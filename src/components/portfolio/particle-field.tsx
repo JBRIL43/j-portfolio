@@ -12,9 +12,13 @@ type Particle = {
 };
 
 /**
- * Cursor-reactive particle constellation rendered on a canvas.
- * Particles drift slowly; the cursor repels nearby particles and
- * nearby particles are connected by faint electric-blue lines.
+ * Global cursor-reactive particle constellation.
+ *
+ * Rendered as a fixed, full-viewport canvas that sits behind all page
+ * content (z-index -1) so the whole site gets a living, dynamic background.
+ * Particles drift slowly; the cursor repels nearby particles and nearby
+ * particles are connected by faint electric-blue lines. Pauses when the
+ * tab is hidden and respects prefers-reduced-motion.
  */
 export function ParticleField() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -35,41 +39,36 @@ export function ParticleField() {
     let height = 0;
     let particles: Particle[] = [];
 
-    const parent = canvas.parentElement;
-    if (!parent) return;
-
-    const resize = () => {
-      const rect = parent.getBoundingClientRect();
-      width = rect.width;
-      height = rect.height;
-      canvas.width = Math.floor(width * dpr);
-      canvas.height = Math.floor(height * dpr);
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-      // density scales with area, capped for perf
-      const target = Math.min(
-        110,
-        Math.max(40, Math.floor((width * height) / 16000))
-      );
-      particles = new Array(target).fill(0).map(() => spawn());
-    };
-
     const spawn = (): Particle => ({
       x: Math.random() * width,
       y: Math.random() * height,
       vx: (Math.random() - 0.5) * 0.25,
       vy: (Math.random() - 0.5) * 0.25,
       size: Math.random() * 1.8 + 0.6,
-      baseAlpha: Math.random() * 0.5 + 0.25,
+      baseAlpha: Math.random() * 0.5 + 0.22,
     });
+
+    const resize = () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      // density scales with viewport area, capped for perf
+      const target = Math.min(
+        100,
+        Math.max(36, Math.floor((width * height) / 20000))
+      );
+      particles = new Array(target).fill(0).map(() => spawn());
+    };
 
     const mouse = { x: -9999, y: -9999, active: false };
     const onMove = (e: MouseEvent) => {
-      const rect = parent.getBoundingClientRect();
-      mouse.x = e.clientX - rect.left;
-      mouse.y = e.clientY - rect.top;
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
       mouse.active = true;
     };
     const onLeave = () => {
@@ -137,7 +136,7 @@ export function ParticleField() {
           const dy = a.y - b.y;
           const dist = Math.hypot(dx, dy);
           if (dist < LINK_DIST) {
-            const o = (1 - dist / LINK_DIST) * 0.22;
+            const o = (1 - dist / LINK_DIST) * 0.2;
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
@@ -153,7 +152,7 @@ export function ParticleField() {
           const dy = a.y - mouse.y;
           const dist = Math.hypot(dx, dy);
           if (dist < REPULSION) {
-            const o = (1 - dist / REPULSION) * 0.5;
+            const o = (1 - dist / REPULSION) * 0.45;
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(mouse.x, mouse.y);
@@ -168,24 +167,43 @@ export function ParticleField() {
     };
 
     let raf = 0;
+    let running = false;
+
+    const start = () => {
+      if (running || reduce) return;
+      running = true;
+      raf = requestAnimationFrame(draw);
+    };
+    const stop = () => {
+      running = false;
+      cancelAnimationFrame(raf);
+    };
+
+    const onVisibility = () => {
+      if (document.hidden) stop();
+      else start();
+    };
+
     resize();
     if (reduce) {
       // draw a single static frame
       draw();
       cancelAnimationFrame(raf);
     } else {
-      raf = requestAnimationFrame(draw);
+      start();
     }
 
     window.addEventListener("resize", resize);
     window.addEventListener("mousemove", onMove, { passive: true });
-    parent.addEventListener("mouseleave", onLeave);
+    document.addEventListener("mouseleave", onLeave);
+    document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
-      cancelAnimationFrame(raf);
+      stop();
       window.removeEventListener("resize", resize);
       window.removeEventListener("mousemove", onMove);
-      parent.removeEventListener("mouseleave", onLeave);
+      document.removeEventListener("mouseleave", onLeave);
+      document.removeEventListener("visibilitychange", onVisibility);
     };
   }, []);
 
@@ -193,7 +211,7 @@ export function ParticleField() {
     <canvas
       ref={canvasRef}
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 -z-10 h-full w-full"
+      className="pointer-events-none fixed inset-0 z-[-1] h-full w-full"
     />
   );
 }

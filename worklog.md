@@ -127,3 +127,27 @@ Work Log:
 
 Stage Summary:
 - The floating identity card now actively follows the cursor: it tilts in 3D toward the pointer, drifts slightly toward it (magnetic), and a blue glare tracks the cursor across the card surface. Settles back to neutral when the cursor leaves. Respects reduced-motion.
+
+---
+Task ID: 6-global-particles
+Agent: Z.ai Code (lead frontend)
+Task: Apply the cursor-reactive particle field to all sections (make it a global dynamic background)
+
+Work Log:
+- Rewrote `src/components/portfolio/particle-field.tsx` to be a global layer:
+  - Canvas is now `position: fixed; inset: 0; z-index: -1` — a single full-viewport layer behind all page content.
+  - Sizes to `window.innerWidth/innerHeight` (viewport), DPR-aware.
+  - Density scales with viewport area (36–100 particles), tuned slightly down for always-on perf.
+  - Cursor tracking via window mousemove (clientX/clientY) so reactivity works anywhere on the page, not just the hero.
+  - Added `visibilitychange` pause (stops rAF when tab hidden) to save CPU.
+  - Kept prefers-reduced-motion guard (single static frame) and full listener cleanup.
+  - Kept electric-blue dots + connection lines + cursor-link lines; alphas kept subtle so text stays readable.
+- Removed `<ParticleField />` (and its import) from `src/components/portfolio/hero.tsx` — the hero now only keeps its aurora/grid ambient layer; particles come from the global instance.
+- Mounted `<ParticleField />` as the first child of the page wrapper in `src/app/page.tsx` so it spans every section.
+- Stacking verified: particles (z-[-1]) sit above section ambient blobs (z-[-10]) but below all content → soft color washes, then crisp particles, then content.
+- `bun run lint` clean.
+- Agent Browser verification: single canvas, position fixed, z-index -1, full viewport (1440x900), no runtime errors. Pixel sampling confirms active drawing and cursor reactivity (lit samples 29 at rest → 43 with cursor active).
+- VLM visual audit: particles + connection lines confirmed visible in Skills section and Contact section (representative of all sections since canvas is fixed). Text readability confirmed intact (headline/buttons/card clearly readable; particles subtle).
+
+Stage Summary:
+- The particle constellation is now a global, always-on dynamic background behind every section of the portfolio. Move the cursor anywhere on the page and particles repel + link to it. Pauses when the tab is hidden and respects reduced-motion.

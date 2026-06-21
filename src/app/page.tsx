@@ -11,10 +11,13 @@ import { Vision } from "@/components/portfolio/vision";
 import { Testimonials } from "@/components/portfolio/testimonials";
 import { Contact } from "@/components/portfolio/contact";
 import { Footer } from "@/components/portfolio/footer";
+import { ParticleField } from "@/components/portfolio/particle-field";
 
 export default function Home() {
   return (
     <div className="relative flex min-h-screen flex-col">
+      {/* Global cursor-reactive particle background (behind all sections) */}
+      <ParticleField />
       <LoadingScreen />
       <Navbar />
       <main className="flex-1">

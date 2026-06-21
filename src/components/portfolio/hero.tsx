@@ -8,7 +8,6 @@ import {
 } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Mail, Sparkles, MapPin, PenTool } from "lucide-react";
-import { ParticleField } from "./particle-field";
 
 const headline = [
   "Building",
@@ -87,14 +86,13 @@ export function Hero() {
       id="hero"
       className="relative flex min-h-screen items-center overflow-hidden pt-28 pb-20"
     >
-      {/* Ambient + particle background */}
+      {/* Ambient background (particles are global, see page.tsx) */}
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute inset-0 grid-bg [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
         <div className="absolute left-1/2 top-[-10%] size-[44rem] -translate-x-1/2 rounded-full bg-[oklch(0.62_0.2_255/0.22)] blur-[140px] animate-aurora" />
         <div className="absolute right-[-10%] top-[30%] size-[32rem] rounded-full bg-[oklch(0.72_0.16_200/0.16)] blur-[130px] animate-aurora [animation-delay:-6s]" />
         <div className="absolute left-[-8%] bottom-[-10%] size-[34rem] rounded-full bg-[oklch(0.6_0.2_290/0.12)] blur-[140px] animate-aurora [animation-delay:-12s]" />
       </div>
-      <ParticleField />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-40 bg-gradient-to-t from-background to-transparent" />
 
       <div className="mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-12 px-5 lg:grid-cols-[1.15fr_0.85fr] lg:gap-8">
