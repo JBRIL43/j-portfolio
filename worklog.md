@@ -204,3 +204,25 @@ Work Log:
 
 Stage Summary:
 - The PCIC Management System is now the flagship featured project with real Dashboard/Events/Members screenshots (gallery + thumbnails in the case-study dialog), a "Live" badge, a "Visit live site" CTA to pcic.tech, and real impact metrics. The Peak Craft leadership section now links to pcic.tech (Live) and pcic.tech/peak-projects. Other projects keep their abstract mockups via the fallback. Lint clean, mobile-verified.
+
+---
+Task ID: 9-hu-student-debt
+Agent: Z.ai Code (lead frontend)
+Task: Add the HU Student Debt System as a second featured project with 4 real screenshots
+
+Work Log:
+- Reviewed the 4 uploaded screenshots via VLM: (1) admin login page, (2) admin dashboard with collections/outstanding debt, (3) student mobile app Make-a-Payment screen, (4) student mobile app dashboard.
+- Copied screenshots to public/projects/: debt-admin-login.png, debt-admin-dashboard.png, debt-mobile-payment.png, debt-mobile-dashboard.png.
+- Added a new "HU Student Debt System" project to `src/lib/portfolio-data.ts` (inserted right after PCIC):
+  - Real Problem/Solution/Impact grounded in Ethiopian Council of Ministers Regulation No. 447/2024 (cost-sharing for tuition/boarding/food).
+  - Solution describes all 3 surfaces: React admin dashboard (payment review, student/graduate mgmt, cost config, ERCA tax export, withdrawal approvals, Fayda national-ID verification, finance reports), Flutter student app (debt overview, cost-sharing statements w/ PDF export, Chapa online payment + receipt upload, push notifications, multi-stage withdrawal workflow), Node.js/Express backend.
+  - Tech: React, Flutter, Node.js, Express, MongoDB, Firebase.
+  - Metrics: Surfaces 3 · Regulation No. 447/2024 · Payments Chapa + receipts.
+  - featured: true, year 2025, liveUrl → GitHub, accent emerald/blue, and the 4 screenshots with captions ordered admin-first then mobile.
+- No component changes needed — the existing ProjectThumbnail + ScreenshotGallery (built in task 8) automatically render the real screenshots, Live badge, Featured badge, 4-thumbnail switcher, and Visit-live-site link.
+- `bun run lint` clean.
+- Agent Browser verification: 7 project cards total; both featured cards (PCIC + HU Student Debt) show real screenshots with Live badges. HU Student Debt dialog opens with 4-thumbnail gallery — confirmed switching through all 4 (admin dashboard → admin login → student app dashboard → student app payment), Featured badge present, Visit-live-site link present. No runtime errors. Mobile: no horizontal overflow (390=390).
+- VLM visual audit: both PCIC and HU Student Debt cards show real software screenshots with green Live badges; the debt card shows the collections/outstanding-debt admin dashboard.
+
+Stage Summary:
+- The portfolio now has two flagship featured projects with real product screenshots and Live badges: PCIC Management System (3 screenshots) and HU Student Debt System (4 screenshots spanning web admin + Flutter mobile app). Both use the same screenshot-gallery dialog with thumbnail switching and a Visit-live-site CTA. Lint clean, mobile-verified.

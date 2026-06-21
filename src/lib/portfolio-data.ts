@@ -196,6 +196,55 @@ export const projects: Project[] = [
     ],
   },
   {
+    id: "hu-student-debt-system",
+    name: "HU Student Debt System",
+    category: "Web",
+    tagline:
+      "A cost-sharing debt platform for Hawassa University — web admin + Flutter student app.",
+    problem:
+      "Under Ethiopian Council of Ministers Regulation No. 447/2024, Hawassa University students must repay a portion of tuition, boarding, and food costs after graduation. The university had no system to track obligations, collect payments, or clear graduates for withdrawal — it was all manual paperwork and spreadsheets.",
+    solution:
+      "Built a full student debt management platform with three surfaces: a React admin dashboard (payment review, student & graduate management, cost configuration, ERCA tax export, withdrawal approvals, Fayda national-ID verification, finance reports), a Flutter student mobile app (debt overview, cost-sharing statements with PDF export, Chapa online payment + receipt upload, push notifications, multi-stage withdrawal workflow), and a Node.js/Express backend tying it all together.",
+    tech: ["React", "Flutter", "Node.js", "Express", "MongoDB", "Firebase"],
+    impact:
+      "Digitized the entire cost-sharing lifecycle — from obligation tracking to payment collection to graduate clearance — replacing manual paperwork with one trusted system for both students and finance staff across Hawassa University.",
+    metrics: [
+      { label: "Surfaces", value: "3" },
+      { label: "Regulation", value: "No. 447/2024" },
+      { label: "Payments", value: "Chapa + receipts" },
+    ],
+    accent: "from-emerald-400/25 via-blue-400/10 to-transparent",
+    year: "2025",
+    featured: true,
+    liveUrl: "https://github.com/jibrilnuredin",
+    screenshots: [
+      {
+        src: "/projects/debt-admin-dashboard.png",
+        alt: "HU Student Debt System admin dashboard with collections and outstanding debt",
+        caption:
+          "Admin dashboard — total collections, outstanding debt, and quick actions for finance staff.",
+      },
+      {
+        src: "/projects/debt-admin-login.png",
+        alt: "HU Student Debt System admin login page",
+        caption:
+          "Admin login — role-based access for finance, registrar, and department staff.",
+      },
+      {
+        src: "/projects/debt-mobile-dashboard.png",
+        alt: "Student mobile app dashboard showing remaining debt and payment history",
+        caption:
+          "Student app — remaining debt, payment status, and transaction history at a glance.",
+      },
+      {
+        src: "/projects/debt-mobile-payment.png",
+        alt: "Student mobile app make a payment screen with payment plan and method options",
+        caption:
+          "Student app — make a payment by plan (advance/semester/full year) via Chapa or receipt upload.",
+      },
+    ],
+  },
+  {
     id: "campus-event-suite",
     name: "Campus Event Promo Suite",
     category: "Design",
