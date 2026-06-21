@@ -104,3 +104,26 @@ Work Log:
 Stage Summary:
 - Jibril's profile card now shows the uploaded avatar instead of "JN" initials.
 - Hero background is now a dynamic, cursor-reactive particle constellation (electric-blue dots + connection lines that respond to mouse movement), layered over the existing aurora/grid ambiance.
+
+---
+Task ID: 5-card-follow-cursor
+Agent: Z.ai Code (lead frontend)
+Task: Make the floating identity card in the hero follow the cursor
+
+Work Log:
+- Reviewed the uploaded screenshot via VLM — confirmed the target is the floating profile/identity card.
+- Refactored `src/components/portfolio/hero.tsx` identity card:
+  - Added cursor-follow motion values (mvX/mvY normalized -1..1 from card-relative pointer position).
+  - `rotateX`/`rotateY` springs (±10°) → the card tilts in 3D toward the cursor.
+  - `shiftX`/`shiftY` springs (±6px) → subtle magnetic translate so the card drifts toward the cursor.
+  - `transformPerspective: 1000` on the style for proper 3D.
+  - Cursor-following radial glare inside the card (data-card-glare + --mx/--my CSS vars), visible on hover.
+  - Entrance animation kept (opacity + y); rotate now driven by motion values instead of the old fixed `rotateX: 8 → 0`.
+  - `prefers-reduced-motion` guard: tilt/shift/glare disabled when reduced motion is requested.
+  - onMouseLeave resets motion values to 0 so the card settles back to neutral.
+- `bun run lint` clean.
+- Agent Browser verification: card renders, no runtime errors. Transform matrix confirmed identity at rest and a matrix3d with rotation (~7.5°) + translation after cursor move → tilt + magnetic follow is live.
+- VLM visual audit: card rendered correctly (avatar, name, roles, tech tags all visible), subtle 3D tilt present, blue glare highlight visible, no layout problems.
+
+Stage Summary:
+- The floating identity card now actively follows the cursor: it tilts in 3D toward the pointer, drifts slightly toward it (magnetic), and a blue glare tracks the cursor across the card surface. Settles back to neutral when the cursor leaves. Respects reduced-motion.

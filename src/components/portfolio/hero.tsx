@@ -1,6 +1,12 @@
 "use client";
 
-import { motion } from "framer-motion";
+import {
+  motion,
+  useMotionValue,
+  useSpring,
+  useTransform,
+} from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Mail, Sparkles, MapPin, PenTool } from "lucide-react";
 import { ParticleField } from "./particle-field";
 
@@ -15,6 +21,65 @@ const headline = [
 export function Hero() {
   const scrollTo = (href: string) => {
     document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  // Cursor-following tilt for the floating identity card
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [reduce, setReduce] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReduce(mq.matches);
+    update();
+    mq.addEventListener?.("change", update);
+    return () => mq.removeEventListener?.("change", update);
+  }, []);
+
+  // normalized cursor position relative to card center: -1 .. 1
+  const mvX = useMotionValue(0);
+  const mvY = useMotionValue(0);
+
+  const rotateY = useSpring(useTransform(mvX, [-1, 1], [10, -10]), {
+    stiffness: 140,
+    damping: 16,
+    mass: 0.4,
+  });
+  const rotateX = useSpring(useTransform(mvY, [-1, 1], [-10, 10]), {
+    stiffness: 140,
+    damping: 16,
+    mass: 0.4,
+  });
+  // subtle magnetic translate so the card drifts toward the cursor
+  const shiftX = useSpring(useTransform(mvX, [-1, 1], [-6, 6]), {
+    stiffness: 120,
+    damping: 18,
+  });
+  const shiftY = useSpring(useTransform(mvY, [-1, 1], [-6, 6]), {
+    stiffness: 120,
+    damping: 18,
+  });
+
+  const onCardMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (reduce) return;
+    const el = cardRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width;
+    const py = (e.clientY - rect.top) / rect.height;
+    mvX.set(px * 2 - 1);
+    mvY.set(py * 2 - 1);
+
+    // cursor-following glare inside the card
+    const inner = el.querySelector<HTMLElement>("[data-card-glare]");
+    if (inner) {
+      inner.style.setProperty("--mx", `${e.clientX - rect.left}px`);
+      inner.style.setProperty("--my", `${e.clientY - rect.top}px`);
+    }
+  };
+
+  const onCardLeave = () => {
+    mvX.set(0);
+    mvY.set(0);
   };
 
   return (
@@ -127,15 +192,36 @@ export function Hero() {
           </motion.div>
         </div>
 
-        {/* Right: identity card */}
+        {/* Right: identity card — follows the cursor */}
         <motion.div
-          initial={{ opacity: 0, y: 30, rotateX: 8 }}
-          animate={{ opacity: 1, y: 0, rotateX: 0 }}
+          ref={cardRef}
+          onMouseMove={onCardMove}
+          onMouseLeave={onCardLeave}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 2.0, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          className="relative mx-auto w-full max-w-sm perspective-1000"
+          style={{
+            rotateX: reduce ? 0 : rotateX,
+            rotateY: reduce ? 0 : rotateY,
+            x: reduce ? 0 : shiftX,
+            y: reduce ? 0 : shiftY,
+            transformPerspective: 1000,
+          }}
+          className="relative mx-auto w-full max-w-sm"
         >
           <div className="absolute -inset-4 -z-10 rounded-3xl bg-[oklch(0.62_0.2_255/0.18)] blur-3xl" />
-          <div className="animate-float-slow rounded-3xl glass-strong p-6 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.8)]">
+          <div
+            data-card-glare
+            className="group relative animate-float-slow overflow-hidden rounded-3xl glass-strong p-6 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.8)]"
+          >
+            {/* cursor-following glare */}
+            <div
+              className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+              style={{
+                background:
+                  "radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), oklch(0.62 0.2 255 / 0.16), transparent 60%)",
+              }}
+            />
             {/* top row */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
