@@ -1,7 +1,13 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowUpRight, Target, Lightbulb, TrendingUp } from "lucide-react";
+import {
+  ArrowUpRight,
+  ExternalLink,
+  Target,
+  Lightbulb,
+  TrendingUp,
+} from "lucide-react";
 import { useState } from "react";
 import {
   projects,
@@ -68,6 +74,91 @@ function ProjectMockup({ project }: { project: Project }) {
   );
 }
 
+/** Card thumbnail: real screenshot when available, else abstract mockup. */
+function ProjectThumbnail({ project }: { project: Project }) {
+  const shot = project.screenshots?.[0];
+  if (shot) {
+    return (
+      <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl ring-1 ring-white/10">
+        <img
+          src={shot.src}
+          alt={shot.alt}
+          className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+        {project.liveUrl && (
+          <span className="absolute right-2.5 top-2.5 inline-flex items-center gap-1 rounded-full bg-emerald-500/90 px-2 py-0.5 text-[10px] font-semibold text-white shadow-[0_0_14px_-2px_oklch(0.7_0.17_162)]">
+            <span className="relative flex size-1.5">
+              <span className="absolute inline-flex size-full animate-ping rounded-full bg-white/80" />
+              <span className="relative inline-flex size-1.5 rounded-full bg-white" />
+            </span>
+            Live
+          </span>
+        )}
+      </div>
+    );
+  }
+  return <ProjectMockup project={project} />;
+}
+
+/** Screenshot gallery with thumbnail switcher, used inside the dialog. */
+function ScreenshotGallery({ project }: { project: Project }) {
+  const shots = project.screenshots ?? [];
+  const [idx, setIdx] = useState(0);
+  if (shots.length === 0) {
+    return (
+      <div className="p-4 pb-0">
+        <ProjectMockup project={project} />
+      </div>
+    );
+  }
+  const active = shots[idx] ?? shots[0];
+  return (
+    <div className="p-4 pb-0">
+      <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl ring-1 ring-white/10">
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={active.src}
+            src={active.src}
+            alt={active.alt}
+            initial={{ opacity: 0, scale: 1.02 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="h-full w-full object-cover object-top"
+          />
+        </AnimatePresence>
+        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3 pt-8">
+          <p className="text-xs text-white/85">{active.caption}</p>
+        </div>
+      </div>
+      {shots.length > 1 && (
+        <div className="mt-3 flex gap-2">
+          {shots.map((s, i) => (
+            <button
+              key={s.src}
+              onClick={() => setIdx(i)}
+              aria-label={`View screenshot ${i + 1}: ${s.caption}`}
+              className={cn(
+                "relative aspect-[16/10] w-24 shrink-0 overflow-hidden rounded-lg ring-1 transition-all",
+                i === idx
+                  ? "ring-[oklch(0.62_0.2_255)] opacity-100"
+                  : "ring-white/10 opacity-60 hover:opacity-100"
+              )}
+            >
+              <img
+                src={s.src}
+                alt={s.alt}
+                className="h-full w-full object-cover object-top"
+              />
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function ProjectCard({
   project,
   onOpen,
@@ -92,7 +183,7 @@ function ProjectCard({
     >
       <TiltGlare />
       <div className="relative p-3">
-        <ProjectMockup project={project} />
+        <ProjectThumbnail project={project} />
       </div>
       <div className="relative flex flex-1 flex-col p-5 pt-1">
         <div className="mb-2 flex items-center justify-between">
@@ -203,14 +294,17 @@ export function Projects() {
         <DialogContent className="max-h-[88vh] overflow-y-auto border-white/10 bg-[oklch(0.1_0.008_264)] p-0 sm:max-w-2xl">
           {selected && (
             <>
-              <div className="p-4 pb-0">
-                <ProjectMockup project={selected} />
-              </div>
+              <ScreenshotGallery project={selected} key={selected.id} />
               <DialogHeader className="px-6 pt-4">
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   <span className="rounded-md bg-[oklch(0.62_0.2_255/0.16)] px-2 py-0.5 text-[11px] font-medium text-[oklch(0.78_0.14_255)] ring-1 ring-[oklch(0.62_0.2_255/0.25)]">
                     {selected.category}
                   </span>
+                  {selected.featured && (
+                    <span className="rounded-md bg-emerald-500/15 px-2 py-0.5 text-[11px] font-medium text-emerald-300 ring-1 ring-emerald-400/25">
+                      Featured
+                    </span>
+                  )}
                   <span className="font-mono text-xs text-muted-foreground">
                     {selected.year}
                   </span>
@@ -276,6 +370,21 @@ export function Projects() {
                     ))}
                   </div>
                 </div>
+
+                {selected.liveUrl && (
+                  <a
+                    href={selected.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group/link inline-flex items-center justify-center gap-2 rounded-xl bg-[oklch(0.62_0.2_255)] px-5 py-3 text-sm font-medium text-white shadow-[0_0_30px_-8px_oklch(0.62_0.2_255)] transition-all hover:brightness-110"
+                  >
+                    <ExternalLink className="size-4 transition-transform group-hover/link:translate-x-0.5" />
+                    Visit live site
+                    <span className="font-mono text-xs text-white/70">
+                      {selected.liveUrl.replace(/^https?:\/\//, "")}
+                    </span>
+                  </a>
+                )}
               </div>
             </>
           )}

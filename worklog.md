@@ -179,3 +179,28 @@ Work Log:
 
 Stage Summary:
 - Every card across the portfolio (Journey, What I Do, Projects, Peak Craft, Skills, Beyond Coding, Testimonials, Contact socials) now follows the cursor with the same 3D tilt + cursor-tracking blue glare as the hero identity card. Entrance/stagger animations preserved; filter layout animations preserved; reduced-motion respected; lint clean; mobile overflow-free.
+
+---
+Task ID: 8-pcic-live-project
+Agent: Z.ai Code (lead frontend)
+Task: Showcase the real PCIC Management System (live at pcic.tech) as a featured project with the 3 uploaded screenshots + live links; add pcic.tech / pcic.tech/peak-projects links
+
+Work Log:
+- Reviewed the 3 uploaded screenshots via VLM — all are real pages of the PCIC Management System (Dashboard, Events, Members) at pcic.tech.
+- Copied the screenshots to public/projects/: pcic-dashboard.png, pcic-events.png, pcic-members.png.
+- Extended the `Project` type in `src/lib/portfolio-data.ts` with optional `screenshots[]`, `liveUrl`, and `featured` fields.
+- Replaced the placeholder "Peak Craft Community Platform" project with a real **PCIC Management System** project: live tagline, real Problem/Solution/Impact copy (spreadsheets → one platform; 27+ members; 81% active rate), metrics (Status: Live / Members managed: 27+ / Active rate: 81%), year 2025, featured:true, liveUrl https://pcic.tech, and the 3 screenshots with captions.
+- Added `pcic` and `peakProjects` links to the `socials` object (pcic.tech + pcic.tech/peak-projects).
+- Updated `src/components/portfolio/projects.tsx`:
+  - New `ProjectThumbnail`: shows the first real screenshot (object-cover, object-top, subtle hover scale + dark gradient) when `screenshots` exist, else falls back to the abstract mockup. Adds an animated green "Live" badge when `liveUrl` exists.
+  - New `ScreenshotGallery`: used in the dialog — large main image with caption overlay + thumbnail switcher (clickable, animated crossfade between screenshots, active thumbnail ringed in blue). Falls back to mockup when no screenshots.
+  - Card thumbnail now uses `ProjectThumbnail`; dialog now uses `ScreenshotGallery` (keyed by project id so the gallery index resets per project).
+  - Dialog header now shows a "Featured" badge for featured projects.
+  - Added a "Visit live site" button at the bottom of the dialog for projects with `liveUrl` (links to pcic.tech, opens new tab, shows the domain).
+- Updated `src/components/portfolio/peak-craft.tsx` featured panel: added two live links — a primary "Live: pcic.tech" button (→ socials.pcic) and a secondary "Peak Projects" button (→ socials.peakProjects).
+- `bun run lint` clean.
+- Agent Browser verification: PCIC card renders with real dashboard screenshot (naturalWidth 1920, complete), green Live badge present, name "PCIC Management System". Dialog opens with 3-thumbnail gallery (Dashboard/Events/Members) — thumbnail switcher confirmed (click Events → Events caption/image). "Visit live site" link → https://pcic.tech. Peak Craft section has both "Live: pcic.tech" and "Peak Projects" links (→ pcic.tech/peak-projects). No runtime errors. Mobile: no horizontal overflow (390=390).
+- VLM visual audit: top-left project card titled "PCIC Management System" shows a real software dashboard screenshot (not an abstract mockup) with a green "Live" badge in the top-right.
+
+Stage Summary:
+- The PCIC Management System is now the flagship featured project with real Dashboard/Events/Members screenshots (gallery + thumbnails in the case-study dialog), a "Live" badge, a "Visit live site" CTA to pcic.tech, and real impact metrics. The Peak Craft leadership section now links to pcic.tech (Live) and pcic.tech/peak-projects. Other projects keep their abstract mockups via the fallback. Lint clean, mobile-verified.

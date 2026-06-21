@@ -1,8 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Quote } from "lucide-react";
-import { leadershipPillars, leadershipStats } from "@/lib/portfolio-data";
+import { ExternalLink, Quote } from "lucide-react";
+import { leadershipPillars, leadershipStats, socials } from "@/lib/portfolio-data";
 import { SectionHeading } from "./section-heading";
 import { staggerContainer, staggerItem } from "./reveal";
 import { TiltCard } from "./tilt";
@@ -73,6 +73,26 @@ export function PeakCraft() {
                   “A community isn&apos;t built by one person — it&apos;s built
                   by one clear story, told consistently, by everyone.”
                 </p>
+              </div>
+
+              <div className="mt-5 flex flex-wrap items-center gap-3">
+                <a
+                  href={socials.pcic}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group/live inline-flex items-center gap-2 rounded-xl bg-[oklch(0.62_0.2_255)] px-4 py-2.5 text-sm font-medium text-white shadow-[0_0_24px_-8px_oklch(0.62_0.2_255)] transition-all hover:brightness-110"
+                >
+                  <ExternalLink className="size-4 transition-transform group-hover/live:translate-x-0.5" />
+                  Live: pcic.tech
+                </a>
+                <a
+                  href={socials.peakProjects}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-xl glass px-4 py-2.5 text-sm font-medium text-foreground/90 transition-colors hover:bg-white/10"
+                >
+                  Peak Projects
+                </a>
               </div>
             </div>
           </TiltCard>

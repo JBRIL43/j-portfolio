@@ -149,27 +149,51 @@ export type Project = {
   metrics: { label: string; value: string }[];
   accent: string; // gradient classes
   year: string;
+  // Optional real product screenshots + live links (when available)
+  screenshots?: { src: string; alt: string; caption: string }[];
+  liveUrl?: string;
+  featured?: boolean;
 };
 
 export const projects: Project[] = [
   {
-    id: "peak-craft-platform",
-    name: "Peak Craft Community Platform",
+    id: "pcic-management-system",
+    name: "PCIC Management System",
     category: "Web",
-    tagline: "A digital home for a university tech community.",
+    tagline: "The operating system for Peak Craft — live at pcic.tech.",
     problem:
-      "Peak Craft's events, members, and resources were scattered across group chats and informal channels, making onboarding and engagement inconsistent.",
+      "Peak Craft's events, members, attendance, and disciplinary records were tracked across spreadsheets and group chats. Admins had no single source of truth, making engagement tracking and accountability inconsistent.",
     solution:
-      "Designed and built a community web platform centralizing events, member profiles, resources, and announcements — with a clean, on-brand content workflow.",
+      "Designed and built PCIC — a full management system with a role-based dashboard, event + attendance tracking, member management with status & strikes, decisions, compliance, and career modules. Live and in use by the Peak Craft leadership team.",
     tech: ["Next.js", "React", "Tailwind", "Node.js", "MongoDB"],
     impact:
-      "Unified the community's digital presence and cut onboarding friction, making every event and resource discoverable in one place.",
+      "Replaced scattered spreadsheets with one trusted platform — giving Peak Craft's leadership real-time visibility into 27+ members, events, attendance, and accountability, all under one branded system at pcic.tech.",
     metrics: [
-      { label: "Members reached", value: "500+" },
-      { label: "Events cataloged", value: "30+" },
+      { label: "Status", value: "Live" },
+      { label: "Members managed", value: "27+" },
+      { label: "Active rate", value: "81%" },
     ],
     accent: "from-blue-500/30 via-cyan-400/10 to-transparent",
-    year: "2024",
+    year: "2025",
+    featured: true,
+    liveUrl: "https://pcic.tech",
+    screenshots: [
+      {
+        src: "/projects/pcic-dashboard.png",
+        alt: "PCIC Management System dashboard overview",
+        caption: "Dashboard — real-time overview of events, members, and compliance.",
+      },
+      {
+        src: "/projects/pcic-events.png",
+        alt: "PCIC Events management page",
+        caption: "Events — create and track community events and attendance.",
+      },
+      {
+        src: "/projects/pcic-members.png",
+        alt: "PCIC Members management page with table",
+        caption: "Members — manage status, batches, domains, and accountability.",
+      },
+    ],
   },
   {
     id: "campus-event-suite",
@@ -454,6 +478,9 @@ export const socials = {
   linkedin: "https://www.linkedin.com/in/jibril-nuredin",
   github: "https://github.com/jibrilnuredin",
   email: "mailto:jibril.nuredin@example.com",
+  // Live product links
+  pcic: "https://pcic.tech",
+  peakProjects: "https://pcic.tech/peak-projects",
 };
 
 export const visionStats = [
