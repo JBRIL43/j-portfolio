@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Mail, Sparkles, MapPin } from "lucide-react";
+import { ArrowRight, Mail, Sparkles, MapPin, PenTool } from "lucide-react";
 
 const headline = [
   "Building",
@@ -75,8 +75,9 @@ export function Hero() {
             transition={{ delay: 2.25, duration: 0.7 }}
             className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg"
           >
-            Information Systems student, web developer, designer, and PR leader
-            transforming ideas into impactful digital products and communities.
+            Information Systems student, web developer, designer, PR lead, social
+            media manager, and content creator transforming ideas into impactful
+            digital products and communities.
           </motion.p>
 
           <motion.div
@@ -116,6 +117,11 @@ export function Hero() {
               <MapPin className="size-3.5 text-[oklch(0.62_0.2_255)]" />
               Head of PR · Peak Craft
             </span>
+            <span className="hidden h-3 w-px bg-white/15 sm:block" />
+            <span className="inline-flex items-center gap-1.5">
+              <PenTool className="size-3.5 text-[oklch(0.62_0.2_255)]" />
+              SMM · Content Creator
+            </span>
           </motion.div>
         </div>
 
@@ -140,7 +146,7 @@ export function Hero() {
                     Jibril Nuredin
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    Builder · Designer · Leader
+                    Engineer · PR Lead · SMM · Creator
                   </p>
                 </div>
               </div>
@@ -158,12 +164,20 @@ export function Hero() {
                 <span className="text-foreground/90">software_engineer</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">edu</span>
-                <span className="text-foreground/90">info_systems</span>
+                <span className="text-muted-foreground">pr</span>
+                <span className="text-foreground/90">peak_craft.head</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">lead</span>
-                <span className="text-foreground/90">peak_craft.pr</span>
+                <span className="text-muted-foreground">smm</span>
+                <span className="text-foreground/90">social_media_mgr</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">content</span>
+                <span className="text-foreground/90">creator</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">edu</span>
+                <span className="text-foreground/90">info_systems</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">focus</span>
@@ -175,7 +189,7 @@ export function Hero() {
 
             {/* stack chips */}
             <div className="flex flex-wrap gap-1.5">
-              {["React", "Next.js", "Node", "Figma", "MongoDB", "Tailwind"].map(
+              {["React", "Next.js", "Node", "Figma", "Canva", "MongoDB", "Tailwind"].map(
                 (s) => (
                   <span
                     key={s}

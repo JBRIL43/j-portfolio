@@ -56,3 +56,24 @@ Stage Summary:
 - Golden path verified end-to-end: project filter (AI→1 result), case-study dialog (full Problem/Solution/Impact), and contact form → POST /api/contact 201 → persisted in SQLite ("Ada Lovelace" row confirmed).
 - VLM visual audit (hero + full-page): "all sections have content, no layout issues, cohesive premium dark-mode design."
 - `bun run lint` clean.
+
+---
+Task ID: 3-hero-roles
+Agent: Z.ai Code (lead frontend)
+Task: Add PR role, SMM, and Content Creator to the Hero identity card roles; add Canva to the tool chips
+
+Work Log:
+- Viewed the user's uploaded screenshot (Hero identity card) via VLM to confirm target area.
+- Updated `src/components/portfolio/hero.tsx`:
+  - Identity card subtitle: "Builder · Designer · Leader" → "Engineer · PR Lead · SMM · Creator".
+  - Meta lines: replaced single `lead: peak_craft.pr` with explicit `pr: peak_craft.head`, `smm: social_media_mgr`, `content: creator` (kept role/edu/focus).
+  - Stack chips: added "Canva" → React, Next.js, Node, Figma, Canva, MongoDB, Tailwind.
+  - Subheadline: expanded to "...designer, PR lead, social media manager, and content creator...".
+  - Meta row under CTAs: added a third pill "SMM · Content Creator" (with PenTool icon), imported PenTool from lucide-react.
+  - Fixed a duplicate divider line introduced during the edit.
+- `bun run lint` clean.
+- Agent Browser verification: all new text renders (Engineer · PR Lead · SMM · Creator; pr/smm/content meta lines; Canva chip; SMM · Content Creator pill), no runtime errors.
+- VLM visual audit: card layout clean (no overlap/cutoff), Canva visible, PR/SMM/content-creator roles shown.
+
+Stage Summary:
+- Hero identity card now reflects the full role set (Engineer, PR Lead, SMM, Content Creator) and Canva is part of the toolkit — consistent across the card subtitle, mono meta lines, the subheadline, and the meta pill row.
