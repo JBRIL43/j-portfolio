@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight, Mail, Sparkles, MapPin, PenTool } from "lucide-react";
+import { ParticleField } from "./particle-field";
 
 const headline = [
   "Building",
@@ -21,14 +22,15 @@ export function Hero() {
       id="hero"
       className="relative flex min-h-screen items-center overflow-hidden pt-28 pb-20"
     >
-      {/* Ambient background */}
+      {/* Ambient + particle background */}
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute inset-0 grid-bg [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
         <div className="absolute left-1/2 top-[-10%] size-[44rem] -translate-x-1/2 rounded-full bg-[oklch(0.62_0.2_255/0.22)] blur-[140px] animate-aurora" />
         <div className="absolute right-[-10%] top-[30%] size-[32rem] rounded-full bg-[oklch(0.72_0.16_200/0.16)] blur-[130px] animate-aurora [animation-delay:-6s]" />
         <div className="absolute left-[-8%] bottom-[-10%] size-[34rem] rounded-full bg-[oklch(0.6_0.2_290/0.12)] blur-[140px] animate-aurora [animation-delay:-12s]" />
-        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-background to-transparent" />
       </div>
+      <ParticleField />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-40 bg-gradient-to-t from-background to-transparent" />
 
       <div className="mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-12 px-5 lg:grid-cols-[1.15fr_0.85fr] lg:gap-8">
         {/* Left: copy */}
@@ -137,8 +139,12 @@ export function Hero() {
             {/* top row */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="relative grid size-12 place-items-center rounded-xl bg-gradient-to-br from-[oklch(0.7_0.18_255)] to-[oklch(0.5_0.2_290)] text-lg font-semibold text-white">
-                  JN
+                <div className="relative size-12 shrink-0">
+                  <img
+                    src="/avatar.png"
+                    alt="Jibril Nuredin avatar"
+                    className="size-12 rounded-xl object-cover ring-1 ring-white/15"
+                  />
                   <span className="absolute -bottom-0.5 -right-0.5 size-3.5 rounded-full border-2 border-[oklch(0.11_0.008_264)] bg-emerald-400" />
                 </div>
                 <div>

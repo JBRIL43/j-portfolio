@@ -77,3 +77,30 @@ Work Log:
 
 Stage Summary:
 - Hero identity card now reflects the full role set (Engineer, PR Lead, SMM, Content Creator) and Canva is part of the toolkit — consistent across the card subtitle, mono meta lines, the subheadline, and the meta pill row.
+
+---
+Task ID: 4-avatar-particles
+Agent: Z.ai Code (lead frontend)
+Task: Add an avatar image to Jibril Nuredin's profile card; add a cursor-reactive particle background to the hero section
+
+Work Log:
+- Reviewed user's two uploaded images via VLM: image 1 = current profile card (context), image 2 = the avatar to use.
+- Copied the uploaded avatar to `public/avatar.png` (645x637 PNG, RGBA).
+- Created `src/components/portfolio/particle-field.tsx`: a canvas-based particle constellation.
+  - DPR-aware sizing to the hero parent, density scales with area (40–110 particles), capped for perf.
+  - Particles drift slowly with baseline random motion + friction; wrap around edges.
+  - Cursor repulsion: particles within 130px of the cursor are pushed away; connecting lines drawn between particles within 120px (opacity by distance); extra brighter lines link particles to the cursor.
+  - Electric-blue dot/line colors to match brand.
+  - Respects `prefers-reduced-motion` (renders a single static frame).
+  - Cleans up listeners + cancels rAF on unmount.
+- Updated `src/components/portfolio/hero.tsx`:
+  - Imported and mounted `<ParticleField />` inside the hero (between ambient aurora layer and bottom fade).
+  - Replaced the "JN" gradient-initials avatar block with an `<img src="/avatar.png">` (rounded-xl, object-cover, ring-1 ring-white/15), keeping the green online-status dot.
+- `bun run lint` clean.
+- Agent Browser verification: avatar image loads (naturalWidth 645, complete=true), particle canvas present (1440x900), no runtime errors.
+- Canvas pixel sampling confirms active drawing (~91–96 lit sample points) and the count shifts on mousemove → cursor reactivity is live.
+- VLM visual audit: avatar visible in card, particles + connecting lines visible in background, layout clean.
+
+Stage Summary:
+- Jibril's profile card now shows the uploaded avatar instead of "JN" initials.
+- Hero background is now a dynamic, cursor-reactive particle constellation (electric-blue dots + connection lines that respond to mouse movement), layered over the existing aurora/grid ambiance.
