@@ -46,7 +46,7 @@ export function Hero() {
             Available for collaborations & freelance
           </motion.div>
 
-          <h1 className="text-balance text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl md:text-6xl lg:text-[4.2rem]">
+          <h1 className="text-balance text-[1.83rem] font-semibold leading-[1.05] tracking-tight sm:text-[2.58rem] md:text-[3.33rem] lg:text-[3.78rem]">
             {headline.map((word, i) => (
               <span key={i} className="mr-[0.28em] inline-block overflow-hidden align-bottom">
                 <motion.span
