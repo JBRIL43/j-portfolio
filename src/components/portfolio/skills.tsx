@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { skillCategories } from "@/lib/portfolio-data";
 import { SectionHeading } from "./section-heading";
+import { TiltCard } from "./tilt";
 import { cn } from "@/lib/utils";
 
 export function Skills() {
@@ -76,7 +77,7 @@ export function Skills() {
           </div>
 
           {/* Skill bars */}
-          <div className="relative overflow-hidden rounded-2xl glass p-6 sm:p-8">
+          <TiltCard className="group relative overflow-hidden rounded-2xl glass p-6 sm:p-8">
             <div className="pointer-events-none absolute -right-16 -top-16 size-48 rounded-full bg-[oklch(0.62_0.2_255/0.12)] blur-3xl" />
             <AnimatePresence mode="wait">
               <motion.div
@@ -120,7 +121,7 @@ export function Skills() {
                 ))}
               </motion.div>
             </AnimatePresence>
-          </div>
+          </TiltCard>
         </div>
       </div>
     </section>

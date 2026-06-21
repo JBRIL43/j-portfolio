@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { interests } from "@/lib/portfolio-data";
 import { SectionHeading } from "./section-heading";
 import { staggerContainer, staggerItem } from "./reveal";
+import { TiltCard } from "./tilt";
 
 export function BeyondCoding() {
   return (
@@ -30,10 +31,10 @@ export function BeyondCoding() {
           {interests.map((item) => {
             const Icon = item.icon;
             return (
-              <motion.div
+              <TiltCard
                 key={item.title}
                 variants={staggerItem}
-                className="group relative overflow-hidden rounded-2xl glass p-6 transition-all duration-300 hover:-translate-y-1 hover:bg-white/8"
+                className="group relative overflow-hidden rounded-2xl glass p-6 transition-colors duration-300 hover:bg-white/8"
               >
                 <div className="absolute -right-8 -top-8 size-24 rounded-full bg-[oklch(0.62_0.2_255/0.08)] blur-2xl transition-opacity duration-300 group-hover:bg-[oklch(0.62_0.2_255/0.18)]" />
                 <div className="relative">
@@ -47,7 +48,7 @@ export function BeyondCoding() {
                     {item.description}
                   </p>
                 </div>
-              </motion.div>
+              </TiltCard>
             );
           })}
         </motion.div>

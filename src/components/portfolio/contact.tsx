@@ -10,6 +10,7 @@ import { z } from "zod";
 import { socials } from "@/lib/portfolio-data";
 import { SectionHeading } from "./section-heading";
 import { Reveal } from "./reveal";
+import { useTilt, TiltGlare } from "./tilt";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -47,6 +48,33 @@ const socialLinks = [
     icon: Mail,
   },
 ];
+
+function SocialCard({ item }: { item: (typeof socialLinks)[number] }) {
+  const { ref, onMouseMove, onMouseLeave, style } = useTilt<HTMLAnchorElement>(6);
+  const Icon = item.icon;
+  return (
+    <motion.a
+      ref={ref}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      style={style}
+      href={item.href}
+      target={item.label === "Email" ? undefined : "_blank"}
+      rel="noopener noreferrer"
+      className="group/tilt group relative flex items-center gap-4 overflow-hidden rounded-2xl glass p-5 transition-colors duration-300 hover:bg-white/8 hover:ring-1 hover:ring-[oklch(0.62_0.2_255/0.25)]"
+    >
+      <TiltGlare />
+      <div className="relative grid size-11 shrink-0 place-items-center rounded-xl bg-white/6 ring-1 ring-white/10 transition-colors group-hover:bg-[oklch(0.62_0.2_255/0.16)]">
+        <Icon className="size-5 text-[oklch(0.78_0.14_255)]" />
+      </div>
+      <div className="relative min-w-0 flex-1">
+        <p className="text-sm font-medium text-foreground">{item.label}</p>
+        <p className="truncate text-xs text-muted-foreground">{item.handle}</p>
+      </div>
+      <ArrowUpRight className="relative size-4 text-muted-foreground transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[oklch(0.78_0.14_255)]" />
+    </motion.a>
+  );
+}
 
 export function Contact() {
   const [submitting, setSubmitting] = useState(false);
@@ -205,31 +233,9 @@ export function Contact() {
           {/* Socials + info */}
           <Reveal delay={0.1}>
             <div className="flex h-full flex-col gap-3">
-              {socialLinks.map((s) => {
-                const Icon = s.icon;
-                return (
-                  <a
-                    key={s.label}
-                    href={s.href}
-                    target={s.label === "Email" ? undefined : "_blank"}
-                    rel="noopener noreferrer"
-                    className="group flex items-center gap-4 rounded-2xl glass p-5 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/8 hover:ring-1 hover:ring-[oklch(0.62_0.2_255/0.25)]"
-                  >
-                    <div className="grid size-11 shrink-0 place-items-center rounded-xl bg-white/6 ring-1 ring-white/10 transition-colors group-hover:bg-[oklch(0.62_0.2_255/0.16)]">
-                      <Icon className="size-5 text-[oklch(0.78_0.14_255)]" />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium text-foreground">
-                        {s.label}
-                      </p>
-                      <p className="truncate text-xs text-muted-foreground">
-                        {s.handle}
-                      </p>
-                    </div>
-                    <ArrowUpRight className="size-4 text-muted-foreground transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[oklch(0.78_0.14_255)]" />
-                  </a>
-                );
-              })}
+              {socialLinks.map((s) => (
+                <SocialCard key={s.label} item={s} />
+              ))}
 
               <div className="mt-auto rounded-2xl glass p-5">
                 <div className="flex items-center gap-2">

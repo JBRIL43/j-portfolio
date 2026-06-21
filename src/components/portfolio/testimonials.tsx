@@ -5,6 +5,7 @@ import { Quote, Star } from "lucide-react";
 import { testimonials } from "@/lib/portfolio-data";
 import { SectionHeading } from "./section-heading";
 import { staggerContainer, staggerItem } from "./reveal";
+import { TiltCard } from "./tilt";
 
 export function Testimonials() {
   return (
@@ -29,10 +30,10 @@ export function Testimonials() {
           className="mt-14 grid grid-cols-1 gap-5 md:grid-cols-3"
         >
           {testimonials.map((t) => (
-            <motion.figure
+            <TiltCard
               key={t.name}
               variants={staggerItem}
-              className="group relative flex h-full flex-col overflow-hidden rounded-2xl glass p-6 transition-all duration-300 hover:-translate-y-1 hover:bg-white/8"
+              className="group relative flex h-full flex-col overflow-hidden rounded-2xl glass p-6 transition-colors duration-300 hover:bg-white/8"
             >
               <div className="absolute -right-6 -top-6 size-24 rounded-full bg-[oklch(0.62_0.2_255/0.1)] blur-2xl transition-colors group-hover:bg-[oklch(0.62_0.2_255/0.2)]" />
               <div className="relative flex flex-1 flex-col">
@@ -60,7 +61,7 @@ export function Testimonials() {
                   </div>
                 </figcaption>
               </div>
-            </motion.figure>
+            </TiltCard>
           ))}
         </motion.div>
 

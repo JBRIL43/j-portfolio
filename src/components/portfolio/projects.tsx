@@ -17,6 +17,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import { useTilt, TiltGlare } from "./tilt";
 import { cn } from "@/lib/utils";
 
 function ProjectMockup({ project }: { project: Project }) {
@@ -74,20 +75,26 @@ function ProjectCard({
   project: Project;
   onOpen: () => void;
 }) {
+  const { ref, onMouseMove, onMouseLeave, style } = useTilt<HTMLButtonElement>(6);
   return (
     <motion.button
+      ref={ref}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      style={style}
       layout
       initial={{ opacity: 0, scale: 0.96 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.96 }}
       transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
       onClick={onOpen}
-      className="group relative flex h-full flex-col overflow-hidden rounded-2xl glass text-left transition-all duration-300 hover:-translate-y-1 hover:bg-white/8"
+      className="group/tilt group relative flex h-full flex-col overflow-hidden rounded-2xl glass text-left transition-colors duration-300 hover:bg-white/8"
     >
-      <div className="p-3">
+      <TiltGlare />
+      <div className="relative p-3">
         <ProjectMockup project={project} />
       </div>
-      <div className="flex flex-1 flex-col p-5 pt-1">
+      <div className="relative flex flex-1 flex-col p-5 pt-1">
         <div className="mb-2 flex items-center justify-between">
           <span className="rounded-md bg-white/6 px-2 py-0.5 text-[11px] font-medium text-foreground/70 ring-1 ring-white/8">
             {project.category}

@@ -151,3 +151,31 @@ Work Log:
 
 Stage Summary:
 - The particle constellation is now a global, always-on dynamic background behind every section of the portfolio. Move the cursor anywhere on the page and particles repel + link to it. Pauses when the tab is hidden and respects reduced-motion.
+
+---
+Task ID: 7-tilt-everywhere
+Agent: Z.ai Code (lead frontend)
+Task: Make every card-like element across all sections follow the cursor (3D tilt + glare) like the hero identity card
+
+Work Log:
+- Created `src/components/portfolio/tilt.tsx` with three exports:
+  - `useTilt<T>(max)` hook: generic over host element type (div/button/anchor). Returns `{ ref, onMouseMove, onMouseLeave, style }`. Uses useMotionValue + useSpring + useTransform for smooth rotateX/rotateY (±max°) toward the cursor, transformPerspective: 1000, and sets `--tilt-mx/--tilt-my` CSS vars for a cursor-following glare. Handlers memoized via useCallback, style via useMemo, destructured at call sites to satisfy the react-hooks/refs lint rule.
+  - `TiltGlare` component: absolute radial-gradient overlay using the inherited `--tilt-mx/my` vars, `rounded-[inherit]`, visible on `group-hover/tilt`.
+  - `TiltCard` component: a motion.div that wires the hook + glare, adds `group/tilt`, and spreads framer props (variants/initial/animate/transition) so it can participate in stagger entrances.
+- Key fix: removed all Tailwind `hover:-translate-y-*` utilities from tilt cards (they write to `transform`, which conflicts with framer-motion's motion-value transform); kept hover bg/ring feedback instead.
+- Applied tilt to every card section:
+  - `journey.tsx`: timeline cards → TiltCard (the card from the user's screenshot).
+  - `what-i-do.tsx`: service cards → TiltCard (removed the old custom spotlight; TiltCard glare replaces it).
+  - `beyond-coding.tsx`: interest cards → TiltCard.
+  - `testimonials.tsx`: testimonial cards → TiltCard.
+  - `peak-craft.tsx`: featured PR panel + leadership pillars → TiltCard (pillars max=6).
+  - `skills.tsx`: skill-bars panel → TiltCard.
+  - `projects.tsx`: project cards → useTilt<HTMLButtonElement> hook on the existing motion.button (kept `layout` for filtering) + TiltGlare, max=6.
+  - `contact.tsx`: social link cards → new SocialCard component using useTilt<HTMLAnchorElement> + TiltGlare on motion.a, max=6. (Form panel intentionally left flat to avoid tilting inputs while typing.)
+- `bun run lint` clean (after destructuring ref/handlers at all call sites to satisfy react-hooks/refs).
+- Agent Browser verification: no runtime errors. Tilt confirmed active on Journey card (matrix3d ~3.4° rotation), What I Do card, and Projects card (~2.4°). Mobile: no horizontal overflow (390=390), tilt works on touch-sized viewport.
+- Project filter still works with tilt (Design → 2 cards, layout animation coexists with tilt motion values).
+- VLM visual audit: project cards show subtle 3D tilt + soft blue glare following the cursor; layout clean.
+
+Stage Summary:
+- Every card across the portfolio (Journey, What I Do, Projects, Peak Craft, Skills, Beyond Coding, Testimonials, Contact socials) now follows the cursor with the same 3D tilt + cursor-tracking blue glare as the hero identity card. Entrance/stagger animations preserved; filter layout animations preserved; reduced-motion respected; lint clean; mobile overflow-free.

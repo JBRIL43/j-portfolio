@@ -5,6 +5,7 @@ import { Quote } from "lucide-react";
 import { leadershipPillars, leadershipStats } from "@/lib/portfolio-data";
 import { SectionHeading } from "./section-heading";
 import { staggerContainer, staggerItem } from "./reveal";
+import { TiltCard } from "./tilt";
 
 export function PeakCraft() {
   return (
@@ -27,12 +28,12 @@ export function PeakCraft() {
 
         <div className="mt-14 grid grid-cols-1 gap-6 lg:grid-cols-[0.9fr_1.1fr]">
           {/* Featured panel */}
-          <motion.div
+          <TiltCard
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="relative overflow-hidden rounded-3xl glass-strong p-7"
+            className="group relative overflow-hidden rounded-3xl glass-strong p-7"
           >
             <div className="absolute -right-10 -top-10 size-40 rounded-full bg-[oklch(0.62_0.2_255/0.18)] blur-3xl" />
             <div className="relative">
@@ -74,7 +75,7 @@ export function PeakCraft() {
                 </p>
               </div>
             </div>
-          </motion.div>
+          </TiltCard>
 
           {/* Pillars */}
           <motion.div
@@ -87,10 +88,11 @@ export function PeakCraft() {
             {leadershipPillars.map((p) => {
               const Icon = p.icon;
               return (
-                <motion.div
+                <TiltCard
                   key={p.title}
                   variants={staggerItem}
-                  className="group flex items-start gap-4 rounded-2xl glass p-5 transition-all duration-300 hover:bg-white/8 hover:ring-1 hover:ring-[oklch(0.62_0.2_255/0.25)]"
+                  max={6}
+                  className="group flex items-start gap-4 rounded-2xl glass p-5 transition-colors duration-300 hover:bg-white/8 hover:ring-1 hover:ring-[oklch(0.62_0.2_255/0.25)]"
                 >
                   <div className="grid size-10 shrink-0 place-items-center rounded-xl bg-white/6 ring-1 ring-white/10 transition-colors group-hover:bg-[oklch(0.62_0.2_255/0.16)]">
                     <Icon className="size-5 text-[oklch(0.78_0.14_255)]" />
@@ -103,7 +105,7 @@ export function PeakCraft() {
                       {p.description}
                     </p>
                   </div>
-                </motion.div>
+                </TiltCard>
               );
             })}
           </motion.div>

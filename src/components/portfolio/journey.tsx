@@ -5,6 +5,7 @@ import { useRef } from "react";
 import { journey } from "@/lib/portfolio-data";
 import { SectionHeading } from "./section-heading";
 import { Reveal } from "./reveal";
+import { TiltCard } from "./tilt";
 
 export function Journey() {
   const ref = useRef<HTMLDivElement>(null);
@@ -59,10 +60,10 @@ export function Journey() {
                     }
                   >
                     <Reveal y={28}>
-                      <div className="group rounded-2xl glass p-5 transition-all duration-300 hover:bg-white/8 hover:ring-1 hover:ring-[oklch(0.62_0.2_255/0.25)]">
+                      <TiltCard className="group relative overflow-hidden rounded-2xl glass p-5 transition-colors duration-300 hover:bg-white/8 hover:ring-1 hover:ring-[oklch(0.62_0.2_255/0.25)]">
                         <div
                           className={
-                            "mb-2 flex items-center gap-2 " +
+                            "relative mb-2 flex items-center gap-2 " +
                             (left ? "sm:justify-end" : "")
                           }
                         >
@@ -73,13 +74,13 @@ export function Journey() {
                             {step.year}
                           </span>
                         </div>
-                        <h3 className="text-lg font-semibold tracking-tight text-foreground">
+                        <h3 className="relative text-lg font-semibold tracking-tight text-foreground">
                           {step.title}
                         </h3>
-                        <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+                        <p className="relative mt-1.5 text-sm leading-relaxed text-muted-foreground">
                           {step.description}
                         </p>
-                      </div>
+                      </TiltCard>
                     </Reveal>
                   </div>
                 </li>
