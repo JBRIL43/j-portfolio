@@ -226,3 +226,25 @@ Work Log:
 
 Stage Summary:
 - The portfolio now has two flagship featured projects with real product screenshots and Live badges: PCIC Management System (3 screenshots) and HU Student Debt System (4 screenshots spanning web admin + Flutter mobile app). Both use the same screenshot-gallery dialog with thumbnail switching and a Visit-live-site CTA. Lint clean, mobile-verified.
+
+---
+Task ID: 10-libraryhub
+Agent: Z.ai Code (lead frontend)
+Task: Add LibraryHub as a third featured project with real screenshot + live demo + GitHub source links
+
+Work Log:
+- Reviewed the uploaded screenshot via VLM: the LibraryHub bookstore landing page (bookshelf hero, "Unleash the power of reading books", Login/Get Started + Join-waitlist/Learn-more CTAs).
+- Copied the screenshot to public/projects/libraryhub-hero.png.
+- Extended the `Project` type in `src/lib/portfolio-data.ts` with an optional `repoUrl` field (alongside the existing `liveUrl`).
+- Added a new "LibraryHub" project (inserted after HU Student Debt System):
+  - Real Problem/Solution/Impact grounded in the user's description: static multi-page bookstore, 32 books, dual buy/rent pricing, search + genre filter, cart with totals, client-side User/Admin auth, featured books, About/Contact pages, static JS data (no backend), GitHub Pages hosting + GitHub Actions CI/CD + HTTPS.
+  - Tech: HTML5, CSS3, JavaScript (ES6), Font Awesome, GitHub Actions.
+  - Metrics: Books 32 · Model Buy or Rent · Hosting GitHub Pages.
+  - featured: true, year 2024, accent amber/orange, liveUrl https://jbril43.github.io/bookstore/, repoUrl https://github.com/JBRIL43/bookstore, 1 screenshot with caption.
+- Updated `src/components/portfolio/projects.tsx` dialog footer: when `repoUrl` is present, render a secondary "View source" button (Github icon, glass style) next to the primary "Visit live site" button. Wrapped both in a flex container. Imported Github from lucide-react.
+- `bun run lint` clean.
+- Agent Browser verification: 8 project cards total; 3 featured (PCIC, HU Student Debt, LibraryHub) all show real screenshots with Live badges. LibraryHub dialog: Featured badge, hero screenshot, full solution copy, and both links — "Visit live site" → https://jbril43.github.io/bookstore/ and "View source" → https://github.com/JBRIL43/bookstore (hrefs confirmed exact). No runtime errors. Mobile: no horizontal overflow (390=390).
+- VLM visual audit: LibraryHub card shows a real bookstore landing page screenshot with a green Live badge.
+
+Stage Summary:
+- The portfolio now has three flagship featured projects with real product screenshots + Live badges: PCIC Management System, HU Student Debt System, and LibraryHub. LibraryHub additionally exposes both a live-demo link (jbril43.github.io/bookstore/) and a source-code link (github.com/JBRIL43/bookstore) via the new "View source" button. Lint clean, mobile-verified.

@@ -152,6 +152,7 @@ export type Project = {
   // Optional real product screenshots + live links (when available)
   screenshots?: { src: string; alt: string; caption: string }[];
   liveUrl?: string;
+  repoUrl?: string;
   featured?: boolean;
 };
 
@@ -241,6 +242,38 @@ export const projects: Project[] = [
         alt: "Student mobile app make a payment screen with payment plan and method options",
         caption:
           "Student app — make a payment by plan (advance/semester/full year) via Chapa or receipt upload.",
+      },
+    ],
+  },
+  {
+    id: "libraryhub",
+    name: "LibraryHub",
+    category: "Web",
+    tagline:
+      "A static multi-page bookstore — browse, buy, or rent 32 books. Live on GitHub Pages.",
+    problem:
+      "Book lovers needed a simple, fast way to browse, purchase, and rent books online without the friction of outdated library systems — and without requiring a backend or paid hosting.",
+    solution:
+      "Built LibraryHub as a fully static, multi-page bookstore web app in HTML, CSS, and vanilla ES6 JavaScript. Features a 32-book catalog across multiple genres, a dual buy/rent pricing model, search + genre filtering, a shopping cart with quantity and total calculation, client-side User/Admin authentication, featured books on the home page, and About/Contact pages. Data lives in a static JS file (no backend), deployed to GitHub Pages with a GitHub Actions CI/CD pipeline and HTTPS by default.",
+    tech: ["HTML5", "CSS3", "JavaScript (ES6)", "Font Awesome", "GitHub Actions"],
+    impact:
+      "Shipped a complete, production-deployed e-commerce-style web app with zero backend costs — automated CI/CD means every push goes live instantly. A clean demonstration of frontend fundamentals done well.",
+    metrics: [
+      { label: "Books", value: "32" },
+      { label: "Model", value: "Buy or Rent" },
+      { label: "Hosting", value: "GitHub Pages" },
+    ],
+    accent: "from-amber-400/30 via-orange-400/10 to-transparent",
+    year: "2024",
+    featured: true,
+    liveUrl: "https://jbril43.github.io/bookstore/",
+    repoUrl: "https://github.com/JBRIL43/bookstore",
+    screenshots: [
+      {
+        src: "/projects/libraryhub-hero.png",
+        alt: "LibraryHub bookstore landing page with bookshelf hero background",
+        caption:
+          "Landing page — library-themed hero inviting readers to browse, buy, or rent.",
       },
     ],
   },

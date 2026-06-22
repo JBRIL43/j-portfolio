@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowUpRight,
   ExternalLink,
+  Github,
   Target,
   Lightbulb,
   TrendingUp,
@@ -371,19 +372,34 @@ export function Projects() {
                   </div>
                 </div>
 
-                {selected.liveUrl && (
-                  <a
-                    href={selected.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group/link inline-flex items-center justify-center gap-2 rounded-xl bg-[oklch(0.62_0.2_255)] px-5 py-3 text-sm font-medium text-white shadow-[0_0_30px_-8px_oklch(0.62_0.2_255)] transition-all hover:brightness-110"
-                  >
-                    <ExternalLink className="size-4 transition-transform group-hover/link:translate-x-0.5" />
-                    Visit live site
-                    <span className="font-mono text-xs text-white/70">
-                      {selected.liveUrl.replace(/^https?:\/\//, "")}
-                    </span>
-                  </a>
+                {(selected.liveUrl || selected.repoUrl) && (
+                  <div className="flex flex-wrap items-center gap-3">
+                    {selected.liveUrl && (
+                      <a
+                        href={selected.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group/link inline-flex items-center justify-center gap-2 rounded-xl bg-[oklch(0.62_0.2_255)] px-5 py-3 text-sm font-medium text-white shadow-[0_0_30px_-8px_oklch(0.62_0.2_255)] transition-all hover:brightness-110"
+                      >
+                        <ExternalLink className="size-4 transition-transform group-hover/link:translate-x-0.5" />
+                        Visit live site
+                        <span className="font-mono text-xs text-white/70">
+                          {selected.liveUrl.replace(/^https?:\/\//, "")}
+                        </span>
+                      </a>
+                    )}
+                    {selected.repoUrl && (
+                      <a
+                        href={selected.repoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group/repo inline-flex items-center justify-center gap-2 rounded-xl glass px-5 py-3 text-sm font-medium text-foreground/90 transition-colors hover:bg-white/10"
+                      >
+                        <Github className="size-4 transition-transform group-hover/repo:scale-110" />
+                        View source
+                      </a>
+                    )}
+                  </div>
                 )}
               </div>
             </>
