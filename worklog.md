@@ -290,3 +290,29 @@ Work Log:
 
 Stage Summary:
 - The portfolio now has five flagship featured projects with real product screenshots + Live badges: PCIC Management System, HU Student Debt System, LibraryHub, Stock Management System, and IoT Campus Fault Reporting App. Each has a full case-study dialog with a screenshot gallery and live/source links. Lint clean, mobile-verified.
+
+---
+Task ID: 13-portrait-image-ratio
+Agent: Z.ai Code (lead frontend)
+Task: Adjust non-landscape (portrait) project screenshots so the full image shows instead of being cropped
+
+Work Log:
+- Audited all 13 project screenshots' intrinsic dimensions: identified 6 PORTRAIT images (mobile app screenshots) — debt-mobile-dashboard.png, debt-mobile-payment.png, fault-report-form.png, fault-report-gps.png, fault-confirm-location.png, fault-submitted.png (all 562x1280 or 576x1280). The rest are landscape and were fine.
+- Root cause: ProjectThumbnail and ScreenshotGallery used a fixed `aspect-[16/10]` frame with `object-cover object-top`, which crops portrait images to fill a landscape box (cutting off the top/bottom of phone screenshots).
+- Created `src/components/portfolio/smart-image.tsx` — a `SmartImage` component that:
+  - Reads intrinsic dimensions on load (via ref + naturalWidth/Height).
+  - Detects orientation: portrait (height > width) vs landscape.
+  - Applies `object-contain p-2` for portrait images (shows the FULL image, letterboxed) and `object-cover object-top` for landscape images (fills the frame).
+  - Wraps the img in a flex container with a dark background (oklch 0.08) so portrait letterboxing looks intentional.
+- Updated `src/components/portfolio/projects.tsx`:
+  - `ProjectThumbnail`: replaced the raw `<img>` with `<SmartImage>` (kept the hover scale + Live badge + gradient overlay).
+  - `ScreenshotGallery` main image: wrapped `<SmartImage>` in the existing `motion.div` crossfade animation.
+  - `ScreenshotGallery` thumbnails: replaced raw `<img>` with `<SmartImage>` (forced `object-contain` so every thumbnail preview shows the full image, landscape or portrait).
+- `bun run lint` clean.
+- Agent Browser verification: portrait images (562x1280) now report `object-fit: contain` in both the card thumbnail and the dialog gallery main image + thumbnails. Rendered dimensions confirm the image fills the full frame height with proportional width (nothing clipped).
+- VLM visual audit (detailed): "the full screenshot is visible top-to-bottom — both the app's top status bar AND its bottom submit button are visible in the thumbnail, letterboxed in a dark frame." Confirmed for both the Fault Reporting card and the HU Student Debt mobile gallery screenshots.
+- Landscape images (PCIC, debt admin, libraryhub, inventory) unaffected — still use object-cover object-top.
+- Mobile: no horizontal overflow (390=390).
+
+Stage Summary:
+- All 6 portrait (mobile app) screenshots now display fully using object-contain with a dark letterbox, instead of being cropped to a landscape frame. Landscape screenshots are unchanged. Applies to both the project card thumbnails and the case-study dialog gallery (main image + thumbnail switcher). Lint clean, mobile-verified.

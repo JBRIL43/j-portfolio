@@ -25,6 +25,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { useTilt, TiltGlare } from "./tilt";
+import { SmartImage } from "./smart-image";
 import { cn } from "@/lib/utils";
 
 function ProjectMockup({ project }: { project: Project }) {
@@ -81,12 +82,12 @@ function ProjectThumbnail({ project }: { project: Project }) {
   if (shot) {
     return (
       <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl ring-1 ring-white/10">
-        <img
+        <SmartImage
           src={shot.src}
           alt={shot.alt}
-          className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+          imgClassName="transition-transform duration-500 group-hover:scale-[1.03]"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
         {project.liveUrl && (
           <span className="absolute right-2.5 top-2.5 inline-flex items-center gap-1 rounded-full bg-emerald-500/90 px-2 py-0.5 text-[10px] font-semibold text-white shadow-[0_0_14px_-2px_oklch(0.7_0.17_162)]">
             <span className="relative flex size-1.5">
@@ -118,18 +119,18 @@ function ScreenshotGallery({ project }: { project: Project }) {
     <div className="p-4 pb-0">
       <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl ring-1 ring-white/10">
         <AnimatePresence mode="wait">
-          <motion.img
+          <motion.div
             key={active.src}
-            src={active.src}
-            alt={active.alt}
             initial={{ opacity: 0, scale: 1.02 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="h-full w-full object-cover object-top"
-          />
+            className="absolute inset-0"
+          >
+            <SmartImage src={active.src} alt={active.alt} />
+          </motion.div>
         </AnimatePresence>
-        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3 pt-8">
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3 pt-8">
           <p className="text-xs text-white/85">{active.caption}</p>
         </div>
       </div>
@@ -147,10 +148,10 @@ function ScreenshotGallery({ project }: { project: Project }) {
                   : "ring-white/10 opacity-60 hover:opacity-100"
               )}
             >
-              <img
+              <SmartImage
                 src={s.src}
                 alt={s.alt}
-                className="h-full w-full object-cover object-top"
+                imgClassName="object-contain p-0.5"
               />
             </button>
           ))}
