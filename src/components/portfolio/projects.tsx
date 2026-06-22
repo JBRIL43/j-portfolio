@@ -3,11 +3,14 @@
 import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowUpRight,
+  Clock,
   ExternalLink,
   Github,
+  Send,
   Target,
   Lightbulb,
   TrendingUp,
+  Youtube,
 } from "lucide-react";
 import { useState } from "react";
 import {
@@ -400,6 +403,59 @@ export function Projects() {
                         View source
                       </a>
                     )}
+                  </div>
+                )}
+
+                {selected.channels && selected.channels.length > 0 && (
+                  <div>
+                    <p className="mb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                      Channels
+                    </p>
+                    <div className="flex flex-wrap items-center gap-3">
+                      {selected.channels.map((c) => {
+                        const Icon =
+                          c.icon === "youtube" ? Youtube : Send;
+                        const soon = c.status === "coming-soon";
+                        const base =
+                          "inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition-all";
+                        if (soon) {
+                          return (
+                            <span
+                              key={c.label}
+                              aria-disabled="true"
+                              className={cn(
+                                base,
+                                "cursor-not-allowed border border-dashed border-white/15 bg-white/3 text-muted-foreground"
+                              )}
+                            >
+                              <Icon className="size-4" />
+                              {c.label}
+                              <span className="ml-1 inline-flex items-center gap-1 rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-semibold text-amber-300 ring-1 ring-amber-400/25">
+                                <Clock className="size-2.5" />
+                                Coming soon
+                              </span>
+                            </span>
+                          );
+                        }
+                        return (
+                          <a
+                            key={c.label}
+                            href={c.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={cn(
+                              base,
+                              c.icon === "youtube"
+                                ? "bg-red-600/90 text-white hover:brightness-110"
+                                : "bg-sky-500/90 text-white hover:brightness-110"
+                            )}
+                          >
+                            <Icon className="size-4" />
+                            {c.label}
+                          </a>
+                        );
+                      })}
+                    </div>
                   </div>
                 )}
               </div>

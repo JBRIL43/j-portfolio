@@ -154,6 +154,8 @@ export type Project = {
   liveUrl?: string;
   repoUrl?: string;
   featured?: boolean;
+  // Optional "coming soon" channels (rendered as disabled CTAs with a badge)
+  channels?: { label: string; href: string; icon: "youtube" | "telegram"; status?: "coming-soon" }[];
 };
 
 export const projects: Project[] = [
@@ -439,20 +441,45 @@ export const projects: Project[] = [
     id: "dev-notes",
     name: "DevNotes — Learning in Public",
     category: "Design",
-    tagline: "A content series documenting the craft.",
+    tagline:
+      "A content series & community for devs learning in public — YouTube + Telegram coming soon.",
     problem:
-      "Knowledge learned in isolation fades. I wanted to reinforce learning and help others starting out.",
+      "Knowledge learned in isolation fades, and most tutorial content skips the messy, real process of actually learning. I wanted to reinforce my own learning while helping others starting out — and to build a community around it.",
     solution:
-      "Created a content series breaking down web dev, design, and community-building concepts into clear, visual posts and threads.",
-    tech: ["Content", "Visuals", "Writing"],
+      "Building DevNotes as a content series and community that breaks down web dev, design, and community-building concepts into clear, visual posts and threads. Launching alongside a YouTube channel (long-form walkthroughs and breakdowns) and a Telegram channel (daily notes, threads, and discussion) so learners can follow along in real time.",
+    tech: ["Content", "Visuals", "Writing", "Community"],
     impact:
-      "Turned personal learning into shared value — growing an audience and sharpening my own understanding along the way.",
+      "Turning personal learning into shared value — soon across video and chat, so the audience can learn alongside me rather than after the fact.",
     metrics: [
       { label: "Posts", value: "50+" },
-      { label: "Reach", value: "Growing" },
+      { label: "YouTube", value: "Coming soon" },
+      { label: "Telegram", value: "Coming soon" },
     ],
-    accent: "from-rose-400/25 via-blue-400/10 to-transparent",
+    accent: "from-rose-400/25 via-red-400/10 to-transparent",
     year: "2024",
+    featured: true,
+    screenshots: [
+      {
+        src: "/projects/devnotes-peakcraft.png",
+        alt: "DevNotes community branding and content preview",
+        caption:
+          "DevNotes — learning-in-public branding and the community it's growing alongside.",
+      },
+    ],
+    channels: [
+      {
+        label: "YouTube Channel",
+        href: "#",
+        icon: "youtube",
+        status: "coming-soon",
+      },
+      {
+        label: "Telegram Channel",
+        href: "#",
+        icon: "telegram",
+        status: "coming-soon",
+      },
+    ],
   },
 ];
 

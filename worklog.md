@@ -316,3 +316,25 @@ Work Log:
 
 Stage Summary:
 - All 6 portrait (mobile app) screenshots now display fully using object-contain with a dark letterbox, instead of being cropped to a landscape frame. Landscape screenshots are unchanged. Applies to both the project card thumbnails and the case-study dialog gallery (main image + thumbnail switcher). Lint clean, mobile-verified.
+
+---
+Task ID: 14-devnotes-coming-soon
+Agent: Z.ai Code (lead frontend)
+Task: Add "Coming soon" labels for the DevNotes YouTube channel and Telegram channel
+
+Work Log:
+- Reviewed the uploaded image via VLM: it's a PeakCraft recruitment poster (not actual YouTube/Telegram channel art), but usable as a DevNotes/community visual.
+- Copied the image to public/projects/devnotes-peakcraft.png.
+- Extended the `Project` type in `src/lib/portfolio-data.ts` with an optional `channels[]` field: `{ label, href, icon: "youtube" | "telegram", status?: "coming-soon" }`.
+- Rewrote the DevNotes project:
+  - Upgraded tagline + Problem/Solution/Impact to mention the YouTube channel (long-form walkthroughs) and Telegram channel (daily notes, threads, discussion).
+  - Added metrics for YouTube + Telegram = "Coming soon".
+  - featured: true, added the screenshot, and two channels (YouTube + Telegram) both with status "coming-soon".
+- Updated `src/components/portfolio/projects.tsx` dialog: added a "Channels" section below the live/repo links. Coming-soon channels render as non-clickable dashed disabled `<span>`s (aria-disabled, cursor-not-allowed) with an amber "Coming soon" badge (Clock icon). Active channels (status !== coming-soon) would render as colored links (red for YouTube, sky for Telegram). Imported Clock, Send, Youtube from lucide-react.
+- `bun run lint` clean.
+- Agent Browser verification: DevNotes card now featured with the screenshot loaded. Dialog shows Featured badge, full updated copy, and a CHANNELS section with "YouTube Channel" + "Telegram Channel" — both with "Coming soon" badges. Confirmed both render as disabled <span> elements (not clickable links). No runtime errors.
+- VLM visual audit: two channel buttons with amber "Coming soon" badges, styled as disabled/dashed.
+- Mobile: no horizontal overflow (390=390).
+
+Stage Summary:
+- DevNotes — Learning in Public is now a featured project with a screenshot and a CHANNELS section showing YouTube Channel and Telegram Channel, each marked with an amber "Coming soon" badge and rendered as disabled (non-clickable) until they launch. When the channels go live, flipping status to undefined (or removing it) will automatically turn them into colored, clickable links. Lint clean, mobile-verified.
