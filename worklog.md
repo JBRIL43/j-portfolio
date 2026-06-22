@@ -415,3 +415,19 @@ Work Log:
 
 Stage Summary:
 - The Campus Event Promo Suite is now a featured project showcasing all 3 real Peak Craft event designs (Huawei ICT Academy promo, Meet & Greet social graphic, and Dedication Commended recognition poster) in a 3-thumbnail gallery. All orientations render correctly via the existing SmartImage component. Lint clean, mobile-verified.
+
+---
+Task ID: 19-recognition-first
+Agent: Z.ai Code (lead frontend)
+Task: Make the recognition poster the first image in the Campus Event Promo Suite
+
+Work Log:
+- Reviewed the newly uploaded image via VLM + md5: it's an updated version of the "Dedication Commended" recognition poster for Jibril Nuredin (904x1280 portrait, different md5 from the previous one).
+- Replaced public/projects/event-recognition.png with the new version (cp from upload).
+- Reordered the screenshots array in the Campus Event Promo Suite project: recognition poster is now FIRST, followed by the Huawei ICT Academy promo (landscape) and the Meet & Greet social graphic (square).
+- `bun run lint` clean.
+- Agent Browser verification: Campus Event card thumbnail now shows event-recognition.png (object-contain, portrait). Dialog gallery: recognition poster is the first/main image (904x1280, object-contain) with caption "Recognition poster — Dedication Commended award design...". Thumbnail order confirmed: recognition → huawei-ict → meet-greet. No runtime errors. Mobile: no horizontal overflow (390=390).
+- VLM visual audit: first/main image is the "DEDICATION COMMENDED" recognition poster with the person's photo in a hexagonal frame and gold laurel wreaths, shown fully (not cropped).
+
+Stage Summary:
+- The recognition poster is now the first/hero image for the Campus Event Promo Suite — both as the project card thumbnail and the first item in the case-study gallery. Gallery order: Recognition poster → Huawei ICT Academy promo → Meet & Greet social graphic. Lint clean, mobile-verified.

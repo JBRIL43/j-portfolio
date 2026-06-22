@@ -384,6 +384,12 @@ export const projects: Project[] = [
     featured: true,
     screenshots: [
       {
+        src: "/projects/event-recognition.png",
+        alt: "Peak Craft Dedication Commended recognition poster for Jibril Nuredin with a hexagonal photo frame",
+        caption:
+          "Recognition poster — Dedication Commended award design with laurel wreaths and gold-on-navy styling.",
+      },
+      {
         src: "/projects/event-huawei-ict.png",
         alt: "Peak Craft Huawei ICT Academy event social media graphic with a lecture hall photo",
         caption:
@@ -394,12 +400,6 @@ export const projects: Project[] = [
         alt: "Peak Craft Meet, Greet and Welcome social media graphic with neon text on a pink-blue gradient",
         caption:
           "Community event — Meet, Greet & Welcome social graphic with neon Peak Craft branding.",
-      },
-      {
-        src: "/projects/event-recognition.png",
-        alt: "Peak Craft Dedication Commended recognition poster for Jibril Nuredin with a hexagonal photo frame",
-        caption:
-          "Recognition poster — Dedication Commended award design with laurel wreaths and gold-on-navy styling.",
       },
     ],
   },
