@@ -310,6 +310,56 @@ export const projects: Project[] = [
     ],
   },
   {
+    id: "fault-reporting-app",
+    name: "IoT Campus Fault Reporting App",
+    category: "Web",
+    tagline:
+      "A Flutter + Supabase app for Hawassa University's IoT campus — report faults with photos, GPS, and SMS alerts.",
+    problem:
+      "On a university campus, faults like leaks and outages often go unreported or take too long to reach maintenance. Students had no fast, low-friction way to flag issues with evidence and location, so fixes stalled.",
+    solution:
+      "Built a cross-platform Flutter app for Hawassa University's IoT campus that lets students report faults with minimal input: decentralized reporting open to all students, photo upload with secure storage, GPS/map integration (OpenStreetMap + Geolocator with manual common names + coordinates), and Twilio SMS notifications to maintenance with map links. Backed by Supabase for database, storage, and auth, with validation, rate limiting, and API abstraction for security. Shipped as a student MVP over 9 weeks with IoT-focused expansion plans.",
+    tech: ["Flutter", "Dart", "Supabase", "OpenStreetMap", "Twilio"],
+    impact:
+      "Cut the gap between a fault happening and maintenance knowing about it — students can report a leak or outage in seconds with a photo and exact location, and maintenance gets an SMS with a map link instantly.",
+    metrics: [
+      { label: "Timeline", value: "9-week MVP" },
+      { label: "Platform", value: "Cross-platform" },
+      { label: "Alerts", value: "Twilio SMS" },
+    ],
+    accent: "from-teal-400/25 via-blue-400/10 to-transparent",
+    year: "2025",
+    featured: true,
+    liveUrl: "https://github.com/JBRIL43/FaultReportingApp",
+    repoUrl: "https://github.com/JBRIL43/FaultReportingApp",
+    screenshots: [
+      {
+        src: "/projects/fault-report-form.png",
+        alt: "Fault reporting app report fault form with phone, description, photo and location fields",
+        caption:
+          "Report a fault — minimal-input form with phone, description, photo, and location.",
+      },
+      {
+        src: "/projects/fault-report-gps.png",
+        alt: "Fault reporting app report fault form with photo attached and GPS location set",
+        caption:
+          "Photo + GPS set — a report ready to submit with evidence and coordinates.",
+      },
+      {
+        src: "/projects/fault-confirm-location.png",
+        alt: "Fault reporting app confirm location screen showing coordinates and details",
+        caption:
+          "Confirm location — review coordinates, description, and contact before submission.",
+      },
+      {
+        src: "/projects/fault-submitted.png",
+        alt: "Fault reporting app report submitted confirmation with tracking ID",
+        caption:
+          "Report submitted — confirmation with a tracking ID and next steps for the student.",
+      },
+    ],
+  },
+  {
     id: "campus-event-suite",
     name: "Campus Event Promo Suite",
     category: "Design",

@@ -269,3 +269,24 @@ Work Log:
 
 Stage Summary:
 - The portfolio now has four flagship featured projects with real product screenshots + Live badges: PCIC Management System, HU Student Debt System, LibraryHub, and Stock Management System. Each has a full case-study dialog with live/source links. Lint clean, mobile-verified.
+
+---
+Task ID: 12-fault-reporting-app
+Agent: Z.ai Code (lead frontend)
+Task: Add the IoT Campus Fault Reporting App as a fifth featured project with 4 real Flutter screenshots + GitHub link
+
+Work Log:
+- Reviewed the 7 uploaded screenshots via VLM + md5 dedup: 4 unique images (rest were duplicates) — (1) Report Fault form, (2) Report Fault with photo+GPS set, (3) Confirm Location, (4) Report Submitted confirmation.
+- Copied the 4 unique screenshots to public/projects/: fault-report-form.png, fault-report-gps.png, fault-confirm-location.png, fault-submitted.png.
+- Added a new "IoT Campus Fault Reporting App" project to `src/lib/portfolio-data.ts` (inserted after Stock Management System):
+  - Real Problem/Solution/Impact grounded in the user's description: cross-platform Flutter app for Hawassa University's IoT campus, decentralized student reporting with minimal input, photo upload + secure storage, GPS/map integration (OpenStreetMap + Geolocator with common names + coords), Twilio SMS notifications to maintenance with map links, Supabase (DB/Storage/Auth), validation + rate limiting + API abstraction, 9-week student MVP with IoT expansion plans.
+  - Tech: Flutter, Dart, Supabase, OpenStreetMap, Twilio.
+  - Metrics: Timeline 9-week MVP · Platform Cross-platform · Alerts Twilio SMS.
+  - featured: true, year 2025, accent teal/blue, liveUrl + repoUrl both → https://github.com/JBRIL43/FaultReportingApp, 4 screenshots ordered by user flow (form → photo+GPS → confirm location → submitted).
+- No component changes needed — existing ProjectThumbnail + ScreenshotGallery + Visit-live-site/View-source buttons handle the new project automatically.
+- `bun run lint` clean.
+- Agent Browser verification: 10 project cards total; 5 featured (PCIC, HU Student Debt, LibraryHub, Stock Management, Fault Reporting) all show real screenshots with Live badges. Fault Reporting dialog: Featured badge, 4-thumbnail gallery (Report a fault → Photo+GPS set → Confirm location → Report submitted), thumbnail switcher confirmed (clicking thumbnail 4 shows "Report submitted — confirmation"), and both links (Visit live site + View source) → https://github.com/JBRIL43/FaultReportingApp. No runtime errors. Mobile: no horizontal overflow (390=390).
+- VLM visual audit: Fault Reporting card shows a real mobile app screenshot (fault report form) with a green Live badge.
+
+Stage Summary:
+- The portfolio now has five flagship featured projects with real product screenshots + Live badges: PCIC Management System, HU Student Debt System, LibraryHub, Stock Management System, and IoT Campus Fault Reporting App. Each has a full case-study dialog with a screenshot gallery and live/source links. Lint clean, mobile-verified.
