@@ -361,3 +361,19 @@ Work Log:
 
 Stage Summary:
 - The Peak Craft Brand System is now a featured project showcasing both branding images (emblem + crown mark) in a 2-thumbnail gallery, with the identified brand colors (Blue · Orange · Gold) documented in the copy and metrics. DevNotes no longer carries a screenshot (abstract mockup fallback) and its coming-soon channels are preserved. Lint clean, mobile-verified.
+
+---
+Task ID: 16-square-image-ratio
+Agent: Z.ai Code (lead frontend)
+Task: Adjust the ratio for the Peak Craft Brand System images (square images were being cropped)
+
+Work Log:
+- Checked intrinsic dimensions: both Peak Craft brand images (peakcraft-emblem.png, peakcraft-crown.png) are 640x640 SQUARE (ratio 1.00).
+- Root cause: the SmartImage component's orientation check was `naturalHeight > naturalWidth` (strictly portrait), so square images (height === width) fell into the landscape branch → `object-cover object-top` → cropped in the 16:10 frame.
+- Fixed `src/components/portfolio/smart-image.tsx`: changed the orientation condition to `naturalHeight >= naturalWidth` (renamed the state from `portrait` to `contain`). Now any non-strictly-landscape image — portrait OR square — uses `object-contain` (shows the full image, letterboxed on the dark background). Strictly landscape images still use `object-cover object-top`.
+- `bun run lint` clean.
+- Agent Browser verification: Peak Craft Brand System card thumbnail (640x640) now reports `object-fit: contain`. Dialog gallery main image + both thumbnails also `object-contain`. No runtime errors. Mobile: no horizontal overflow (390=390).
+- VLM visual audit: the Peak Craft branding image (mountains + crown + PEAK CRAFT text) is shown fully without cropping, centered in the dark frame.
+
+Stage Summary:
+- Square images (like the Peak Craft brand emblem and crown mark) now display fully using object-contain instead of being cropped to the landscape frame. The SmartImage component now correctly handles landscape, portrait, AND square orientations. Lint clean, mobile-verified.

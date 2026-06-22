@@ -13,11 +13,12 @@ type SmartImageProps = {
 /**
  * Image that adapts its object-fit to its natural orientation.
  *
- * - Landscape images → `object-cover object-top` (fill the frame, crop sides).
- * - Portrait images  → `object-contain` (show the whole image, letterboxed).
+ * - Landscape images (wider than tall) → `object-cover object-top` (fill the frame, crop sides).
+ * - Portrait OR square images (taller than wide, or equal) → `object-contain`
+ *   (show the whole image, letterboxed on a dark background).
  *
  * The container should provide a fixed aspect ratio + a dark background so
- * portrait letterboxing looks intentional.
+ * non-landscape letterboxing looks intentional.
  */
 export function SmartImage({
   src,
@@ -26,15 +27,16 @@ export function SmartImage({
   imgClassName,
 }: SmartImageProps) {
   const ref = useRef<HTMLImageElement>(null);
-  const [portrait, setPortrait] = useState(false);
+  const [contain, setContain] = useState(false);
 
   useEffect(() => {
     const img = ref.current;
     if (!img) return;
     // Resolve orientation as soon as intrinsic dimensions are known.
+    // Use contain for anything that isn't strictly landscape (i.e. portrait or square).
     const check = () => {
       if (img.naturalWidth && img.naturalHeight) {
-        setPortrait(img.naturalHeight > img.naturalWidth);
+        setContain(img.naturalHeight >= img.naturalWidth);
       }
     };
     check();
@@ -56,7 +58,7 @@ export function SmartImage({
         loading="lazy"
         className={cn(
           "h-full w-full",
-          portrait
+          contain
             ? "object-contain p-2"
             : "object-cover object-top",
           imgClassName
