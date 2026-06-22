@@ -475,3 +475,28 @@ Work Log:
 
 Stage Summary:
 - Added a complete Awards & Certifications section (id #awards) between Beyond Coding and Vision, with 6 entries (1 award, 3 certifications, 2 recognition), animated filtering by type, color-coded type badges, cursor-follow tilt cards, and navbar integration. Content is grounded in Jibril's real Peak Craft recognition and proven-via-projects certifications — easy to extend with real credential URLs when available. Lint clean, mobile-verified.
+
+---
+Task ID: 22-real-certs-pagination
+Agent: Z.ai Code (lead frontend)
+Task: Replace placeholder awards with the 16 real certificates from the uploaded zip; add pagination and a certificate-image dialog
+
+Work Log:
+- Extracted `upload/certefication.zip` to /tmp/cert-extract — found 21 files (PNGs, scanned JPGs, 1 PDF, 1 recommendation letter).
+- Analyzed every image via VLM to extract exact title, issuer, and recipient. Excluded: 1 certificate awarded to a different person (Helina Berhane Alemu), 1 recommendation letter (not a certificate), 1 PDF (chapter five), and 1 duplicate (Pasted image.png = UX App Design with Figma).
+- Copied 16 valid certificate images to public/projects/certs/ with clean names.
+- Rewrote the `awards[]` array in `src/lib/portfolio-data.ts` — removed all 6 placeholder entries, added 16 real certificates grounded in the VLM analysis:
+  - 1 award: Cursor Hackathon Addis Ababa 2025.
+  - 9 certifications: Udemy PR Management, Udemy UX Figma, Simplilearn Data Science, ALX Virtual Assistant, YEEP Tech & Business Week, HU × British Council × EU, HU Participation, Peak Craft Code Crafter, Peak Craft Data Science.
+  - 6 recognition: Peak Craft Public Relation, Peak Craft Adviser, Peak Craft Achievement, Rotaract Leadership & Team Building, Rotaract Peace Building & Conflict Prevention, Lake Hawassa Half Marathon Volunteer.
+  - Each has type, issuer, year, description, icon, and the real certificate image path.
+- Rewrote `src/components/portfolio/awards.tsx` to add:
+  - **Pagination**: 6 cards per page with prev/next arrow buttons + page-dot indicators (active dot is a wide pill). "Showing X–Y of Z" count below. Resets to page 0 on filter change. Pagination only shows when >1 page.
+  - **Certificate dialog**: clicking any card opens a full-screen modal showing the real certificate image (via SmartImage so all orientations render correctly), the title/issuer/year/badge, the description, and an optional credential link. Closes on backdrop click or X button. Body scroll locked while open.
+  - Each card now has a "View certificate" link with an eye icon, in addition to the optional "View credential" external link.
+- `bun run lint` clean.
+- Agent Browser verification: page 1 shows 6 cards with "Showing 1–6 of 16"; pagination present (5 buttons). Page 2 shows 6 more cards. Certification filter → 9 results across 2 pages ("Showing 1–6 of 9"). Clicking a card opens the certificate dialog with the real image (cursor-hackathon.png confirmed). No runtime errors. Mobile: 6 cards, no horizontal overflow (390=390).
+- VLM visual audit: cards with icons, titles, issuers, years, and colored type badges confirmed present in the Awards section.
+
+Stage Summary:
+- The Awards & Certifications section now showcases all 16 real certificates/awards from Jibril's uploaded zip (replacing the 6 placeholders), with pagination (6 per page), animated type filtering, and a click-to-view certificate dialog that displays each real certificate image at full size. Content covers Udemy, Simplilearn, ALX, Cursor Hackathon, Hawassa University, Peak Craft, Rotaract Club of Hawassa, and the Lake Hawassa Half Marathon. Lint clean, mobile-verified.

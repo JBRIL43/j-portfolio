@@ -1,12 +1,19 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useState } from "react";
-import { ExternalLink } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ExternalLink,
+  Eye,
+  X,
+} from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 import { awards, type AwardItem } from "@/lib/portfolio-data";
 import { SectionHeading } from "./section-heading";
 import { staggerContainer, staggerItem } from "./reveal";
 import { TiltCard } from "./tilt";
+import { SmartImage } from "./smart-image";
 import { cn } from "@/lib/utils";
 
 type Filter = "All" | AwardItem["type"];
@@ -25,14 +32,12 @@ const typeStyles: Record<
   { badge: string; ring: string; iconBg: string }
 > = {
   award: {
-    badge:
-      "bg-amber-500/15 text-amber-300 ring-1 ring-amber-400/25",
+    badge: "bg-amber-500/15 text-amber-300 ring-1 ring-amber-400/25",
     ring: "group-hover:ring-amber-400/30",
     iconBg: "group-hover:bg-amber-500/16",
   },
   certification: {
-    badge:
-      "bg-emerald-500/15 text-emerald-300 ring-1 ring-emerald-400/25",
+    badge: "bg-emerald-500/15 text-emerald-300 ring-1 ring-emerald-400/25",
     ring: "group-hover:ring-emerald-400/30",
     iconBg: "group-hover:bg-emerald-500/16",
   },
@@ -44,7 +49,15 @@ const typeStyles: Record<
   },
 };
 
-function AwardCard({ item }: { item: AwardItem }) {
+const PAGE_SIZE = 6;
+
+function AwardCard({
+  item,
+  onOpen,
+}: {
+  item: AwardItem;
+  onOpen: () => void;
+}) {
   const Icon = item.icon;
   const styles = typeStyles[item.type];
 
@@ -52,10 +65,12 @@ function AwardCard({ item }: { item: AwardItem }) {
     <TiltCard
       variants={staggerItem}
       className={cn(
-        "group relative flex h-full flex-col overflow-hidden rounded-2xl glass p-6 transition-colors duration-300 hover:bg-white/8",
+        "group relative flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl glass p-6 transition-colors duration-300 hover:bg-white/8",
         "hover:ring-1",
         styles.ring
       )}
+      // TiltCard is a div; handle click via onClick
+      onClick={onOpen as unknown as React.MouseEventHandler<HTMLDivElement>}
     >
       <div className="relative flex flex-1 flex-col">
         <div className="mb-4 flex items-start justify-between gap-3">
@@ -85,9 +100,7 @@ function AwardCard({ item }: { item: AwardItem }) {
           {item.title}
         </h3>
         <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
-          <span className="font-medium text-foreground/80">
-            {item.issuer}
-          </span>
+          <span className="font-medium text-foreground/80">{item.issuer}</span>
           <span className="size-1 rounded-full bg-white/20" />
           <span className="font-mono">{item.year}</span>
         </div>
@@ -96,12 +109,25 @@ function AwardCard({ item }: { item: AwardItem }) {
           {item.description}
         </p>
 
+        {item.image && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onOpen();
+            }}
+            className="mt-4 inline-flex items-center gap-1.5 text-xs font-medium text-[oklch(0.78_0.14_255)] transition-colors hover:text-[oklch(0.85_0.12_255)]"
+          >
+            <Eye className="size-3.5" />
+            View certificate
+          </button>
+        )}
         {item.credentialUrl && (
           <a
             href={item.credentialUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-4 inline-flex items-center gap-1.5 text-xs font-medium text-[oklch(0.78_0.14_255)] transition-colors hover:text-[oklch(0.85_0.12_255)]"
+            onClick={(e) => e.stopPropagation()}
+            className="mt-2 inline-flex items-center gap-1.5 text-xs font-medium text-[oklch(0.78_0.14_255)] transition-colors hover:text-[oklch(0.85_0.12_255)]"
           >
             <ExternalLink className="size-3.5" />
             View credential
@@ -112,11 +138,132 @@ function AwardCard({ item }: { item: AwardItem }) {
   );
 }
 
+function CertificateDialog({
+  item,
+  onClose,
+}: {
+  item: AwardItem | null;
+  onClose: () => void;
+}) {
+  useEffect(() => {
+    if (item) {
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = "";
+      };
+    }
+  }, [item]);
+
+  return (
+    <AnimatePresence>
+      {item && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-[80] flex items-center justify-center p-4 sm:p-6"
+          onClick={onClose}
+        >
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-md" />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 16 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 16 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            onClick={(e) => e.stopPropagation()}
+            className="relative z-10 flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-2xl border border-white/10 bg-[oklch(0.1_0.008_264)] shadow-[0_30px_80px_-30px_rgba(0,0,0,0.9)]"
+          >
+            {/* header */}
+            <div className="flex items-start justify-between gap-4 border-b border-white/8 p-5">
+              <div>
+                <div className="mb-1.5 flex flex-wrap items-center gap-2">
+                  <span
+                    className={cn(
+                      "rounded-md px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide",
+                      typeStyles[item.type].badge
+                    )}
+                  >
+                    {item.type === "award"
+                      ? "Award"
+                      : item.type === "certification"
+                        ? "Certification"
+                        : "Recognition"}
+                  </span>
+                  <span className="font-mono text-xs text-muted-foreground">
+                    {item.year}
+                  </span>
+                </div>
+                <h3 className="text-lg font-semibold tracking-tight text-foreground">
+                  {item.title}
+                </h3>
+                <p className="text-xs text-muted-foreground">{item.issuer}</p>
+              </div>
+              <button
+                onClick={onClose}
+                aria-label="Close"
+                className="grid size-9 shrink-0 place-items-center rounded-lg glass transition-colors hover:bg-white/10"
+              >
+                <X className="size-5" />
+              </button>
+            </div>
+
+            {/* certificate image */}
+            <div className="flex-1 overflow-y-auto p-5">
+              {item.image ? (
+                <div className="overflow-hidden rounded-xl ring-1 ring-white/10">
+                  <SmartImage
+                    src={item.image}
+                    alt={item.title}
+                    className="min-h-[300px] rounded-xl"
+                  />
+                </div>
+              ) : (
+                <div className="grid min-h-[200px] place-items-center rounded-xl glass text-sm text-muted-foreground">
+                  No certificate image available
+                </div>
+              )}
+              <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+                {item.description}
+              </p>
+              {item.credentialUrl && (
+                <a
+                  href={item.credentialUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 inline-flex items-center gap-2 rounded-xl bg-[oklch(0.62_0.2_255)] px-4 py-2.5 text-sm font-medium text-white shadow-[0_0_24px_-8px_oklch(0.62_0.2_255)] transition-all hover:brightness-110"
+                >
+                  <ExternalLink className="size-4" />
+                  View credential
+                </a>
+              )}
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
 export function Awards() {
   const [filter, setFilter] = useState<Filter>("All");
+  const [page, setPage] = useState(0);
+  const [selected, setSelected] = useState<AwardItem | null>(null);
 
-  const filtered =
-    filter === "All" ? awards : awards.filter((a) => a.type === filter);
+  const filtered = useMemo(
+    () => (filter === "All" ? awards : awards.filter((a) => a.type === filter)),
+    [filter]
+  );
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  // clamp page when filter changes
+  const currentPage = Math.min(page, totalPages - 1);
+  const start = currentPage * PAGE_SIZE;
+  const pageItems = filtered.slice(start, start + PAGE_SIZE);
+
+  const onFilterChange = (f: Filter) => {
+    setFilter(f);
+    setPage(0);
+  };
 
   return (
     <section id="awards" className="relative overflow-hidden py-24 sm:py-32">
@@ -133,7 +280,7 @@ export function Awards() {
               <span className="text-gradient-blue">credentials</span>
             </>
           }
-          description="Formal recognition for leadership and craft — plus certifications earned and skills proven through real, shipped work."
+          description="A growing collection of certifications, awards, and formal recognition — earned through study, community work, and real projects."
         />
 
         {/* filters */}
@@ -141,7 +288,7 @@ export function Awards() {
           {filters.map((f) => (
             <button
               key={f}
-              onClick={() => setFilter(f)}
+              onClick={() => onFilterChange(f)}
               className={cn(
                 "relative rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
                 filter === f
@@ -161,19 +308,81 @@ export function Awards() {
           ))}
         </div>
 
+        {/* cards grid */}
         <motion.div
+          key={`${filter}-${currentPage}`}
           variants={staggerContainer}
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-80px" }}
-          layout
           className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
         >
-          {filtered.map((item) => (
-            <AwardCard key={item.id} item={item} />
+          {pageItems.map((item) => (
+            <AwardCard
+              key={item.id}
+              item={item}
+              onOpen={() => setSelected(item)}
+            />
           ))}
         </motion.div>
+
+        {/* pagination */}
+        {totalPages > 1 && (
+          <div className="mt-10 flex items-center justify-center gap-2">
+            <button
+              onClick={() => setPage((p) => Math.max(0, p - 1))}
+              disabled={currentPage === 0}
+              aria-label="Previous page"
+              className={cn(
+                "grid size-10 place-items-center rounded-xl glass transition-all",
+                currentPage === 0
+                  ? "cursor-not-allowed opacity-40"
+                  : "hover:bg-white/10"
+              )}
+            >
+              <ChevronLeft className="size-5" />
+            </button>
+
+            <div className="flex items-center gap-1.5">
+              {Array.from({ length: totalPages }).map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setPage(i)}
+                  aria-label={`Go to page ${i + 1}`}
+                  className={cn(
+                    "size-2.5 rounded-full transition-all",
+                    i === currentPage
+                      ? "w-6 bg-[oklch(0.62_0.2_255)] shadow-[0_0_12px_-2px_oklch(0.62_0.2_255)]"
+                      : "bg-white/15 hover:bg-white/30"
+                  )}
+                />
+              ))}
+            </div>
+
+            <button
+              onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
+              disabled={currentPage === totalPages - 1}
+              aria-label="Next page"
+              className={cn(
+                "grid size-10 place-items-center rounded-xl glass transition-all",
+                currentPage === totalPages - 1
+                  ? "cursor-not-allowed opacity-40"
+                  : "hover:bg-white/10"
+              )}
+            >
+              <ChevronRight className="size-5" />
+            </button>
+          </div>
+        )}
+
+        {/* count */}
+        <p className="mt-4 text-center text-xs text-muted-foreground">
+          Showing {start + 1}–{Math.min(start + PAGE_SIZE, filtered.length)} of{" "}
+          {filtered.length}
+        </p>
       </div>
+
+      <CertificateDialog item={selected} onClose={() => setSelected(null)} />
     </section>
   );
 }
