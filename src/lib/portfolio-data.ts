@@ -278,6 +278,38 @@ export const projects: Project[] = [
     ],
   },
   {
+    id: "inventory-management",
+    name: "Stock Management System",
+    category: "Web",
+    tagline:
+      "A full inventory platform — track stock in/out, revenue, profit, and low-stock alerts.",
+    problem:
+      "Small businesses track stock movements, revenue, and profit across spreadsheets that don't scale — making it easy to lose sight of low-stock items, miscount inventory, and miss revenue insights until it's too late.",
+    solution:
+      "Built a Stock Management System web app with a role-based admin dashboard: real-time metrics (total items, stock IN/OUT, revenue, profit, low-stock alerts under 5 units), a searchable stock-balance table with status indicators, Stock IN / Stock OUT / Balance / Revenue / Items modules, exportable reports, and printable views. Source-controlled on GitHub for collaboration and deployment.",
+    tech: ["React", "Node.js", "MongoDB", "JavaScript"],
+    impact:
+      "Gives administrators one live view of inventory health — turning scattered spreadsheets into a single source of truth for stock levels, movements, and financials.",
+    metrics: [
+      { label: "Items tracked", value: "37" },
+      { label: "Revenue", value: "546,300" },
+      { label: "Stock moves", value: "IN / OUT" },
+    ],
+    accent: "from-cyan-400/25 via-blue-400/10 to-transparent",
+    year: "2025",
+    featured: true,
+    liveUrl: "https://github.com/JBRIL43/inventory_management",
+    repoUrl: "https://github.com/JBRIL43/inventory_management",
+    screenshots: [
+      {
+        src: "/projects/inventory-dashboard.png",
+        alt: "Stock Management System admin dashboard with metrics and stock balance table",
+        caption:
+          "Dashboard — total items, stock IN/OUT, revenue, profit, low-stock alerts, and a live stock-balance table.",
+      },
+    ],
+  },
+  {
     id: "campus-event-suite",
     name: "Campus Event Promo Suite",
     category: "Design",

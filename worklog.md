@@ -248,3 +248,24 @@ Work Log:
 
 Stage Summary:
 - The portfolio now has three flagship featured projects with real product screenshots + Live badges: PCIC Management System, HU Student Debt System, and LibraryHub. LibraryHub additionally exposes both a live-demo link (jbril43.github.io/bookstore/) and a source-code link (github.com/JBRIL43/bookstore) via the new "View source" button. Lint clean, mobile-verified.
+
+---
+Task ID: 11-stock-management
+Agent: Z.ai Code (lead frontend)
+Task: Add the Stock Management System as a fourth featured project with real dashboard screenshot + GitHub link
+
+Work Log:
+- Reviewed the uploaded screenshot via VLM: a Stock/Inventory Management System admin dashboard — sidebar (Dashboard, Stock IN, Stock OUT, Balance, Revenue, Items, Export Report), 6 metric cards (Total Items 37, Total Stock IN 1754, Total Stock OUT 71, Total Revenue 546,300, Total Profit 121,800, Low Stock <5 = 1), and a searchable stock-balance table with In Stock / Low Stock status.
+- Copied the screenshot to public/projects/inventory-dashboard.png.
+- Added a new "Stock Management System" project to `src/lib/portfolio-data.ts` (inserted after LibraryHub):
+  - Real Problem/Solution/Impact grounded in the screenshot: role-based admin dashboard, real-time metrics (items, stock IN/OUT, revenue, profit, low-stock alerts <5), searchable stock-balance table with status indicators, Stock IN/OUT/Balance/Revenue/Items modules, exportable reports + printable views.
+  - Tech: React, Node.js, MongoDB, JavaScript.
+  - Metrics: Items tracked 37 · Revenue 546,300 · Stock moves IN/OUT.
+  - featured: true, year 2025, accent cyan/blue, liveUrl + repoUrl both → https://github.com/JBRIL43/inventory_management, 1 screenshot with caption.
+- No component changes needed — existing ProjectThumbnail + ScreenshotGallery + Visit-live-site/View-source buttons (built in tasks 8 & 10) handle the new project automatically.
+- `bun run lint` clean.
+- Agent Browser verification: 9 project cards total; 4 featured (PCIC, HU Student Debt, LibraryHub, Stock Management) all show real screenshots with Live badges. Stock Management dialog: Featured badge, dashboard screenshot with caption, full Problem/Solution copy, and both links (Visit live site + View source) → https://github.com/JBRIL43/inventory_management (hrefs confirmed). No runtime errors. Mobile: no horizontal overflow (390=390).
+- VLM visual audit: Stock Management card shows the real inventory dashboard screenshot (Total Items/Revenue/Profit metrics + stock-balance table) with a green Live badge.
+
+Stage Summary:
+- The portfolio now has four flagship featured projects with real product screenshots + Live badges: PCIC Management System, HU Student Debt System, LibraryHub, and Stock Management System. Each has a full case-study dialog with live/source links. Lint clean, mobile-verified.
