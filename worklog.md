@@ -431,3 +431,17 @@ Work Log:
 
 Stage Summary:
 - The recognition poster is now the first/hero image for the Campus Event Promo Suite — both as the project card thumbnail and the first item in the case-study gallery. Gallery order: Recognition poster → Huawei ICT Academy promo → Meet & Greet social graphic. Lint clean, mobile-verified.
+
+---
+Task ID: 20-remove-campus-event
+Agent: Z.ai Code (lead frontend)
+Task: Remove the Campus Event Promo Suite project
+
+Work Log:
+- Removed the "Campus Event Promo Suite" project object from the `projects` array in `src/lib/portfolio-data.ts`.
+- Deleted its 3 orphaned screenshot files: public/projects/event-recognition.png, event-huawei-ict.png, event-meet-greet.png.
+- `bun run lint` clean.
+- Agent Browser verification: projects grid now shows 7 cards (down from 8). Confirmed "Campus Event" no longer appears in any project title. No runtime errors. Mobile: no horizontal overflow (390=390).
+
+Stage Summary:
+- The Campus Event Promo Suite project has been removed. The portfolio now has 7 projects: PCIC Management System, HU Student Debt System, LibraryHub, Stock Management System, IoT Campus Fault Reporting App, Peak Craft Brand System, DevNotes — Learning in Public. Lint clean, mobile-verified.
