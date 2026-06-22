@@ -365,20 +365,43 @@ export const projects: Project[] = [
     id: "campus-event-suite",
     name: "Campus Event Promo Suite",
     category: "Design",
-    tagline: "A reusable design system for event promotion.",
+    tagline:
+      "A reusable design system for Peak Craft event promotion — posters, social graphics, and recognition materials.",
     problem:
-      "Every event needed fresh promotional visuals, but there was no consistent identity — campaigns took days and looked disjointed.",
+      "Every event needed fresh promotional visuals, but there was no consistent identity — campaigns took days and looked disjointed across posters, social posts, and recognition materials.",
     solution:
-      "Built a modular Figma design system and template library for posters, social posts, and tickets, enabling fast, on-brand promotion by any team member.",
-    tech: ["Figma", "Design Systems", "Branding"],
+      "Built a modular Figma design system and template library for posters, social graphics, and recognition materials — enabling fast, on-brand promotion by any team member. Used across Peak Craft events like the Huawei ICT Academy session, member meet-and-greets, and dedication/recognition announcements.",
+    tech: ["Figma", "Design Systems", "Branding", "Social Media"],
     impact:
-      "Reduced promo turnaround from days to hours while establishing a recognizable Peak Craft visual identity across every channel.",
+      "Reduced promo turnaround from days to hours while establishing a recognizable Peak Craft visual identity across every channel and event type.",
     metrics: [
       { label: "Promo speed", value: "10× faster" },
       { label: "Templates", value: "40+" },
+      { label: "Event types", value: "Posters · Social · Awards" },
     ],
     accent: "from-violet-500/30 via-blue-400/10 to-transparent",
     year: "2024",
+    featured: true,
+    screenshots: [
+      {
+        src: "/projects/event-huawei-ict.png",
+        alt: "Peak Craft Huawei ICT Academy event social media graphic with a lecture hall photo",
+        caption:
+          "Event promo — Huawei ICT Academy session social graphic with live event photography.",
+      },
+      {
+        src: "/projects/event-meet-greet.png",
+        alt: "Peak Craft Meet, Greet and Welcome social media graphic with neon text on a pink-blue gradient",
+        caption:
+          "Community event — Meet, Greet & Welcome social graphic with neon Peak Craft branding.",
+      },
+      {
+        src: "/projects/event-recognition.png",
+        alt: "Peak Craft Dedication Commended recognition poster for Jibril Nuredin with a hexagonal photo frame",
+        caption:
+          "Recognition poster — Dedication Commended award design with laurel wreaths and gold-on-navy styling.",
+      },
+    ],
   },
   {
     id: "brand-system",

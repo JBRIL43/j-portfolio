@@ -393,3 +393,25 @@ Work Log:
 
 Stage Summary:
 - Removed the Study Companion App and Personal Portfolio Engine projects. The portfolio now has 8 projects (PCIC Management System, HU Student Debt System, LibraryHub, Stock Management System, IoT Campus Fault Reporting App, Campus Event Promo Suite, Peak Craft Brand System, DevNotes — Learning in Public). Lint clean, mobile-verified.
+
+---
+Task ID: 18-campus-event-images
+Agent: Z.ai Code (lead frontend)
+Task: Add the 3 uploaded event images to the Campus Event Promo Suite project
+
+Work Log:
+- Reviewed the 3 uploaded images via VLM: (1) a "Dedication Commended" recognition poster for Jibril Nuredin (gold-on-navy, laurel wreaths, hexagonal photo frame), (2) a Huawei ICT Academy event social graphic with a lecture-hall photo, (3) a "Meet, Greet & Welcome" neon social graphic on a pink-blue gradient. All Peak Craft branded.
+- Checked dimensions: event-huawei-ict.png (1200x630 landscape), event-meet-greet.png (1080x1080 square), event-recognition.png (904x1280 portrait). Mixed orientations.
+- Copied all 3 to public/projects/: event-recognition.png, event-huawei-ict.png, event-meet-greet.png.
+- Updated the "Campus Event Promo Suite" project in `src/lib/portfolio-data.ts`:
+  - Upgraded to featured: true.
+  - Rewrote tagline + Problem/Solution/Impact to mention posters, social graphics, and recognition materials; referenced the specific event types (Huawei ICT Academy session, member meet-and-greets, dedication/recognition announcements).
+  - Added tech "Social Media", added "Event types: Posters · Social · Awards" metric.
+  - Added all 3 screenshots ordered: Huawei ICT (landscape, main thumbnail) → Meet & Greet (square) → Recognition poster (portrait), each with descriptive captions.
+- No component changes needed — existing SmartImage handles all 3 orientations (cover for landscape, contain for square + portrait) in the card thumbnail, gallery main image, and gallery thumbnails.
+- `bun run lint` clean.
+- Agent Browser verification: Campus Event card shows the real Huawei ICT screenshot (object-cover, landscape). Dialog: 3-thumbnail gallery, Featured badge, all captions present. Orientation handling confirmed: recognition poster (904x1280 portrait) → object-contain, meet-greet (1080x1080 square) → object-contain, huawei-ict (1200x630 landscape) → object-cover. Thumbnail switcher works. No runtime errors. Mobile: no horizontal overflow (390=390).
+- VLM visual audit: real event promotion graphic visible and shown fully (not cropped) — the Meet, Greet & Welcome social graphic with neon branding.
+
+Stage Summary:
+- The Campus Event Promo Suite is now a featured project showcasing all 3 real Peak Craft event designs (Huawei ICT Academy promo, Meet & Greet social graphic, and Dedication Commended recognition poster) in a 3-thumbnail gallery. All orientations render correctly via the existing SmartImage component. Lint clean, mobile-verified.
