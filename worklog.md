@@ -338,3 +338,26 @@ Work Log:
 
 Stage Summary:
 - DevNotes — Learning in Public is now a featured project with a screenshot and a CHANNELS section showing YouTube Channel and Telegram Channel, each marked with an amber "Coming soon" badge and rendered as disabled (non-clickable) until they launch. When the channels go live, flipping status to undefined (or removing it) will automatically turn them into colored, clickable links. Lint clean, mobile-verified.
+
+---
+Task ID: 15-brand-system-images
+Agent: Z.ai Code (lead frontend)
+Task: Remove the screenshot from DevNotes; add both Peak Craft branding images to the Peak Craft Brand System project and identify the brand colors
+
+Work Log:
+- Reviewed the 2 uploaded images via VLM: (1) a crown symbol on a red→orange→blue gradient, (2) the full Peak Craft emblem (mountains + golden crown + "PEAK CRAFT" wordmark).
+- Copied both to public/projects/: peakcraft-emblem.png and peakcraft-crown.png.
+- Updated the "Peak Craft Brand System" project in `src/lib/portfolio-data.ts`:
+  - Upgraded to featured: true.
+  - Rewrote tagline + Problem/Solution to describe the crown-and-peaks emblem and the color system.
+  - Identified and documented the brand colors in the Solution copy and as a metric: "Colors: Blue · Orange · Gold" (deep blues/purples for mountains, bright oranges/reds for peaks, gold for the crown).
+  - Added tech "Design System", changed accent to orange/blue to match the brand.
+  - Added both screenshots: emblem first (main thumbnail), crown second — each with descriptive captions.
+- Removed the screenshot from the "DevNotes — Learning in Public" project (deleted the screenshots[] array) so it falls back to the abstract CSS mockup. Kept its featured status + YouTube/Telegram coming-soon channels intact.
+- Deleted the orphaned public/projects/devnotes-peakcraft.png file.
+- `bun run lint` clean.
+- Agent Browser verification: DevNotes card now shows the abstract mockup (0 <img> tags in its dialog); its dialog still shows Featured badge + CHANNELS (YouTube/Telegram Coming soon). Peak Craft Brand System card shows the real emblem screenshot; its dialog shows Featured badge + 2-thumbnail gallery (emblem + crown), thumbnail switcher confirmed (clicking crown shows "Crown mark" caption), and the new "Colors: Blue · Orange · Gold" metric. No runtime errors. Mobile: no horizontal overflow (390=390).
+- VLM visual audit: Brand System card thumbnail shows the real branding image (mountains + crown + "PEAK CRAFT" text).
+
+Stage Summary:
+- The Peak Craft Brand System is now a featured project showcasing both branding images (emblem + crown mark) in a 2-thumbnail gallery, with the identified brand colors (Blue · Orange · Gold) documented in the copy and metrics. DevNotes no longer carries a screenshot (abstract mockup fallback) and its coming-soon channels are preserved. Lint clean, mobile-verified.

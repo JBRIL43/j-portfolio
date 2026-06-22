@@ -422,20 +422,37 @@ export const projects: Project[] = [
     id: "brand-system",
     name: "Peak Craft Brand System",
     category: "Community",
-    tagline: "Identity, voice, and guidelines for a community.",
+    tagline:
+      "Identity, voice, and guidelines for a tech community — crown, peaks, and a bold color system.",
     problem:
-      "As Peak Craft grew, the brand became inconsistent across teams, events, and social platforms.",
+      "As Peak Craft grew, the brand became inconsistent across teams, events, and social platforms — there was no single emblem, color palette, or voice tying everything together.",
     solution:
-      "Defined the brand voice, color system, typography, and usage guidelines — then rolled them out across design and communications.",
-    tech: ["Branding", "Figma", "Strategy"],
+      "Defined the Peak Craft brand from the ground up: a crown-and-peaks emblem symbolizing mastery and ambition, a vibrant color system (deep blues and purples for the mountains, bright oranges and reds for the peaks, gold for the crown), bold typography, and usage guidelines — then rolled them out across design and communications.",
+    tech: ["Branding", "Figma", "Strategy", "Design System"],
     impact:
-      "Created a cohesive identity that made Peak Craft instantly recognizable and easier for new collaborators to represent.",
+      "Created a cohesive identity that made Peak Craft instantly recognizable and easier for new collaborators to represent across every touchpoint.",
     metrics: [
       { label: "Guidelines", value: "Full" },
       { label: "Adoption", value: "Org-wide" },
+      { label: "Colors", value: "Blue · Orange · Gold" },
     ],
-    accent: "from-amber-400/25 via-blue-400/10 to-transparent",
+    accent: "from-orange-400/25 via-blue-500/10 to-transparent",
     year: "2023",
+    featured: true,
+    screenshots: [
+      {
+        src: "/projects/peakcraft-emblem.png",
+        alt: "Peak Craft brand emblem with mountains, crown, and Peak Craft wordmark",
+        caption:
+          "Brand emblem — layered mountain peaks, a golden crown, and the Peak Craft wordmark in bold orange.",
+      },
+      {
+        src: "/projects/peakcraft-crown.png",
+        alt: "Peak Craft crown symbol on a red-orange-to-blue gradient background",
+        caption:
+          "Crown mark — the brand's geometric crown symbol on its signature red→orange→blue gradient.",
+      },
+    ],
   },
   {
     id: "dev-notes",
@@ -458,14 +475,6 @@ export const projects: Project[] = [
     accent: "from-rose-400/25 via-red-400/10 to-transparent",
     year: "2024",
     featured: true,
-    screenshots: [
-      {
-        src: "/projects/devnotes-peakcraft.png",
-        alt: "DevNotes community branding and content preview",
-        caption:
-          "DevNotes — learning-in-public branding and the community it's growing alongside.",
-      },
-    ],
     channels: [
       {
         label: "YouTube Channel",
