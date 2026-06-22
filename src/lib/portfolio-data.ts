@@ -15,6 +15,12 @@ import {
   HeartHandshake,
   ShieldCheck,
   Layers,
+  Award,
+  Trophy,
+  Medal,
+  BadgeCheck,
+  Verified,
+  GraduationCap,
   type LucideIcon,
 } from "lucide-react";
 
@@ -27,6 +33,7 @@ export const navItems: NavItem[] = [
   { label: "Peak Craft", href: "#peak-craft" },
   { label: "Skills", href: "#skills" },
   { label: "Beyond", href: "#beyond" },
+  { label: "Awards", href: "#awards" },
   { label: "Vision", href: "#vision" },
   { label: "Contact", href: "#contact" },
 ];
@@ -630,4 +637,80 @@ export const visionStats = [
   { label: "Focus", value: "Africa & beyond" },
   { label: "Mission", value: "Products · Communities · Businesses" },
   { label: "Horizon", value: "Long-term impact" },
+];
+
+export type AwardItem = {
+  id: string;
+  title: string;
+  issuer: string;
+  year: string;
+  type: "award" | "certification" | "recognition";
+  description: string;
+  icon: LucideIcon;
+  credentialUrl?: string;
+  image?: string;
+};
+
+export const awards: AwardItem[] = [
+  {
+    id: "dedication-commended",
+    title: "Dedication Commended",
+    issuer: "Peak Craft",
+    year: "2024",
+    type: "recognition",
+    description:
+      "Formally recognized for distinguished performance and exceptional contributions as Previous PR Lead — outstanding leadership, teamwork, and initiative within the Peak Craft community.",
+    icon: Medal,
+    image: "/projects/peakcraft-emblem.png",
+  },
+  {
+    id: "huawei-ict-academy",
+    title: "Huawei ICT Academy",
+    issuer: "Huawei",
+    year: "2024",
+    type: "certification",
+    description:
+      "Participated in the Huawei ICT Academy program through Peak Craft — building foundational and advanced ICT skills aligned with industry standards.",
+    icon: GraduationCap,
+  },
+  {
+    id: "head-of-pr",
+    title: "Head of Public Relations",
+    issuer: "Peak Craft",
+    year: "2023",
+    type: "award",
+    description:
+      "Appointed Head of PR for a university tech community — leading event promotion, brand management, and cross-team collaboration that grew reach across campus.",
+    icon: Trophy,
+  },
+  {
+    id: "web-development",
+    title: "Full-Stack Web Development",
+    issuer: "Self-directed / Project-based",
+    year: "2024",
+    type: "certification",
+    description:
+      "Demonstrated proficiency in React, Next.js, Node.js, and MongoDB through shipped production projects (PCIC, Stock Management, LibraryHub).",
+    icon: BadgeCheck,
+  },
+  {
+    id: "community-leadership",
+    title: "Community Builder",
+    issuer: "Peak Craft · Hawassa University",
+    year: "2023",
+    type: "recognition",
+    description:
+      "Recognized for growing a university tech community through events, mentorship, and a strong shared culture that turned a club into a movement.",
+    icon: Award,
+  },
+  {
+    id: "flutter-mobile",
+    title: "Flutter Mobile Development",
+    issuer: "Project-based",
+    year: "2025",
+    type: "certification",
+    description:
+      "Built cross-platform mobile apps with Flutter + Supabase, including the IoT Campus Fault Reporting App and the HU Student Debt student app.",
+    icon: Verified,
+  },
 ];

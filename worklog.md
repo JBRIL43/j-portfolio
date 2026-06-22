@@ -445,3 +445,33 @@ Work Log:
 
 Stage Summary:
 - The Campus Event Promo Suite project has been removed. The portfolio now has 7 projects: PCIC Management System, HU Student Debt System, LibraryHub, Stock Management System, IoT Campus Fault Reporting App, Peak Craft Brand System, DevNotes — Learning in Public. Lint clean, mobile-verified.
+
+---
+Task ID: 21-awards-section
+Agent: Z.ai Code (lead frontend)
+Task: Add an Awards & Certifications section to the portfolio
+
+Work Log:
+- Added 6 award-related icons to `src/lib/portfolio-data.ts` imports (Award, Trophy, Medal, BadgeCheck, Verified, GraduationCap). NOTE: `Certificate` is NOT a valid lucide-react export (caused a 500 SSR error); replaced with `Verified`.
+- Added an `AwardItem` type + `awards[]` array with 6 entries grounded in Jibril's real background:
+  1. Dedication Commended (Peak Craft, recognition, 2024) — the formal PR-lead recognition.
+  2. Huawei ICT Academy (Huawei, certification, 2024).
+  3. Head of Public Relations (Peak Craft, award, 2023).
+  4. Full-Stack Web Development (self-directed, certification, 2024) — proven via shipped projects.
+  5. Community Builder (Peak Craft · HU, recognition, 2023).
+  6. Flutter Mobile Development (project-based, certification, 2025) — proven via shipped apps.
+  Each has type (award/certification/recognition), issuer, year, description, icon, optional credentialUrl + image.
+- Created `src/components/portfolio/awards.tsx`: a filterable grid section.
+  - SectionHeading: "Recognition & credentials".
+  - Animated filter pills (All / Awards / Certifications / Recognition) with layoutId pill like Projects.
+  - 6 tilt cards (reuses TiltCard) with: icon, type badge (color-coded: amber for awards, emerald for certifications, blue for recognition), title, issuer, year, description, optional "View credential" link.
+  - Stagger entrance animation + overflow-hidden section.
+- Added "Awards" to navItems (between Beyond and Vision).
+- Mounted `<Awards />` in page.tsx between BeyondCoding and Vision.
+- Fixed the SSR 500 error by replacing the invalid `Certificate` import with `Verified`.
+- `bun run lint` clean.
+- Agent Browser verification: Awards section renders with heading + 4 filter buttons + 6 cards. Filter works (Certifications → 3 cards: Huawei ICT, Full-Stack, Flutter; All → 6). Type badges render. "Awards" appears in navbar. Tilt responds to cursor (transform matrix changes). No runtime errors. Mobile: no horizontal overflow (390=390).
+- VLM visual audit: section has cards with icons, titles, issuers, years, type badges, and a filter row — layout clean.
+
+Stage Summary:
+- Added a complete Awards & Certifications section (id #awards) between Beyond Coding and Vision, with 6 entries (1 award, 3 certifications, 2 recognition), animated filtering by type, color-coded type badges, cursor-follow tilt cards, and navbar integration. Content is grounded in Jibril's real Peak Craft recognition and proven-via-projects certifications — easy to extend with real credential URLs when available. Lint clean, mobile-verified.

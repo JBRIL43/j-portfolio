@@ -7,6 +7,7 @@ import { Projects } from "@/components/portfolio/projects";
 import { PeakCraft } from "@/components/portfolio/peak-craft";
 import { Skills } from "@/components/portfolio/skills";
 import { BeyondCoding } from "@/components/portfolio/beyond-coding";
+import { Awards } from "@/components/portfolio/awards";
 import { Vision } from "@/components/portfolio/vision";
 import { Testimonials } from "@/components/portfolio/testimonials";
 import { Contact } from "@/components/portfolio/contact";
@@ -28,6 +29,7 @@ export default function Home() {
         <PeakCraft />
         <Skills />
         <BeyondCoding />
+        <Awards />
         <Vision />
         <Testimonials />
         <Contact />
