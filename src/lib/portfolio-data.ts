@@ -381,44 +381,6 @@ export const projects: Project[] = [
     year: "2024",
   },
   {
-    id: "study-companion",
-    name: "Study Companion App",
-    category: "AI",
-    tagline: "An AI-assisted study tool for students.",
-    problem:
-      "Students struggled to organize notes, generate practice questions, and stay on top of coursework across many subjects.",
-    solution:
-      "Built an AI-assisted study companion that turns notes into flashcards, summaries, and practice questions — with a focused, distraction-free interface.",
-    tech: ["Next.js", "OpenAI", "Node.js", "Tailwind"],
-    impact:
-      "A personal exploration of AI-assisted product building that deepened my understanding of LLM tooling and student-centric UX.",
-    metrics: [
-      { label: "Subjects", value: "Multi" },
-      { label: "Mode", value: "Prototype" },
-    ],
-    accent: "from-emerald-400/25 via-blue-400/10 to-transparent",
-    year: "2025",
-  },
-  {
-    id: "portfolio-engine",
-    name: "Personal Portfolio Engine",
-    category: "Web",
-    tagline: "A premium, animated personal brand site.",
-    problem:
-      "Most developer portfolios look the same — a list of skills with no story. I wanted mine to communicate vision, craft, and leadership.",
-    solution:
-      "Designed and engineered a dark, glassmorphic portfolio with animated storytelling, interactive skills, and project filtering — built for speed and SEO.",
-    tech: ["Next.js", "TypeScript", "Framer Motion", "Tailwind"],
-    impact:
-      "A living case study in design systems, micro-interactions, and performance-first frontend engineering.",
-    metrics: [
-      { label: "Lighthouse", value: "95+" },
-      { label: "Sections", value: "10" },
-    ],
-    accent: "from-blue-500/30 via-indigo-400/10 to-transparent",
-    year: "2025",
-  },
-  {
     id: "brand-system",
     name: "Peak Craft Brand System",
     category: "Community",

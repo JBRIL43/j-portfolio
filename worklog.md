@@ -377,3 +377,19 @@ Work Log:
 
 Stage Summary:
 - Square images (like the Peak Craft brand emblem and crown mark) now display fully using object-contain instead of being cropped to the landscape frame. The SmartImage component now correctly handles landscape, portrait, AND square orientations. Lint clean, mobile-verified.
+
+---
+Task ID: 17-remove-two-projects
+Agent: Z.ai Code (lead frontend)
+Task: Remove the Study Companion App and Personal Portfolio Engine projects
+
+Work Log:
+- Located both projects in `src/lib/portfolio-data.ts` (study-companion at line 384, portfolio-engine at line 403).
+- Removed both project objects from the `projects` array. No other references to them existed in the codebase (they used abstract mockups, no screenshots, no liveUrl/repoUrl).
+- `bun run lint` clean.
+- Agent Browser verification: projects grid now shows 8 cards (down from 10). Confirmed neither "Study Companion" nor "Personal Portfolio Engine" appears in any project title. No runtime errors.
+- Note: the "AI" filter now returns 0 cards because Study Companion was the only AI-categorized project — this is expected, not an error (the empty state is handled gracefully). "All" and other filters (Web/Design/Community) still populate correctly.
+- Mobile: no horizontal overflow (390=390).
+
+Stage Summary:
+- Removed the Study Companion App and Personal Portfolio Engine projects. The portfolio now has 8 projects (PCIC Management System, HU Student Debt System, LibraryHub, Stock Management System, IoT Campus Fault Reporting App, Campus Event Promo Suite, Peak Craft Brand System, DevNotes — Learning in Public). Lint clean, mobile-verified.
