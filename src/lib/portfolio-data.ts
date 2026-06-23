@@ -43,50 +43,59 @@ export type JourneyStep = {
   title: string;
   description: string;
   tag: string;
+  /** Optional supporting photo for the milestone. */
+  image?: string;
 };
 
 export const journey: JourneyStep[] = [
   {
-    year: "2019",
+    year: "2022",
     title: "Discovering Technology",
     description:
-      "Curiosity sparked by a single computer. I started tearing apart how apps and websites worked, spending late nights reading about how the internet was built.",
+      "My journey started when I got my first PC. I began exploring everything — tearing apart how apps and websites worked, spending late nights figuring out how technology actually fits together.",
     tag: "Origin",
   },
   {
-    year: "2021",
-    title: "Learning to Program",
+    year: "2022",
+    title: "Finding My Path at University",
     description:
-      "Took my first real steps into code with Python and Java. The moment a program responded to my logic, I knew this was the craft I wanted to master.",
+      "I went to university to find a career that suited me and got into Information Systems at Hawassa University. I took my first programming language, C++ — it was difficult because it was my first time ever encountering code.",
     tag: "Foundations",
   },
   {
-    year: "2022",
+    year: "2023",
     title: "Joining Peak Craft",
     description:
-      "Enrolled at Hawassa University for Information Systems and found Peak Craft — a tech community that felt like home. I began contributing as a member and designer.",
+      "I joined Peak Craft — a community built to support students with practical skills rather than just the theory we learn in university. A place to actually apply what we were studying.",
     tag: "Community",
   },
   {
     year: "2023",
-    title: "Becoming PR Head",
+    title: "Becoming PR Lead",
     description:
-      "Promoted to Head of Public Relations at Peak Craft. I led event promotion, brand identity, and cross-team collaboration that grew our reach across campus.",
+      "In the same year I became the PR Lead of Peak Craft. I promoted the club, designed event posters, shaped the branding, and helped put every Peak Craft event in front of the right people.",
     tag: "Leadership",
   },
   {
     year: "2024",
-    title: "Building Web Applications",
+    title: "Exploring Departments & Shipping Real Projects",
     description:
-      "Shipped real products with React, Next.js, and Node.js — turning designs into fast, accessible experiences. Started blending design sensibility with engineering rigor.",
+      "I explored a lot of departments at Peak Craft and picked up skills in Data Science, some understanding of cyber and networking, and most of all learned the real craft of shipping websites, apps, and real projects — then started blending it all with my PR skills.",
     tag: "Craft",
   },
   {
-    year: "Now",
-    title: "Exploring AI & Entrepreneurship",
+    year: "2025",
+    title: "Building My Final Year Project",
     description:
-      "Exploring AI-assisted development and the foundations of building a company. Studying how products, communities, and businesses create lasting impact across Africa.",
-    tag: "Frontier",
+      "I built an app for my final year project for graduation — putting everything I'd learned about shipping real products into one capstone that proved the craft had stuck.",
+    tag: "Capstone",
+  },
+  {
+    year: "2026",
+    title: "Graduated — BSc, Information Systems",
+    description:
+      "On June 27, 2026 I graduated with a BSc degree in Information Systems from Hawassa University. Now I'm exploring the world of technology even more — finding work that feeds both my curiosity and my stomach.",
+    tag: "Graduation",
   },
 ];
 

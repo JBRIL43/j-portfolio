@@ -529,3 +529,26 @@ Work Log:
 
 Stage Summary:
 - Canva (86%) is now a skill under the Tools category in the Technical Skills section, with an animated proficiency bar and the note "Graphics & social media design". The Tools tab count badge now shows 4. Lint clean, mobile-verified.
+
+---
+Task ID: 26-journey-rewrite
+Agent: Z.ai Code (lead frontend)
+Task: Rewrite the Journey section with Jibril's real, detailed personal timeline (2022→2026 graduation)
+
+Work Log:
+- Rewrote the `journey[]` array in `src/lib/portfolio-data.ts` based on the user's real story. Replaced the 6 placeholder milestones with 7 real ones grounded in the user's message:
+  1. 2022 — Discovering Technology (got first PC, started exploring everything). Tag: Origin.
+  2. 2022 — Finding My Path at University (enrolled in Information Systems at Hawassa University; first programming language C++, difficult as first encounter with code). Tag: Foundations.
+  3. 2023 — Joining Peak Craft (community supporting students with practical skills beyond theory). Tag: Community.
+  4. 2023 — Becoming PR Lead (promoted the club, event posters, branding). Tag: Leadership.
+  5. 2024 — Exploring Departments & Shipping Real Projects (Data Science, cyber/networking, real craft of shipping websites/apps, blending with PR skills). Tag: Craft.
+  6. 2025 — Building My Final Year Project (capstone app for graduation). Tag: Capstone.
+  7. 2026 — Graduated — BSc, Information Systems (June 27, 2026; now exploring technology and finding work that feeds curiosity and stomach). Tag: Graduation.
+- Added an optional `image` field to the `JourneyStep` type so supporting photos can be attached per milestone (none yet — user mentioned wanting photos but didn't attach them).
+- Updated `src/components/portfolio/journey.tsx` to render a supporting photo (via SmartImage, 16:9 frame, max-w-xs) when a milestone has an image; photo aligns right on left-side milestones. Added SmartImage + cn imports.
+- Updated the section description: "From a first PC to a BSc in Information Systems — curiosity, craft, leadership, and graduation. This is the real story so far."
+- `bun run lint` clean.
+- Agent Browser verification: all 7 milestones render with correct titles, tags, and years (Origin/Foundations/Community/Leadership/Craft/Capstone/Graduation; 2022/2022/2023/2023/2024/2025/2026). The graduation milestone shows the June 27, 2026 BSc text. No runtime errors. Mobile: no horizontal overflow (390=390).
+
+Stage Summary:
+- The Journey section now tells Jibril's real story: first PC (2022) → Information Systems at Hawassa University + first C++ (2022) → joining Peak Craft (2023) → becoming PR Lead (2023) → exploring departments + shipping real projects (2024) → final year project (2025) → graduating BSc Information Systems on June 27, 2026. The component is ready to display supporting photos per milestone whenever Jibril uploads them (just add the `image` path to each step). Lint clean, mobile-verified.

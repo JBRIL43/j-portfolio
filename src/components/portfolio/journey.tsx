@@ -6,6 +6,8 @@ import { journey } from "@/lib/portfolio-data";
 import { SectionHeading } from "./section-heading";
 import { Reveal } from "./reveal";
 import { TiltCard } from "./tilt";
+import { SmartImage } from "./smart-image";
+import { cn } from "@/lib/utils";
 
 export function Journey() {
   const ref = useRef<HTMLDivElement>(null);
@@ -26,7 +28,7 @@ export function Journey() {
               <span className="text-gradient-blue">builder</span>
             </>
           }
-          description="Every milestone added a new lens — curiosity, craft, leadership, and vision. This is the story so far."
+          description="From a first PC to a BSc in Information Systems — curiosity, craft, leadership, and graduation. This is the real story so far."
         />
 
         <div ref={ref} className="relative mt-16 sm:mt-20">
@@ -80,6 +82,21 @@ export function Journey() {
                         <p className="relative mt-1.5 text-sm leading-relaxed text-muted-foreground">
                           {step.description}
                         </p>
+                        {step.image && (
+                          <div
+                            className={cn(
+                              "relative mt-4 overflow-hidden rounded-xl ring-1 ring-white/10",
+                              left && "sm:[&>div]:ml-auto"
+                            )}
+                          >
+                            <div className="aspect-[16/9] w-full max-w-xs">
+                              <SmartImage
+                                src={step.image}
+                                alt={step.title}
+                              />
+                            </div>
+                          </div>
+                        )}
                       </TiltCard>
                     </Reveal>
                   </div>
