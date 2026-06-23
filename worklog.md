@@ -515,3 +515,17 @@ Work Log:
 
 Stage Summary:
 - Canva now appears in the Tools & skills section of 4 What I Do discipline dialogs: UI/UX Design, Content Creation, Community Leadership, and Social Media Strategy. Lint clean, mobile-verified.
+
+---
+Task ID: 25-canva-skill
+Agent: Z.ai Code (lead frontend)
+Task: Add Canva as a skill under the Tools category in the Technical Skills section
+
+Work Log:
+- Reviewed the uploaded screenshot via VLM: confirmed the Skills "Tools" category had Git (85%), Linux (78%), Figma (88%) — Canva was missing.
+- Added Canva to the `tools` skill category in `src/lib/portfolio-data.ts`: { name: "Canva", level: 86, note: "Graphics & social media design" }.
+- `bun run lint` clean.
+- Agent Browser verification: clicked the Tools tab → Canva appears alongside Git, Linux, and Figma. Canva level shows 86%. The Tools category count badge updated from 3 to 4. Animated proficiency bar renders. No runtime errors. Mobile: no horizontal overflow (390=390).
+
+Stage Summary:
+- Canva (86%) is now a skill under the Tools category in the Technical Skills section, with an animated proficiency bar and the note "Graphics & social media design". The Tools tab count badge now shows 4. Lint clean, mobile-verified.

@@ -550,6 +550,7 @@ export const skillCategories: SkillCategory[] = [
       { name: "Git", level: 85, note: "Version control & flow" },
       { name: "Linux", level: 78, note: "CLI & dev environments" },
       { name: "Figma", level: 88, note: "Design & prototyping" },
+      { name: "Canva", level: 86, note: "Graphics & social media design" },
     ],
   },
 ];
