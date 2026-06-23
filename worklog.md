@@ -500,3 +500,18 @@ Work Log:
 
 Stage Summary:
 - The Awards & Certifications section now showcases all 16 real certificates/awards from Jibril's uploaded zip (replacing the 6 placeholders), with pagination (6 per page), animated type filtering, and a click-to-view certificate dialog that displays each real certificate image at full size. Content covers Udemy, Simplilearn, ALX, Cursor Hackathon, Hawassa University, Peak Craft, Rotaract Club of Hawassa, and the Lake Hawassa Half Marathon. Lint clean, mobile-verified.
+
+---
+Task ID: 24-canva-in-tools
+Agent: Z.ai Code (lead frontend)
+Task: Add Canva to the tools list in the What I Do discipline dialogs
+
+Work Log:
+- Audited the `tools[]` arrays for all 6 services: Canva was already present in UI/UX Design and Content Creation; missing from Community Leadership and Social Media Strategy (where it's genuinely used for event/social graphics).
+- Added "Canva" to the tools array for Community Leadership and Social Media Strategy in `src/lib/portfolio-data.ts`.
+- Left Web Development and AI-Assisted Development unchanged (Canva isn't relevant there).
+- `bun run lint` clean.
+- Agent Browser verification: opened the Community Leadership details dialog → Canva present in Tools & skills. Opened the Social Media Strategy details dialog → Canva present (tools list ends with PR, Canva). No runtime errors. Mobile: no horizontal overflow (390=390).
+
+Stage Summary:
+- Canva now appears in the Tools & skills section of 4 What I Do discipline dialogs: UI/UX Design, Content Creation, Community Leadership, and Social Media Strategy. Lint clean, mobile-verified.

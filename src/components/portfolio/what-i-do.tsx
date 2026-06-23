@@ -1,26 +1,39 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { services } from "@/lib/portfolio-data";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowUpRight, Check, Eye, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { services, type Service } from "@/lib/portfolio-data";
 import { SectionHeading } from "./section-heading";
 import { staggerContainer, staggerItem } from "./reveal";
 import { TiltCard } from "./tilt";
+import { cn } from "@/lib/utils";
 
-function ServiceCard({ index }: { index: number }) {
+function ServiceCard({
+  index,
+  onOpen,
+}: {
+  index: number;
+  onOpen: () => void;
+}) {
   const service = services[index];
   const Icon = service.icon;
 
   return (
     <TiltCard
       variants={staggerItem}
-      className="group relative h-full overflow-hidden rounded-2xl glass p-6 transition-colors duration-300 hover:bg-white/8"
+      onClick={onOpen as unknown as React.MouseEventHandler<HTMLDivElement>}
+      className={cn(
+        "group relative h-full cursor-pointer overflow-hidden rounded-2xl glass p-6 transition-colors duration-300 hover:bg-white/8"
+      )}
     >
       <div className="relative">
         <div className="mb-5 inline-grid size-11 place-items-center rounded-xl bg-white/6 ring-1 ring-white/10 transition-all duration-300 group-hover:bg-[oklch(0.62_0.2_255/0.16)] group-hover:ring-[oklch(0.62_0.2_255/0.4)]">
           <Icon className="size-5 text-[oklch(0.78_0.14_255)]" />
         </div>
-        <h3 className="text-lg font-semibold tracking-tight text-foreground">
+        <h3 className="flex items-center gap-1.5 text-lg font-semibold tracking-tight text-foreground">
           {service.title}
+          <ArrowUpRight className="size-4 text-muted-foreground transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-[oklch(0.78_0.14_255)]" />
         </h3>
         <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
           {service.description}
@@ -35,12 +48,153 @@ function ServiceCard({ index }: { index: number }) {
             </span>
           ))}
         </div>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onOpen();
+          }}
+          className="mt-5 inline-flex items-center gap-1.5 text-xs font-medium text-[oklch(0.78_0.14_255)] transition-colors hover:text-[oklch(0.85_0.12_255)]"
+        >
+          <Eye className="size-3.5" />
+          View details
+        </button>
       </div>
     </TiltCard>
   );
 }
 
+function ServiceDialog({
+  service,
+  onClose,
+}: {
+  service: Service | null;
+  onClose: () => void;
+}) {
+  useEffect(() => {
+    if (service) {
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = "";
+      };
+    }
+  }, [service]);
+
+  const Icon = service?.icon;
+
+  return (
+    <AnimatePresence>
+      {service && Icon && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-[80] flex items-center justify-center p-4 sm:p-6"
+          onClick={onClose}
+        >
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-md" />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 16 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 16 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            onClick={(e) => e.stopPropagation()}
+            className="relative z-10 flex max-h-[88vh] w-full max-w-xl flex-col overflow-hidden rounded-2xl border border-white/10 bg-[oklch(0.1_0.008_264)] shadow-[0_30px_80px_-30px_rgba(0,0,0,0.9)]"
+          >
+            {/* header */}
+            <div className="relative overflow-hidden border-b border-white/8 p-6">
+              <div className="pointer-events-none absolute -right-12 -top-12 size-40 rounded-full bg-[oklch(0.62_0.2_255/0.16)] blur-3xl" />
+              <div className="relative flex items-start justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="inline-grid size-12 place-items-center rounded-xl bg-[oklch(0.62_0.2_255/0.16)] ring-1 ring-[oklch(0.62_0.2_255/0.3)]">
+                    <Icon className="size-6 text-[oklch(0.78_0.14_255)]" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold tracking-tight text-foreground">
+                      {service.title}
+                    </h3>
+                    <p className="text-xs text-muted-foreground">
+                      {service.description}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={onClose}
+                  aria-label="Close"
+                  className="grid size-9 shrink-0 place-items-center rounded-lg glass transition-colors hover:bg-white/10"
+                >
+                  <X className="size-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* body */}
+            <div className="flex-1 overflow-y-auto p-6">
+              <p className="mb-5 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                What this looks like in practice
+              </p>
+              <ul className="space-y-3">
+                {service.details.map((d, i) => (
+                  <motion.li
+                    key={i}
+                    initial={{ opacity: 0, x: -8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.05 + i * 0.06, duration: 0.4 }}
+                    className="flex items-start gap-3"
+                  >
+                    <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-[oklch(0.62_0.2_255/0.16)] ring-1 ring-[oklch(0.62_0.2_255/0.3)]">
+                      <Check className="size-3 text-[oklch(0.78_0.14_255)]" />
+                    </span>
+                    <span className="text-sm leading-relaxed text-foreground/85">
+                      {d}
+                    </span>
+                  </motion.li>
+                ))}
+              </ul>
+
+              {service.tools && service.tools.length > 0 && (
+                <div className="mt-6">
+                  <p className="mb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                    Tools & skills
+                  </p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {service.tools.map((t) => (
+                      <span
+                        key={t}
+                        className="rounded-md bg-white/6 px-2.5 py-1 text-xs text-foreground/80 ring-1 ring-white/10"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div className="mt-6">
+                <p className="mb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                  Focus areas
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {service.highlights.map((h) => (
+                    <span
+                      key={h}
+                      className="rounded-md bg-[oklch(0.62_0.2_255/0.12)] px-2.5 py-1 text-xs text-[oklch(0.78_0.14_255)] ring-1 ring-[oklch(0.62_0.2_255/0.2)]"
+                    >
+                      {h}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
 export function WhatIDo() {
+  const [selected, setSelected] = useState<Service | null>(null);
+
   return (
     <section id="work" className="relative py-24 sm:py-32">
       <div className="mx-auto max-w-6xl px-5">
@@ -52,7 +206,7 @@ export function WhatIDo() {
               <span className="text-gradient-blue">craftsman</span>
             </>
           }
-          description="I sit at the intersection of engineering, design, and community — and I move fluently between them."
+          description="I sit at the intersection of engineering, design, and community — and I move fluently between them. Click any card to see the details."
         />
 
         <motion.div
@@ -63,10 +217,16 @@ export function WhatIDo() {
           className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
         >
           {services.map((_, i) => (
-            <ServiceCard key={i} index={i} />
+            <ServiceCard
+              key={i}
+              index={i}
+              onOpen={() => setSelected(services[i])}
+            />
           ))}
         </motion.div>
       </div>
+
+      <ServiceDialog service={selected} onClose={() => setSelected(null)} />
     </section>
   );
 }
