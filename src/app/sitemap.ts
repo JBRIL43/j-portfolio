@@ -1,12 +1,24 @@
 import type { MetadataRoute } from "next";
 
+const routes = [
+  "",
+  "/journey",
+  "/work",
+  "/projects",
+  "/peak-craft",
+  "/skills",
+  "/beyond",
+  "/awards",
+  "/vision",
+  "/testimonials",
+  "/contact",
+];
+
 export default function sitemap(): MetadataRoute.Sitemap {
-  return [
-    {
-      url: "https://jibrilnuredin.dev",
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 1,
-    },
-  ];
+  return routes.map((path) => ({
+    url: `https://jibrilnuredin.dev${path}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly",
+    priority: path === "" ? 1 : 0.8,
+  }));
 }

@@ -8,6 +8,7 @@ import {
 } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Mail, Sparkles, MapPin, PenTool } from "lucide-react";
+import Link from "next/link";
 
 const headline = [
   "Building",
@@ -18,10 +19,6 @@ const headline = [
 ];
 
 export function Hero() {
-  const scrollTo = (href: string) => {
-    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
-  };
-
   // Cursor-following tilt for the floating identity card
   const cardRef = useRef<HTMLDivElement>(null);
   const [reduce, setReduce] = useState(false);
@@ -151,20 +148,20 @@ export function Hero() {
             transition={{ delay: 2.4, duration: 0.7 }}
             className="mt-8 flex flex-wrap items-center gap-3"
           >
-            <button
-              onClick={() => scrollTo("#projects")}
+            <Link
+              href="/projects"
               className="group inline-flex items-center gap-2 rounded-xl bg-[oklch(0.62_0.2_255)] px-5 py-3 text-sm font-medium text-white shadow-[0_0_30px_-8px_oklch(0.62_0.2_255)] transition-all hover:shadow-[0_0_40px_-6px_oklch(0.62_0.2_255)] hover:brightness-110"
             >
               View Projects
               <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
-            </button>
-            <button
-              onClick={() => scrollTo("#contact")}
+            </Link>
+            <Link
+              href="/contact"
               className="inline-flex items-center gap-2 rounded-xl glass px-5 py-3 text-sm font-medium text-foreground/90 transition-all hover:bg-white/10"
             >
               <Mail className="size-4" />
               Contact Me
-            </button>
+            </Link>
           </motion.div>
 
           <motion.div
@@ -294,24 +291,28 @@ export function Hero() {
         </motion.div>
       </div>
 
-      {/* scroll cue */}
-      <motion.button
-        onClick={() => scrollTo("#journey")}
+      {/* explore cue */}
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 2.9, duration: 0.7 }}
-        className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-muted-foreground sm:flex"
-        aria-label="Scroll to journey"
+        className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 sm:flex"
       >
-        <span className="text-[10px] uppercase tracking-[0.2em]">Scroll</span>
-        <span className="flex h-9 w-5 items-start justify-center rounded-full border border-white/15 p-1">
-          <motion.span
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-            className="size-1.5 rounded-full bg-[oklch(0.62_0.2_255)]"
-          />
-        </span>
-      </motion.button>
+        <Link
+          href="/journey"
+          className="flex flex-col items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
+          aria-label="Explore my journey"
+        >
+          <span className="text-[10px] uppercase tracking-[0.2em]">Explore</span>
+          <span className="flex h-9 w-5 items-start justify-center rounded-full border border-white/15 p-1">
+            <motion.span
+              animate={{ y: [0, 10, 0] }}
+              transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+              className="size-1.5 rounded-full bg-[oklch(0.62_0.2_255)]"
+            />
+          </span>
+        </Link>
+      </motion.div>
     </section>
   );
 }

@@ -552,3 +552,27 @@ Work Log:
 
 Stage Summary:
 - The Journey section now tells Jibril's real story: first PC (2022) → Information Systems at Hawassa University + first C++ (2022) → joining Peak Craft (2023) → becoming PR Lead (2023) → exploring departments + shipping real projects (2024) → final year project (2025) → graduating BSc Information Systems on June 27, 2026. The component is ready to display supporting photos per milestone whenever Jibril uploads them (just add the `image` path to each step). Lint clean, mobile-verified.
+
+---
+Task ID: 27-multi-page
+Agent: Z.ai Code (lead frontend)
+Task: Convert the single-page portfolio into a multi-page site — each section becomes its own route
+
+Work Log:
+- Changed navItems in portfolio-data.ts from anchor links (#journey) to route paths (/journey, /work, /projects, /peak-craft, /skills, /beyond, /awards, /vision, /contact).
+- Rewrote Navbar (src/components/portfolio/navbar.tsx): now uses next/link Link + usePathname for active-state highlighting; logo → /, "Let's talk" → /contact; mobile sheet uses Link with onClick to close. Removed the scrollIntoView logic and the useActiveSection dependency.
+- Updated layout.tsx to mount the shared shell globally: ParticleField + <div flex min-h-screen flex-col> > Navbar + <main>{children}</main> + Footer. So every page gets the navbar, footer, and particle background.
+- Updated Footer (footer.tsx) nav to use next/link Link instead of scrollIntoView.
+- Updated Hero (hero.tsx): "View Projects" → Link to /projects, "Contact Me" → Link to /contact, the bottom cue → Link to /journey (label "Explore"). Removed the now-unused scrollTo function. Added next/link import.
+- Rewrote app/page.tsx (Home) to render LoadingScreen + Hero + a new HomeExplore section.
+- Created HomeExplore (home-explore.tsx): a grid of 10 tilt cards, each linking to a section page with an icon, label, and description. Added overflow-hidden for mobile.
+- Created 10 route pages, each with per-page Metadata (title/description) and pt-24 navbar clearance:
+  /journey, /work, /projects, /peak-craft, /skills, /beyond, /awards, /vision, /testimonials, /contact.
+- Updated sitemap.ts to list all 11 routes.
+- Fixed lint: removed setState-in-effect (pathname watcher) in navbar, replaced with onClick close on mobile links.
+- `bun run lint` clean.
+- Agent Browser verification: Home renders Hero + Explore grid. All 10 routes return 200 with correct per-page titles ("My Journey · Jibril Nuredin", "What I Do · Jibril Nuredin", etc.) and full content. Shared shell (Navbar + Footer + particles) confirmed present on every page. Active nav highlight works (e.g. "Projects" active on /projects). Project case-study dialog still opens on /projects. Contact form on /contact submits → POST /api/contact 201 → persisted to DB ("Test User"). Mobile: no horizontal overflow (390=390). No runtime errors.
+- VLM visual audit: home page has hero + Explore grid of cards + navbar.
+
+Stage Summary:
+- The portfolio is now a proper multi-page Next.js App Router site. Home (/) shows the Hero + an Explore grid linking to each section. Each section is its own route with per-page SEO metadata: /journey, /work, /projects, /peak-craft, /skills, /beyond, /awards, /vision, /testimonials, /contact. Navbar, Footer, and the cursor-reactive particle field are shared globally via the layout. Navbar uses route-based active highlighting. All interactions preserved (project dialogs, awards pagination/dialog, skills tabs, contact form → DB, tilt cards, particle cursor reactivity). Lint clean, mobile-verified.

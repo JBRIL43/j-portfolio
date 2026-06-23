@@ -3,6 +3,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as SonnerToaster } from "@/components/ui/sonner";
+import { Navbar } from "@/components/portfolio/navbar";
+import { Footer } from "@/components/portfolio/footer";
+import { ParticleField } from "@/components/portfolio/particle-field";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -119,7 +122,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground overflow-x-hidden`}
       >
-        {children}
+        {/* Global cursor-reactive particle background (behind all pages) */}
+        <ParticleField />
+        <div className="relative flex min-h-screen flex-col">
+          <Navbar />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </div>
         <Toaster />
         <SonnerToaster position="bottom-right" theme="dark" richColors />
       </body>

@@ -1,6 +1,7 @@
 "use client";
 
 import { ArrowUp, Github, Linkedin, Mail } from "lucide-react";
+import Link from "next/link";
 import { navItems, socials } from "@/lib/portfolio-data";
 
 export function Footer() {
@@ -64,16 +65,12 @@ export function Footer() {
             <ul className="grid grid-cols-2 gap-2">
               {navItems.map((item) => (
                 <li key={item.href}>
-                  <button
-                    onClick={() =>
-                      document
-                        .querySelector(item.href)
-                        ?.scrollIntoView({ behavior: "smooth" })
-                    }
+                  <Link
+                    href={item.href}
                     className="text-sm text-muted-foreground transition-colors hover:text-foreground"
                   >
                     {item.label}
-                  </button>
+                  </Link>
                 </li>
               ))}
             </ul>
