@@ -86,6 +86,7 @@ type TiltCardProps = Omit<
   React.ComponentProps<typeof motion.div>,
   "ref" | "onMouseMove" | "onMouseLeave" | "style"
 > & {
+  children?: React.ReactNode;
   max?: number;
   glare?: boolean;
 };

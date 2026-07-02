@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
+import { sendContactEmails } from "@/lib/contact-mail";
 
 /**
  * Contact form validation schema.
@@ -47,9 +48,15 @@ export async function POST(request: Request) {
     await db.contactMessage.create({
       data: { name, email, subject, message },
     });
+
+    await sendContactEmails({ name, email, subject, message });
   } catch {
     return NextResponse.json(
-      { ok: false, error: "Server error" },
+      {
+        ok: false,
+        error:
+          "Message saved, but email delivery failed. Please try again or email me directly.",
+      },
       { status: 500 },
     );
   }

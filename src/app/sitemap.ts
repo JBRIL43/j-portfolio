@@ -10,7 +10,6 @@ const routes = [
   "/beyond",
   "/awards",
   "/vision",
-  "/testimonials",
   "/contact",
 ];
 

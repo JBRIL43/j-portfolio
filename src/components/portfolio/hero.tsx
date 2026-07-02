@@ -7,7 +7,14 @@ import {
   useTransform,
 } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { ArrowRight, Mail, Sparkles, MapPin, PenTool } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowRight,
+  Mail,
+  Sparkles,
+  MapPin,
+  PenTool,
+} from "lucide-react";
 import Link from "next/link";
 
 const headline = [
@@ -85,12 +92,12 @@ export function Hero() {
     >
       {/* Ambient background (particles are global, see page.tsx) */}
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute inset-0 grid-bg [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
-        <div className="absolute left-1/2 top-[-10%] size-[44rem] -translate-x-1/2 rounded-full bg-[oklch(0.62_0.2_255/0.22)] blur-[140px] animate-aurora" />
-        <div className="absolute right-[-10%] top-[30%] size-[32rem] rounded-full bg-[oklch(0.72_0.16_200/0.16)] blur-[130px] animate-aurora [animation-delay:-6s]" />
-        <div className="absolute left-[-8%] bottom-[-10%] size-[34rem] rounded-full bg-[oklch(0.6_0.2_290/0.12)] blur-[140px] animate-aurora [animation-delay:-12s]" />
+        <div className="absolute inset-0 grid-bg mask-[radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
+        <div className="absolute left-1/2 top-[-10%] size-176 -translate-x-1/2 rounded-full bg-[oklch(0.62_0.2_255/0.22)] blur-[140px] animate-aurora" />
+        <div className="absolute right-[-10%] top-[30%] size-128 rounded-full bg-[oklch(0.72_0.16_200/0.16)] blur-[130px] animate-aurora [animation-delay:-6s]" />
+        <div className="absolute left-[-8%] bottom-[-10%] size-136 rounded-full bg-[oklch(0.6_0.2_290/0.12)] blur-[140px] animate-aurora [animation-delay:-12s]" />
       </div>
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-40 bg-gradient-to-t from-background to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-40 bg-linear-to-t from-background to-transparent" />
 
       <div className="mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-12 px-5 lg:grid-cols-[1.15fr_0.85fr] lg:gap-8">
         {/* Left: copy */}
@@ -299,18 +306,25 @@ export function Hero() {
         className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 sm:flex"
       >
         <Link
-          href="/journey"
-          className="flex flex-col items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
-          aria-label="Explore my journey"
+          href="#explore"
+          className="group flex flex-col items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
+          aria-label="Scroll down to explore more"
         >
-          <span className="text-[10px] uppercase tracking-[0.2em]">Explore</span>
-          <span className="flex h-9 w-5 items-start justify-center rounded-full border border-white/15 p-1">
+          <span className="text-[10px] uppercase tracking-[0.2em]">
+            Scroll down
+          </span>
+          <span className="flex h-10 w-6 items-start justify-center rounded-full border border-white/15 p-1.5 transition-colors group-hover:border-white/25">
             <motion.span
               animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-              className="size-1.5 rounded-full bg-[oklch(0.62_0.2_255)]"
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              className="grid size-3 place-items-center rounded-full bg-[oklch(0.62_0.2_255)] shadow-[0_0_18px_oklch(0.62_0.2_255/0.5)]"
             />
           </span>
+          <ArrowDown className="size-3.5 animate-bounce text-[oklch(0.62_0.2_255)]" />
         </Link>
       </motion.div>
     </section>

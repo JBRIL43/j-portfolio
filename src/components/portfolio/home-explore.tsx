@@ -6,10 +6,7 @@ import {
   Award,
   Compass,
   FolderGit2,
-  GraduationCap,
   Megaphone,
-  Quote,
-  Rocket,
   Send,
   Wrench,
 } from "lucide-react";
@@ -20,35 +17,19 @@ import { TiltCard } from "./tilt";
 const cards = [
   {
     href: "/journey",
-    label: "My Journey",
+    label: "About Me",
     description:
-      "From a first PC to a BSc in Information Systems — the real story, milestone by milestone.",
+      "The quick story: journey, skills, and vision in one place.",
     icon: Compass,
     accent: "from-blue-500/20 via-cyan-400/5 to-transparent",
   },
   {
-    href: "/work",
-    label: "What I Do",
-    description:
-      "Six disciplines — web development, design, community, content, social, and AI.",
-    icon: Wrench,
-    accent: "from-violet-500/20 via-blue-400/5 to-transparent",
-  },
-  {
     href: "/projects",
-    label: "Featured Projects",
+    label: "Work & Projects",
     description:
-      "Real, shipped products — PCIC, HU Student Debt, LibraryHub, Stock Management, and more.",
+      "The products, systems, and Peak Craft work I want hiring managers to see first.",
     icon: FolderGit2,
-    accent: "from-blue-500/20 via-indigo-400/5 to-transparent",
-  },
-  {
-    href: "/peak-craft",
-    label: "Peak Craft Leadership",
-    description:
-      "How I led the voice of a tech community as Head of Public Relations.",
-    icon: Megaphone,
-    accent: "from-amber-400/20 via-blue-400/5 to-transparent",
+    accent: "from-violet-500/20 via-blue-400/5 to-transparent",
   },
   {
     href: "/skills",
@@ -63,7 +44,7 @@ const cards = [
     label: "Beyond Coding",
     description:
       "The habits that fuel the work — fitness, drawing, reading, faith, and growth.",
-    icon: Rocket,
+    icon: Megaphone,
     accent: "from-rose-400/20 via-blue-400/5 to-transparent",
   },
   {
@@ -73,22 +54,6 @@ const cards = [
       "A growing collection of certifications, awards, and formal recognition.",
     icon: Award,
     accent: "from-amber-400/20 via-orange-400/5 to-transparent",
-  },
-  {
-    href: "/vision",
-    label: "Vision",
-    description:
-      "Building products, communities, and businesses that create meaningful impact.",
-    icon: GraduationCap,
-    accent: "from-blue-500/20 via-cyan-400/5 to-transparent",
-  },
-  {
-    href: "/testimonials",
-    label: "Testimonials",
-    description:
-      "Words from mentors, teammates, and clients — with more coming soon.",
-    icon: Quote,
-    accent: "from-violet-500/20 via-blue-400/5 to-transparent",
   },
   {
     href: "/contact",
@@ -102,7 +67,7 @@ const cards = [
 
 export function HomeExplore() {
   return (
-    <section className="relative overflow-hidden py-24 sm:py-32">
+    <section id="explore" className="relative overflow-hidden py-24 sm:py-32">
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute left-1/2 top-0 size-[36rem] -translate-x-1/2 rounded-full bg-[oklch(0.62_0.2_255/0.06)] blur-[130px]" />
       </div>
