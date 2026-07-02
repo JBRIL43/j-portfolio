@@ -46,7 +46,9 @@ export const metadata: Metadata = {
   authors: [{ name: "Jibril Nuredin" }],
   creator: "Jibril Nuredin",
   icons: {
-    icon: "/logo.svg",
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
   },
   openGraph: {
     title: "Jibril Nuredin — Building Technology, Communities & Digital Experiences",

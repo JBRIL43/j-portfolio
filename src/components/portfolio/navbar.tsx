@@ -115,7 +115,7 @@ export function Navbar() {
           >
             <span className="relative grid size-8 place-items-center rounded-lg glass">
               <span className="text-[13px] font-semibold text-gradient-blue">
-                JN
+                JB
               </span>
               <span className="absolute inset-0 rounded-lg ring-1 ring-[oklch(0.62_0.2_255/0.3)] opacity-0 transition-opacity group-hover:opacity-100" />
             </span>

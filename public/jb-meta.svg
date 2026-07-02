@@ -1,0 +1,27 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0B1020" />
+      <stop offset="1" stop-color="#05070D" />
+    </linearGradient>
+    <linearGradient id="accent" x1="140" y1="100" x2="520" y2="520" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#66B0FF" />
+      <stop offset="1" stop-color="#2E65FF" />
+    </linearGradient>
+    <clipPath id="avatarClip">
+      <rect x="92" y="92" width="446" height="446" rx="48" />
+    </clipPath>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <circle cx="1020" cy="110" r="220" fill="#2E65FF" fill-opacity="0.12" />
+  <circle cx="1080" cy="540" r="180" fill="#2E65FF" fill-opacity="0.08" />
+  <rect x="92" y="92" width="446" height="446" rx="48" fill="#111827" stroke="url(#accent)" stroke-opacity="0.65" stroke-width="8" />
+  <image href="/avatar.png" x="92" y="92" width="446" height="446" clip-path="url(#avatarClip)" preserveAspectRatio="xMidYMid slice" />
+  <rect x="92" y="92" width="446" height="446" rx="48" fill="url(#accent)" fill-opacity="0.12" />
+  <text x="622" y="230" fill="#EAF2FF" font-family="Inter, Arial, sans-serif" font-size="92" font-weight="700" letter-spacing="4">JB</text>
+  <text x="622" y="310" fill="#A7B4CC" font-family="Inter, Arial, sans-serif" font-size="36" font-weight="500">Jibril Nuredin</text>
+  <text x="622" y="380" fill="#D6E4FF" font-family="Inter, Arial, sans-serif" font-size="42" font-weight="600">Building Technology,</text>
+  <text x="622" y="432" fill="#D6E4FF" font-family="Inter, Arial, sans-serif" font-size="42" font-weight="600">Communities &amp; Digital</text>
+  <text x="622" y="484" fill="#D6E4FF" font-family="Inter, Arial, sans-serif" font-size="42" font-weight="600">Experiences</text>
+  <text x="622" y="548" fill="#7A8AA8" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="500">Software Engineer · Web Developer · PR Leader</text>
+</svg>

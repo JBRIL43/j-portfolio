@@ -19,7 +19,7 @@ export function Footer() {
             <div className="flex items-center gap-2.5">
               <span className="grid size-8 place-items-center rounded-lg glass-strong shadow-[0_0_0_1px_oklch(0.62_0.2_255/0.18)]">
                 <span className="text-[13px] font-semibold text-gradient-blue">
-                  JN
+                  JB
                 </span>
               </span>
               <span className="text-sm font-semibold tracking-tight text-foreground">

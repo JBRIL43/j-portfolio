@@ -57,7 +57,7 @@ export function LoadingScreen() {
               <div className="absolute inset-0 rounded-2xl bg-[oklch(0.62_0.2_255/0.35)] blur-xl" />
               <div className="relative grid size-16 place-items-center rounded-2xl glass-strong">
                 <span className="text-xl font-semibold tracking-tight text-gradient-blue">
-                  JN
+                  JB
                 </span>
               </div>
             </motion.div>
