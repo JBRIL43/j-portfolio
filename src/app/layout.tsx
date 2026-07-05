@@ -1,20 +1,25 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as SonnerToaster } from "@/components/ui/sonner";
 import { Navbar } from "@/components/portfolio/navbar";
 import { Footer } from "@/components/portfolio/footer";
 import { ParticleField } from "@/components/portfolio/particle-field";
+import { SmoothScroll } from "@/components/portfolio/smooth-scroll";
+import { GSAPInit } from "@/components/portfolio/gsap-init";
+import { TerminalMode } from "@/components/portfolio/terminal-mode";
+import { CustomCursor } from "@/components/portfolio/custom-cursor";
+import { SoundToggle } from "@/components/portfolio/sound-toggle";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-sans",
   subsets: ["latin"],
   display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
   subsets: ["latin"],
   display: "swap",
 });
@@ -24,7 +29,8 @@ const siteUrl = "https://jibrilnuredin.dev";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Jibril Nuredin — Building Technology, Communities & Digital Experiences",
+    default:
+      "Jibril Nuredin — Building Technology, Communities & Digital Experiences",
     template: "%s · Jibril Nuredin",
   },
   description:
@@ -51,7 +57,8 @@ export const metadata: Metadata = {
     apple: "/logo.png",
   },
   openGraph: {
-    title: "Jibril Nuredin — Building Technology, Communities & Digital Experiences",
+    title:
+      "Jibril Nuredin — Building Technology, Communities & Digital Experiences",
     description:
       "Information Systems student, web developer, designer, and PR leader transforming ideas into impactful digital products and communities.",
     url: siteUrl,
@@ -122,15 +129,21 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground overflow-x-hidden`}
+        className={`${inter.variable} ${jetbrainsMono.variable} antialiased bg-background text-foreground overflow-x-hidden`}
       >
-        {/* Global cursor-reactive particle background (behind all pages) */}
-        <ParticleField />
-        <div className="relative flex min-h-screen flex-col">
-          <Navbar />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </div>
+        <CustomCursor />
+        <SoundToggle />
+        <GSAPInit />
+        <SmoothScroll>
+          {/* Global cursor-reactive particle background (behind all pages) */}
+          <ParticleField />
+          <div className="relative flex min-h-screen flex-col">
+            <Navbar />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </div>
+        </SmoothScroll>
+        <TerminalMode />
         <Toaster />
         <SonnerToaster position="bottom-right" theme="dark" richColors />
       </body>

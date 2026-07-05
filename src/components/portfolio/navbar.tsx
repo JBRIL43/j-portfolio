@@ -1,12 +1,14 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { ChevronDown, Menu, X, Terminal } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { useScrolled } from "./use-scrolled";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 type NavGroup = {
   label: string;
@@ -76,7 +78,33 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
   const [activeGroup, setActiveGroup] = useState<string | null>(null);
   const [mobileGroup, setMobileGroup] = useState<string | null>(null);
+  const [reduce, setReduce] = useState(false);
+  const progressRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReduce(mq.matches);
+    update();
+    mq.addEventListener?.("change", update);
+    return () => mq.removeEventListener?.("change", update);
+  }, []);
+
+  // Scroll progress indicator
+  useEffect(() => {
+    if (reduce || !progressRef.current) return;
+
+    gsap.to(progressRef.current, {
+      scaleX: 1,
+      ease: "none",
+      scrollTrigger: {
+        trigger: "body",
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 0.3,
+      },
+    });
+  }, [reduce]);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -100,12 +128,20 @@ export function Navbar() {
         transition={{ delay: 0.6, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         className="fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-3 sm:pt-4"
       >
+        {/* Scroll Progress Bar */}
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-white/5">
+          <div
+            ref={progressRef}
+            className="origin-left scale-x-0 h-full bg-gradient-to-r from-[oklch(0.62_0.2_255)] via-[oklch(0.78_0.16_220)] to-[oklch(0.72_0.16_200)]"
+          />
+        </div>
+
         <nav
           className={cn(
             "flex w-full max-w-5xl items-center justify-between gap-4 rounded-2xl px-4 py-2.5 transition-all duration-300 sm:px-5",
             scrolled
               ? "glass-strong shadow-[0_8px_40px_-12px_rgba(0,0,0,0.6)]"
-              : "border border-transparent bg-transparent"
+              : "border border-transparent bg-transparent",
           )}
         >
           <Link
@@ -126,7 +162,9 @@ export function Navbar() {
 
           <div className="hidden items-center gap-1 lg:flex">
             {navGroups.map((group) => {
-              const groupActive = group.items.some((item) => isActive(item.href));
+              const groupActive = group.items.some((item) =>
+                isActive(item.href),
+              );
               return (
                 <div
                   key={group.label}
@@ -138,14 +176,14 @@ export function Navbar() {
                     type="button"
                     onClick={() =>
                       setActiveGroup((current) =>
-                        current === group.label ? null : group.label
+                        current === group.label ? null : group.label,
                       )
                     }
                     className={cn(
                       "relative inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm transition-colors",
                       groupActive || activeGroup === group.label
                         ? "text-foreground"
-                        : "text-muted-foreground hover:text-foreground"
+                        : "text-muted-foreground hover:text-foreground",
                     )}
                     aria-expanded={activeGroup === group.label}
                   >
@@ -164,7 +202,7 @@ export function Navbar() {
                     <ChevronDown
                       className={cn(
                         "relative size-4 transition-transform duration-200",
-                        activeGroup === group.label && "rotate-180"
+                        activeGroup === group.label && "rotate-180",
                       )}
                     />
                   </button>
@@ -187,7 +225,7 @@ export function Navbar() {
                               onClick={() => setActiveGroup(null)}
                               className={cn(
                                 "block rounded-xl px-4 py-3 transition-colors hover:bg-white/6",
-                                active && "bg-white/6"
+                                active && "bg-white/6",
                               )}
                             >
                               <div className="flex items-center justify-between gap-3">
@@ -276,7 +314,7 @@ export function Navbar() {
                         type="button"
                         onClick={() =>
                           setMobileGroup((current) =>
-                            current === group.label ? null : group.label
+                            current === group.label ? null : group.label,
                           )
                         }
                         className="flex w-full items-center justify-between rounded-xl px-4 py-3 text-left text-base font-medium text-foreground transition-colors hover:bg-white/5"
@@ -286,7 +324,7 @@ export function Navbar() {
                         <ChevronDown
                           className={cn(
                             "size-4 transition-transform duration-200",
-                            expanded && "rotate-180"
+                            expanded && "rotate-180",
                           )}
                         />
                       </button>
@@ -311,11 +349,13 @@ export function Navbar() {
                                       "block rounded-xl px-3 py-3 transition-colors hover:bg-white/6",
                                       active
                                         ? "bg-white/6 text-foreground"
-                                        : "text-foreground/90"
+                                        : "text-foreground/90",
                                     )}
                                   >
                                     <div className="flex items-center justify-between gap-3">
-                                      <span className="font-medium">{item.label}</span>
+                                      <span className="font-medium">
+                                        {item.label}
+                                      </span>
                                       <span className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
                                         {group.label}
                                       </span>

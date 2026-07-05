@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Journey } from "@/components/portfolio/journey";
+import { JourneyTimeline } from "@/components/portfolio/journey-timeline";
 
 export const metadata: Metadata = {
   title: "My Journey",
@@ -11,6 +12,7 @@ export default function JourneyPage() {
   return (
     <div className="pt-24">
       <Journey />
+      <JourneyTimeline />
     </div>
   );
 }

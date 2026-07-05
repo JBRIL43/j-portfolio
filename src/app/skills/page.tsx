@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Skills } from "@/components/portfolio/skills";
+import { SkillsInteractive } from "@/components/portfolio/skills-interactive";
 
 export const metadata: Metadata = {
   title: "Technical Skills",
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function SkillsPage() {
   return (
     <div className="pt-24">
-      <Skills />
+      <SkillsInteractive />
     </div>
   );
 }
