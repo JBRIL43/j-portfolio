@@ -14,7 +14,10 @@ import {
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 import { cn } from "@/lib/utils";
+import { useReducedMotion } from "./use-reduced-motion";
 
 const headline = [
   "Building",
@@ -29,19 +32,11 @@ export function Hero() {
   const cardRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const scrollProgressRef = useRef<HTMLDivElement>(null);
-  const [reduce, setReduce] = useState(false);
+  const reduce = useReducedMotion();
 
   // Magnetic button refs
   const cta1Ref = useRef<HTMLAnchorElement>(null);
   const cta2Ref = useRef<HTMLAnchorElement>(null);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => setReduce(mq.matches);
-    update();
-    mq.addEventListener?.("change", update);
-    return () => mq.removeEventListener?.("change", update);
-  }, []);
 
   // Magnetic hover effect for CTA buttons
   useEffect(() => {

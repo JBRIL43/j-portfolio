@@ -2,12 +2,6 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  useMotionValue,
-  useReducedMotion,
-  useSpring,
-  useTransform,
-} from "framer-motion";
-import {
   ArrowRight,
   Award,
   Compass,
@@ -17,9 +11,10 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { SectionHeading } from "./section-heading";
+import { useTilt, TiltGlare } from "./tilt";
 
 type StoryTab = {
   id: string;
@@ -143,68 +138,19 @@ function StoryTabButton({
   active: boolean;
   onSelect: () => void;
 }) {
-  const reduce = useReducedMotion();
-  const cardRef = useRef<HTMLButtonElement>(null);
-
-  const mvX = useMotionValue(0);
-  const mvY = useMotionValue(0);
-
-  const rotateY = useSpring(useTransform(mvX, [-1, 1], [10, -10]), {
-    stiffness: 220,
-    damping: 20,
-    mass: 0.28,
-  });
-  const rotateX = useSpring(useTransform(mvY, [-1, 1], [-10, 10]), {
-    stiffness: 220,
-    damping: 20,
-    mass: 0.28,
-  });
-  const shiftX = useSpring(useTransform(mvX, [-1, 1], [-6, 6]), {
-    stiffness: 200,
-    damping: 22,
-    mass: 0.26,
-  });
-  const shiftY = useSpring(useTransform(mvY, [-1, 1], [-6, 6]), {
-    stiffness: 200,
-    damping: 22,
-    mass: 0.26,
-  });
-
-  const onMove = (event: React.MouseEvent<HTMLButtonElement>) => {
-    if (reduce) return;
-    const el = cardRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const px = (event.clientX - rect.left) / rect.width;
-    const py = (event.clientY - rect.top) / rect.height;
-    mvX.set(px * 2 - 1);
-    mvY.set(py * 2 - 1);
-    el.style.setProperty("--mx", `${event.clientX - rect.left}px`);
-    el.style.setProperty("--my", `${event.clientY - rect.top}px`);
-  };
-
-  const onLeave = () => {
-    mvX.set(0);
-    mvY.set(0);
-  };
+  const { ref, onMouseMove, onMouseLeave, style } = useTilt<HTMLButtonElement>(10);
 
   return (
     <motion.button
-      ref={cardRef}
+      ref={ref}
       type="button"
       onClick={onSelect}
-      onMouseMove={onMove}
-      onMouseLeave={onLeave}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
       whileTap={{ scale: 0.98 }}
-      style={{
-        rotateX: reduce ? 0 : rotateX,
-        rotateY: reduce ? 0 : rotateY,
-        x: reduce ? 0 : shiftX,
-        y: reduce ? 0 : shiftY,
-        transformPerspective: 1000,
-      }}
+      style={style}
       className={cn(
-        "group relative flex h-full min-h-33 flex-col justify-between overflow-hidden rounded-2xl border px-5 py-4 text-left transition-all duration-300",
+        "group/tilt relative flex h-full min-h-33 flex-col justify-between overflow-hidden rounded-2xl border px-5 py-4 text-left transition-all duration-300",
         active
           ? "border-white/20 bg-white/9 shadow-[0_16px_50px_-20px_rgba(0,0,0,0.7)]"
           : "border-white/8 bg-white/4 hover:border-white/14 hover:bg-white/7"
@@ -214,13 +160,7 @@ function StoryTabButton({
       <div
         className={`pointer-events-none absolute inset-0 bg-linear-to-br ${tab.accent} opacity-0 transition-opacity duration-300 group-hover:opacity-100`}
       />
-      <div
-        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-        style={{
-          background:
-            "radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), oklch(0.62 0.2 255 / 0.16), transparent 60%)",
-        }}
-      />
+      <TiltGlare />
       <div className="relative flex items-center justify-between gap-3">
         <span className="text-[10px] font-medium uppercase tracking-[0.24em] text-muted-foreground">
           {tab.eyebrow}

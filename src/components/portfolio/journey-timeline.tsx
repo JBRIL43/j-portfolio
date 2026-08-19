@@ -1,77 +1,40 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, type ComponentType, type CSSProperties } from "react";
 import { motion } from "framer-motion";
+import { useReducedMotion } from "./use-reduced-motion";
+import { AmbientGlow } from "./ambient-glow";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { GraduationCap, Award, Briefcase, Star, Heart, Lightbulb } from "lucide-react";
 
-const timelineEvents = [
-  {
-    year: "2021",
-    title: "The Beginning",
-    description: "Discovered programming and realized technology could be a tool for impact.",
-    icon: Lightbulb,
-    category: "start",
-  },
-  {
-    year: "2022",
-    title: "First Web Projects",
-    description: "Built my first websites, learning HTML, CSS, and JavaScript basics.",
-    icon: Briefcase,
-    category: "growth",
-  },
-  {
-    year: "2023",
-    title: "Peak Craft Journey",
-    description: "Joined Peak Craft as a member, then designer, now Head of Public Relations.",
-    icon: Heart,
-    category: "community",
-  },
-  {
-    year: "2024",
-    title: "React & Next.js Mastery",
-    description: "Deep dive into modern React, TypeScript, and the full-stack ecosystem.",
-    icon: Star,
-    category: "skills",
-  },
-  {
-    year: "2025",
-    title: "Information Systems Graduate",
-    description: "Completing degree at Hawassa University with a focus on tech innovation.",
-    icon: GraduationCap,
-    category: "education",
-  },
-  {
-    year: "Future",
-    title: "Building What's Next",
-    description: "Creating impactful digital products and growing African tech communities.",
-    icon: Award,
-    category: "future",
-  },
-];
+gsap.registerPlugin(ScrollTrigger);
+import { GraduationCap, Award, Briefcase, Star, Heart, Lightbulb, Rocket, Code, Users } from "lucide-react";
+import { journey } from "@/lib/data/journey";
 
-const categoryColors: Record<string, string> = {
-  start: "oklch(0.62_0.2_255)",
-  growth: "oklch(0.7_0.17_162)",
-  community: "oklch(0.77_0.19_70)",
-  skills: "oklch(0.63_0.26_304)",
-  education: "oklch(0.65_0.25_16)",
-  future: "oklch(0.72_0.16_200)",
+const tagIcons: Record<string, ComponentType<{ className?: string; style?: CSSProperties }>> = {
+  Origin: Lightbulb,
+  Foundations: Code,
+  Community: Users,
+  Leadership: Heart,
+  Craft: Briefcase,
+  Capstone: Rocket,
+  Graduation: GraduationCap,
+};
+
+const tagColors: Record<string, string> = {
+  Origin: "oklch(0.62_0.2_255)",
+  Foundations: "oklch(0.7_0.17_162)",
+  Community: "oklch(0.77_0.19_70)",
+  Leadership: "oklch(0.63_0.26_304)",
+  Craft: "oklch(0.65_0.25_16)",
+  Capstone: "oklch(0.72_0.16_200)",
+  Graduation: "oklch(0.62_0.2_255)",
 };
 
 export function JourneyTimeline() {
   const timelineRef = useRef<HTMLDivElement>(null);
   const lineRef = useRef<HTMLDivElement>(null);
-  const [reduce, setReduce] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => setReduce(mq.matches);
-    update();
-    mq.addEventListener?.("change", update);
-    return () => mq.removeEventListener?.("change", update);
-  }, []);
+  const reduce = useReducedMotion();
 
   useEffect(() => {
     if (reduce || !timelineRef.current || !lineRef.current) return;
@@ -122,10 +85,7 @@ export function JourneyTimeline() {
   return (
     <section className="relative overflow-hidden py-24 sm:py-32">
       {/* Background effects */}
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-1/2 top-0 size-[40rem] -translate-x-1/2 rounded-full bg-[oklch(0.62_0.2_255/0.05)] blur-[150px]" />
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-      </div>
+      <AmbientGlow color="bg-[oklch(0.62_0.2_255/0.05)]" size="size-[40rem]" top="top-0" blur="blur-[150px]" />
 
       <div className="mx-auto max-w-4xl px-5">
         <motion.div
@@ -160,32 +120,45 @@ export function JourneyTimeline() {
 
           {/* Events */}
           <div className="space-y-16">
-            {timelineEvents.map((event, index) => {
-              const Icon = event.icon;
+            {journey.map((event, index) => {
+              const Icon = tagIcons[event.tag] || Star;
               const isLeft = index % 2 === 0;
-              const color = categoryColors[event.category];
+              const color = tagColors[event.tag] || "oklch(0.62_0.2_255)";
 
               return (
                 <div
-                  key={event.year}
+                  key={`${event.year}-${event.tag}`}
                   data-timeline-item
                   className={`relative flex items-center ${isLeft ? "justify-start" : "justify-end"}`}
                 >
                   {/* Spacer for the other side */}
                   <div className={`w-1/2 ${isLeft ? "pr-12 text-right" : "pl-12 text-left"} hidden sm:block`} />
 
-                  {/* Center dot */}
+                  {/* Center avatar milestone */}
                   <div className="absolute left-1/2 -translate-x-1/2 z-10">
                     <motion.div
-                      whileHover={{ scale: 1.3 }}
-                      className="relative size-5 rounded-full border-2 border-background"
-                      style={{ backgroundColor: color }}
+                      whileHover={{ scale: 1.2 }}
+                      className="relative size-12 rounded-full border-2 border-background overflow-hidden shadow-lg"
+                      style={{ boxShadow: `0 0 20px ${color}40` }}
                     >
+                      <img
+                        src="/avatar.png"
+                        alt={event.title}
+                        className="size-full object-cover"
+                      />
+                      {/* Category color ring overlay */}
                       <div
-                        className="absolute inset-0 rounded-full animate-ping opacity-50"
-                        style={{ backgroundColor: color }}
+                        className="absolute inset-0 rounded-full border-2"
+                        style={{ borderColor: color, boxShadow: `inset 0 0 12px ${color}30` }}
                       />
                     </motion.div>
+                    {/* Pulse ring */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div
+                        className="absolute size-12 rounded-full animate-ping opacity-30"
+                        style={{ backgroundColor: color }}
+                      />
+                    </div>
                   </div>
 
                   {/* Content card */}
@@ -209,7 +182,7 @@ export function JourneyTimeline() {
                               color: color,
                             }}
                           >
-                            {event.year}
+                            {event.tag}
                           </span>
                           <Icon
                             className="size-4 transition-transform group-hover:rotate-12"

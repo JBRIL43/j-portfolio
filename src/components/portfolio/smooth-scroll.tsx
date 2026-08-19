@@ -1,18 +1,10 @@
 "use client";
 
 import { ReactLenis } from "lenis/react";
-import { useState } from "react";
+import { useReducedMotion } from "./use-reduced-motion";
 
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
-  const [reduce, setReduce] = useState(false);
-
-  // Check reduced motion preference
-  if (typeof window !== "undefined") {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (mq.matches) {
-      setReduce(true);
-    }
-  }
+  const reduce = useReducedMotion();
 
   if (reduce) {
     return <>{children}</>;

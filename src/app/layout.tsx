@@ -7,7 +7,6 @@ import { Navbar } from "@/components/portfolio/navbar";
 import { Footer } from "@/components/portfolio/footer";
 import { ParticleField } from "@/components/portfolio/particle-field";
 import { SmoothScroll } from "@/components/portfolio/smooth-scroll";
-import { GSAPInit } from "@/components/portfolio/gsap-init";
 import { TerminalMode } from "@/components/portfolio/terminal-mode";
 import { CustomCursor } from "@/components/portfolio/custom-cursor";
 import { SoundToggle } from "@/components/portfolio/sound-toggle";
@@ -133,7 +132,6 @@ export default function RootLayout({
       >
         <CustomCursor />
         <SoundToggle />
-        <GSAPInit />
         <SmoothScroll>
           {/* Global cursor-reactive particle background (behind all pages) */}
           <ParticleField />

@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import { useReducedMotion } from "./use-reduced-motion";
 
 type Particle = {
   x: number;
@@ -35,15 +36,7 @@ type ShootingStar = {
  */
 export function ParticleField() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [reduce, setReduce] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => setReduce(mq.matches);
-    update();
-    mq.addEventListener?.("change", update);
-    return () => mq.removeEventListener?.("change", update);
-  }, []);
+  const reduce = useReducedMotion();
 
   useEffect(() => {
     const canvas = canvasRef.current;

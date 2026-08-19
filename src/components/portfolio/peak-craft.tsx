@@ -6,13 +6,12 @@ import { leadershipPillars, leadershipStats, socials } from "@/lib/portfolio-dat
 import { SectionHeading } from "./section-heading";
 import { staggerContainer, staggerItem } from "./reveal";
 import { TiltCard } from "./tilt";
+import { AmbientGlow } from "./ambient-glow";
 
 export function PeakCraft() {
   return (
     <section id="peak-craft" className="relative overflow-hidden py-24 sm:py-32">
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute right-0 top-1/3 size-[30rem] rounded-full bg-[oklch(0.6_0.2_290/0.1)] blur-[120px]" />
-      </div>
+      <AmbientGlow color="bg-[oklch(0.6_0.2_290/0.1)]" size="size-[30rem]" top="top-1/3" side="right" />
 
       <div className="mx-auto max-w-6xl px-5">
         <SectionHeading

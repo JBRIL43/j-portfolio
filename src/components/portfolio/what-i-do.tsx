@@ -1,12 +1,13 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { ArrowUpRight, Check, Eye, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { services, type Service } from "@/lib/portfolio-data";
 import { SectionHeading } from "./section-heading";
 import { staggerContainer, staggerItem } from "./reveal";
 import { TiltCard } from "./tilt";
+import { Modal } from "./modal";
 import { cn } from "@/lib/utils";
 
 function ServiceCard({
@@ -70,40 +71,16 @@ function ServiceDialog({
   service: Service | null;
   onClose: () => void;
 }) {
-  useEffect(() => {
-    if (service) {
-      document.body.style.overflow = "hidden";
-      return () => {
-        document.body.style.overflow = "";
-      };
-    }
-  }, [service]);
-
   const Icon = service?.icon;
 
   return (
-    <AnimatePresence>
+    <Modal open={!!service && !!Icon} onClose={onClose} closeButton={false}>
       {service && Icon && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[80] flex items-center justify-center p-4 sm:p-6"
-          onClick={onClose}
-        >
-          <div className="absolute inset-0 bg-black/80 backdrop-blur-md" />
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 16 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 16 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            onClick={(e) => e.stopPropagation()}
-            className="relative z-10 flex max-h-[88vh] w-full max-w-xl flex-col overflow-hidden rounded-2xl border border-white/10 bg-[oklch(0.1_0.008_264)] shadow-[0_30px_80px_-30px_rgba(0,0,0,0.9)]"
-          >
+        <>
             {/* header */}
             <div className="relative overflow-hidden border-b border-white/8 p-6">
               <div className="pointer-events-none absolute -right-12 -top-12 size-40 rounded-full bg-[oklch(0.62_0.2_255/0.16)] blur-3xl" />
-              <div className="relative flex items-start justify-between gap-4">
+              <div className="relative flex items-start gap-4 pr-10">
                 <div className="flex items-center gap-3">
                   <div className="inline-grid size-12 place-items-center rounded-xl bg-[oklch(0.62_0.2_255/0.16)] ring-1 ring-[oklch(0.62_0.2_255/0.3)]">
                     <Icon className="size-6 text-[oklch(0.78_0.14_255)]" />
@@ -117,13 +94,6 @@ function ServiceDialog({
                     </p>
                   </div>
                 </div>
-                <button
-                  onClick={onClose}
-                  aria-label="Close"
-                  className="grid size-9 shrink-0 place-items-center rounded-lg glass transition-colors hover:bg-white/10"
-                >
-                  <X className="size-5" />
-                </button>
               </div>
             </div>
 
@@ -185,10 +155,9 @@ function ServiceDialog({
                 </div>
               </div>
             </div>
-          </motion.div>
-        </motion.div>
+        </>
       )}
-    </AnimatePresence>
+    </Modal>
   );
 }
 

@@ -6,14 +6,16 @@ import {
   ChevronRight,
   ExternalLink,
   Eye,
-  X,
 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { awards, type AwardItem } from "@/lib/portfolio-data";
 import { SectionHeading } from "./section-heading";
 import { staggerContainer, staggerItem } from "./reveal";
 import { TiltCard } from "./tilt";
 import { SmartImage } from "./smart-image";
+import { FilterPills } from "./filter-pills";
+import { AmbientGlow } from "./ambient-glow";
+import { Modal } from "./modal";
 import { cn } from "@/lib/utils";
 
 type Filter = "All" | AwardItem["type"];
@@ -145,36 +147,17 @@ function CertificateDialog({
   item: AwardItem | null;
   onClose: () => void;
 }) {
-  useEffect(() => {
-    if (item) {
-      document.body.style.overflow = "hidden";
-      return () => {
-        document.body.style.overflow = "";
-      };
-    }
-  }, [item]);
-
   return (
-    <AnimatePresence>
+    <Modal
+      open={!!item}
+      onClose={onClose}
+      maxWidth="max-w-3xl"
+      maxHeight="max-h-[90vh]"
+    >
       {item && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[80] flex items-center justify-center p-4 sm:p-6"
-          onClick={onClose}
-        >
-          <div className="absolute inset-0 bg-black/80 backdrop-blur-md" />
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 16 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 16 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            onClick={(e) => e.stopPropagation()}
-            className="relative z-10 flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-2xl border border-white/10 bg-[oklch(0.1_0.008_264)] shadow-[0_30px_80px_-30px_rgba(0,0,0,0.9)]"
-          >
+        <>
             {/* header */}
-            <div className="flex items-start justify-between gap-4 border-b border-white/8 p-5">
+            <div className="flex items-start gap-4 border-b border-white/8 p-5 pr-14">
               <div>
                 <div className="mb-1.5 flex flex-wrap items-center gap-2">
                   <span
@@ -198,13 +181,6 @@ function CertificateDialog({
                 </h3>
                 <p className="text-xs text-muted-foreground">{item.issuer}</p>
               </div>
-              <button
-                onClick={onClose}
-                aria-label="Close"
-                className="grid size-9 shrink-0 place-items-center rounded-lg glass transition-colors hover:bg-white/10"
-              >
-                <X className="size-5" />
-              </button>
             </div>
 
             {/* certificate image */}
@@ -237,10 +213,9 @@ function CertificateDialog({
                 </a>
               )}
             </div>
-          </motion.div>
-        </motion.div>
+        </>
       )}
-    </AnimatePresence>
+    </Modal>
   );
 }
 
@@ -267,9 +242,7 @@ export function Awards() {
 
   return (
     <section id="awards" className="relative overflow-hidden py-24 sm:py-32">
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-1/2 top-1/3 size-[34rem] -translate-x-1/2 rounded-full bg-[oklch(0.62_0.2_255/0.07)] blur-[120px]" />
-      </div>
+      <AmbientGlow color="bg-[oklch(0.62_0.2_255/0.07)]" size="size-[34rem]" top="top-1/3" />
 
       <div className="mx-auto max-w-6xl px-5">
         <SectionHeading
@@ -283,30 +256,13 @@ export function Awards() {
           description="A growing collection of certifications, awards, and formal recognition — earned through study, community work, and real projects."
         />
 
-        {/* filters */}
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-2">
-          {filters.map((f) => (
-            <button
-              key={f}
-              onClick={() => onFilterChange(f)}
-              className={cn(
-                "relative rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
-                filter === f
-                  ? "text-white"
-                  : "text-muted-foreground hover:text-foreground"
-              )}
-            >
-              {filter === f && (
-                <motion.span
-                  layoutId="awards-filter"
-                  className="absolute inset-0 rounded-full bg-[oklch(0.62_0.2_255)] shadow-[0_0_20px_-6px_oklch(0.62_0.2_255)]"
-                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                />
-              )}
-              <span className="relative">{filterLabels[f]}</span>
-            </button>
-          ))}
-        </div>
+        <FilterPills
+          options={filters}
+          value={filter}
+          onChange={onFilterChange}
+          layoutId="awards-filter"
+          labels={filterLabels}
+        />
 
         {/* cards grid */}
         <motion.div

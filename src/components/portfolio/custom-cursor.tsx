@@ -3,13 +3,14 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useSpring, useMotionValue, useTransform } from "framer-motion";
 import { usePathname } from "next/navigation";
+import { useReducedMotion } from "./use-reduced-motion";
 
 export function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const cursorGlowRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
-  const [reduce, setReduce] = useState(false);
+  const reduce = useReducedMotion();
   const pathname = usePathname();
 
   // Mouse position
@@ -23,14 +24,6 @@ export function CustomCursor() {
   // Scale based on hover state
   const scale = useTransform(useMotionValue(0), [0, 1], [1, 2.5]);
   const glowScale = useTransform(useMotionValue(0), [0, 1], [1, 4]);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => setReduce(mq.matches);
-    update();
-    mq.addEventListener?.("change", update);
-    return () => mq.removeEventListener?.("change", update);
-  }, []);
 
   useEffect(() => {
     if (reduce) return;

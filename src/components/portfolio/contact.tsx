@@ -11,6 +11,7 @@ import { socials } from "@/lib/portfolio-data";
 import { SectionHeading } from "./section-heading";
 import { Reveal } from "./reveal";
 import { useTilt, TiltGlare } from "./tilt";
+import { AmbientGlow } from "./ambient-glow";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -119,9 +120,7 @@ export function Contact() {
 
   return (
     <section id="contact" className="relative overflow-hidden py-24 sm:py-32">
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-1/2 top-0 size-[36rem] -translate-x-1/2 rounded-full bg-[oklch(0.62_0.2_255/0.1)] blur-[130px]" />
-      </div>
+      <AmbientGlow color="bg-[oklch(0.62_0.2_255/0.1)]" top="top-0" blur="blur-[130px]" />
 
       <div className="mx-auto max-w-6xl px-5">
         <SectionHeading

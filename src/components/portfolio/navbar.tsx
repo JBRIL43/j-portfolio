@@ -7,8 +7,11 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { useScrolled } from "./use-scrolled";
+import { useReducedMotion } from "./use-reduced-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 type NavGroup = {
   label: string;
@@ -78,17 +81,9 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
   const [activeGroup, setActiveGroup] = useState<string | null>(null);
   const [mobileGroup, setMobileGroup] = useState<string | null>(null);
-  const [reduce, setReduce] = useState(false);
+  const reduce = useReducedMotion();
   const progressRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
-
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => setReduce(mq.matches);
-    update();
-    mq.addEventListener?.("change", update);
-    return () => mq.removeEventListener?.("change", update);
-  }, []);
 
   // Scroll progress indicator
   useEffect(() => {

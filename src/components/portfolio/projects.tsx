@@ -20,6 +20,8 @@ import {
   type ProjectCategory,
 } from "@/lib/portfolio-data";
 import { SectionHeading } from "./section-heading";
+import { FilterPills } from "./filter-pills";
+import { AmbientGlow } from "./ambient-glow";
 import {
   Dialog,
   DialogContent,
@@ -238,9 +240,7 @@ export function Projects() {
 
   return (
     <section id="projects" className="relative overflow-hidden py-24 sm:py-32">
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-1/2 top-1/4 size-[36rem] -translate-x-1/2 rounded-full bg-[oklch(0.62_0.2_255/0.08)] blur-[120px]" />
-      </div>
+      <AmbientGlow top="top-1/4" />
 
       <div className="mx-auto max-w-6xl px-5">
         <SectionHeading
@@ -254,30 +254,12 @@ export function Projects() {
           description="Each project is a case study in solving a real problem — from community platforms to AI-assisted tools."
         />
 
-        {/* filters */}
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-2">
-          {projectFilters.map((f) => (
-            <button
-              key={f}
-              onClick={() => setFilter(f)}
-              className={cn(
-                "relative rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
-                filter === f
-                  ? "text-white"
-                  : "text-muted-foreground hover:text-foreground"
-              )}
-            >
-              {filter === f && (
-                <motion.span
-                  layoutId="project-filter"
-                  className="absolute inset-0 rounded-full bg-[oklch(0.62_0.2_255)] shadow-[0_0_20px_-6px_oklch(0.62_0.2_255)]"
-                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                />
-              )}
-              <span className="relative">{f}</span>
-            </button>
-          ))}
-        </div>
+        <FilterPills
+          options={projectFilters}
+          value={filter}
+          onChange={setFilter}
+          layoutId="project-filter"
+        />
 
         <motion.div
           layout

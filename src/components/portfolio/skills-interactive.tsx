@@ -1,11 +1,15 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { skillCategories } from "@/lib/portfolio-data";
 import { SectionHeading } from "./section-heading";
+import { useReducedMotion } from "./use-reduced-motion";
+import { AmbientGlow } from "./ambient-glow";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 import {
   Code2,
   Database,
@@ -50,15 +54,7 @@ const toolCards = [
 export function SkillsInteractive() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [hoveredTool, setHoveredTool] = useState<string | null>(null);
-  const [reduce, setReduce] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => setReduce(mq.matches);
-    update();
-    mq.addEventListener?.("change", update);
-    return () => mq.removeEventListener?.("change", update);
-  }, []);
+  const reduce = useReducedMotion();
 
   // Animate cards on scroll
   useEffect(() => {
@@ -87,10 +83,8 @@ export function SkillsInteractive() {
   return (
     <section id="skills" className="relative overflow-hidden py-24 sm:py-32">
       {/* Ambient effects */}
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute right-[-20%] top-[20%] size-96 rounded-full bg-[oklch(0.62_0.2_255/0.08)] blur-[120px]" />
-        <div className="absolute left-[-10%] bottom-[10%] size-80 rounded-full bg-[oklch(0.78_0.16_220/0.06)] blur-[100px]" />
-      </div>
+      <AmbientGlow size="size-96" top="top-[20%]" side="right" className="left-auto right-[-20%]" />
+      <AmbientGlow color="bg-[oklch(0.78_0.16_220/0.06)]" size="size-80" top="bottom-[10%]" side="left" blur="blur-[100px]" className="left-[-10%] bottom-[10%]" />
 
       <div className="mx-auto max-w-6xl px-5">
         <SectionHeading

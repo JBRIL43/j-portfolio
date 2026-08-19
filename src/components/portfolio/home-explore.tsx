@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 import {
   ArrowUpRight,
   Award,
@@ -14,8 +14,12 @@ import {
 import Link from "next/link";
 import { staggerContainer, staggerItem } from "./reveal";
 import { TiltCard } from "./tilt";
+import { useReducedMotion } from "./use-reduced-motion";
+import { AmbientGlow } from "./ambient-glow";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const cards = [
   {
@@ -75,15 +79,7 @@ const cards = [
 
 export function HomeExplore() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [reduce, setReduce] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => setReduce(mq.matches);
-    update();
-    mq.addEventListener?.("change", update);
-    return () => mq.removeEventListener?.("change", update);
-  }, []);
+  const reduce = useReducedMotion();
 
   // Animate cards on scroll
   useEffect(() => {
@@ -112,9 +108,7 @@ export function HomeExplore() {
   }, [reduce]);
   return (
     <section id="explore" className="relative overflow-hidden py-24 sm:py-32">
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-1/2 top-0 size-[36rem] -translate-x-1/2 rounded-full bg-[oklch(0.62_0.2_255/0.06)] blur-[130px]" />
-      </div>
+      <AmbientGlow color="bg-[oklch(0.62_0.2_255/0.06)]" top="top-0" blur="blur-[130px]" />
 
       <div className="mx-auto max-w-6xl px-5">
         <motion.div
