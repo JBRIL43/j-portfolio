@@ -422,7 +422,7 @@ function ContactRoom() {
           Get In Touch
         </Text>
         <Text position={[0, -0.2, 0.2]} fontSize={0.12} color="#888888">
-          jibrilnuredin@gmail.com
+          jibirnur32@gmail.com
         </Text>
       </Float>
 

@@ -38,13 +38,13 @@ const socialLinks = [
   },
   {
     label: "GitHub",
-    handle: "@jibrilnuredin",
+    handle: "@JBRIL43",
     href: socials.github,
     icon: Github,
   },
   {
     label: "Email",
-    handle: "jibril.nuredin@example.com",
+    handle: "jibrilnur32@gmail.com",
     href: socials.email,
     icon: Mail,
   },

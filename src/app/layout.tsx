@@ -10,6 +10,7 @@ import { SmoothScroll } from "@/components/portfolio/smooth-scroll";
 import { TerminalMode } from "@/components/portfolio/terminal-mode";
 import { CustomCursor } from "@/components/portfolio/custom-cursor";
 import { SoundToggle } from "@/components/portfolio/sound-toggle";
+import { ScrollProgressIndicator } from "@/components/portfolio/scroll-progress-indicator";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -137,6 +138,7 @@ export default function RootLayout({
           <ParticleField />
           <div className="relative flex min-h-screen flex-col">
             <Navbar />
+            <ScrollProgressIndicator />
             <main className="flex-1">{children}</main>
             <Footer />
           </div>

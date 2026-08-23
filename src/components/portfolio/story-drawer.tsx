@@ -11,10 +11,11 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { SectionHeading } from "./section-heading";
 import { useTilt, TiltGlare } from "./tilt";
+import { useReducedMotion } from "./use-reduced-motion";
 
 type StoryTab = {
   id: string;
@@ -191,6 +192,9 @@ function StoryTabButton({
 export function StoryDrawer() {
   const [activeId, setActiveId] = useState(storyTabs[0]?.id ?? "journey");
   const [direction, setDirection] = useState(0);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
+  const reduce = useReducedMotion();
 
   const activeIndex = storyTabs.findIndex((tab) => tab.id === activeId);
   const activeTab = storyTabs[activeIndex] ?? storyTabs[0];
@@ -202,10 +206,28 @@ export function StoryDrawer() {
     setActiveId(nextId);
   };
 
+  // Parallax: background glow drifts opposite to scroll
+  useEffect(() => {
+    if (reduce || !glowRef.current || !sectionRef.current) return;
+    const section = sectionRef.current;
+    const glow = glowRef.current;
+
+    const onScroll = () => {
+      const rect = section.getBoundingClientRect();
+      const viewH = window.innerHeight;
+      const center = rect.top + rect.height / 2 - viewH / 2;
+      glow.style.transform = `translate3d(0, ${center * -0.06}px, 0)`;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [reduce]);
+
   return (
-    <section className="relative overflow-hidden py-20 sm:py-28">
-      <div className="pointer-events-none absolute inset-0 -z-10">
+    <section ref={sectionRef} id="story" className="relative overflow-hidden py-20 sm:py-28">
+      <div ref={glowRef} className="pointer-events-none absolute inset-0 -z-10 will-change-transform">
         <div className="absolute left-1/2 top-0 size-128 -translate-x-1/2 rounded-full bg-[oklch(0.62_0.2_255/0.06)] blur-[110px]" />
+        <div className="absolute right-[-5%] top-[30%] size-64 rounded-full bg-[oklch(0.72_0.16_200/0.05)] blur-[90px]" />
       </div>
 
       <div className="mx-auto max-w-6xl px-5">

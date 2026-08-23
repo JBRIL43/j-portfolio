@@ -34,6 +34,8 @@ const tagColors: Record<string, string> = {
 export function JourneyTimeline() {
   const timelineRef = useRef<HTMLDivElement>(null);
   const lineRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
 
   useEffect(() => {
@@ -82,9 +84,30 @@ export function JourneyTimeline() {
     });
   }, [reduce]);
 
+  // Parallax: background glow drifts opposite to scroll for depth
+  useEffect(() => {
+    if (reduce || !glowRef.current || !sectionRef.current) return;
+    const section = sectionRef.current;
+    const glow = glowRef.current;
+
+    const onScroll = () => {
+      const rect = section.getBoundingClientRect();
+      const viewH = window.innerHeight;
+      const center = rect.top + rect.height / 2 - viewH / 2;
+      glow.style.transform = `translate3d(0, ${center * -0.05}px, 0)`;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [reduce]);
+
   return (
-    <section className="relative overflow-hidden py-24 sm:py-32">
-      {/* Background effects */}
+    <section ref={sectionRef} id="timeline" className="relative overflow-hidden py-24 sm:py-32">
+      {/* Parallax background effects */}
+      <div ref={glowRef} className="pointer-events-none absolute inset-0 -z-10 will-change-transform">
+        <div className="absolute left-1/2 top-0 size-[40rem] -translate-x-1/2 rounded-full bg-[oklch(0.62_0.2_255/0.05)] blur-[150px]" />
+        <div className="absolute left-[-10%] top-[40%] size-64 rounded-full bg-[oklch(0.72_0.16_200/0.04)] blur-[100px]" />
+      </div>
       <AmbientGlow color="bg-[oklch(0.62_0.2_255/0.05)]" size="size-[40rem]" top="top-0" blur="blur-[150px]" />
 
       <div className="mx-auto max-w-4xl px-5">

@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ArrowUpRight, Check, Eye, X } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { services, type Service } from "@/lib/portfolio-data";
 import { SectionHeading } from "./section-heading";
 import { staggerContainer, staggerItem } from "./reveal";
@@ -163,9 +163,34 @@ function ServiceDialog({
 
 export function WhatIDo() {
   const [selected, setSelected] = useState<Service | null>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
+
+  // Parallax: background glow layers at different speeds
+  useEffect(() => {
+    if (!glowRef.current || !sectionRef.current) return;
+    const section = sectionRef.current;
+    const glow = glowRef.current;
+
+    const onScroll = () => {
+      const rect = section.getBoundingClientRect();
+      const viewH = window.innerHeight;
+      const center = rect.top + rect.height / 2 - viewH / 2;
+      glow.style.transform = `translate3d(${center * -0.02}px, ${center * -0.05}px, 0)`;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <section id="work" className="relative py-24 sm:py-32">
+    <section ref={sectionRef} id="work" className="relative py-24 sm:py-32">
+      {/* Parallax background glows */}
+      <div ref={glowRef} className="pointer-events-none absolute inset-0 -z-10 will-change-transform">
+        <div className="absolute left-[-10%] top-[15%] size-80 rounded-full bg-[oklch(0.62_0.2_255/0.06)] blur-[120px]" />
+        <div className="absolute right-[-8%] bottom-[10%] size-64 rounded-full bg-[oklch(0.72_0.16_200/0.05)] blur-[100px]" />
+      </div>
+
       <div className="mx-auto max-w-6xl px-5">
         <SectionHeading
           eyebrow="What I Do"

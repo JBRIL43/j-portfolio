@@ -2,9 +2,14 @@
 
 import { ArrowUp, Github, Linkedin, Mail } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { navItems, socials } from "@/lib/portfolio-data";
 
 export function Footer() {
+  const pathname = usePathname();
+
+  if (pathname === "/desktop") return null;
+
   const toTop = () =>
     window.scrollTo({ top: 0, behavior: "smooth" });
 

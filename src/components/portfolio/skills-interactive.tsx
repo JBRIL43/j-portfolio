@@ -53,6 +53,8 @@ const toolCards = [
 
 export function SkillsInteractive() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
   const [hoveredTool, setHoveredTool] = useState<string | null>(null);
   const reduce = useReducedMotion();
 
@@ -80,9 +82,30 @@ export function SkillsInteractive() {
     );
   }, [reduce]);
 
+  // Parallax: dual background glows drift at different speeds
+  useEffect(() => {
+    if (reduce || !glowRef.current || !sectionRef.current) return;
+    const section = sectionRef.current;
+    const glow = glowRef.current;
+
+    const onScroll = () => {
+      const rect = section.getBoundingClientRect();
+      const viewH = window.innerHeight;
+      const center = rect.top + rect.height / 2 - viewH / 2;
+      glow.style.transform = `translate3d(0, ${center * -0.04}px, 0)`;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [reduce]);
+
   return (
-    <section id="skills" className="relative overflow-hidden py-24 sm:py-32">
-      {/* Ambient effects */}
+    <section ref={sectionRef} id="skills" className="relative overflow-hidden py-24 sm:py-32">
+      {/* Parallax ambient effects */}
+      <div ref={glowRef} className="pointer-events-none absolute inset-0 -z-10 will-change-transform">
+        <div className="absolute right-[-20%] top-[20%] size-96 rounded-full bg-[oklch(0.62_0.2_255/0.05)] blur-[120px]" />
+        <div className="absolute left-[-10%] bottom-[10%] size-80 rounded-full bg-[oklch(0.78_0.16_220/0.06)] blur-[100px]" />
+      </div>
       <AmbientGlow size="size-96" top="top-[20%]" side="right" className="left-auto right-[-20%]" />
       <AmbientGlow color="bg-[oklch(0.78_0.16_220/0.06)]" size="size-80" top="bottom-[10%]" side="left" blur="blur-[100px]" className="left-[-10%] bottom-[10%]" />
 

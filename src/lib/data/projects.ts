@@ -82,7 +82,7 @@ export const projects: Project[] = [
     accent: "from-emerald-400/25 via-blue-400/10 to-transparent",
     year: "2025",
     featured: true,
-    liveUrl: "https://github.com/jibrilnuredin",
+    liveUrl: "https://github.com/JBRIL43",
     screenshots: [
       {
         src: "/projects/debt-admin-dashboard.png",

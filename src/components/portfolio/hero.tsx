@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import {
   ArrowDown,
   ArrowRight,
@@ -109,6 +109,36 @@ export function Hero() {
     });
   }, [reduce]);
 
+  // Multi-layer parallax for background aurora blobs
+  const blob1Ref = useRef<HTMLDivElement>(null);
+  const blob2Ref = useRef<HTMLDivElement>(null);
+  const blob3Ref = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (reduce) return;
+
+    // Each blob scrolls at a different rate for depth
+    const layers = [
+      { el: gridRef.current, speed: 60 },
+      { el: blob1Ref.current, speed: -80 },
+      { el: blob2Ref.current, speed: -120 },
+      { el: blob3Ref.current, speed: -160 },
+    ];
+
+    const onScroll = () => {
+      const scrollY = window.scrollY;
+      layers.forEach(({ el, speed }) => {
+        if (el) {
+          el.style.transform = `translate3d(0, ${scrollY * speed / 600}px, 0)`;
+        }
+      });
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [reduce]);
+
   // normalized cursor position relative to card center: -1 .. 1
   const mvX = useMotionValue(0);
   const mvY = useMotionValue(0);
@@ -164,10 +194,10 @@ export function Hero() {
     >
       {/* Ambient background (particles are global, see page.tsx) */}
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute inset-0 grid-bg mask-[radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
-        <div className="absolute left-1/2 top-[-10%] size-176 -translate-x-1/2 rounded-full bg-[oklch(0.62_0.2_255/0.22)] blur-[140px] animate-aurora" />
-        <div className="absolute right-[-10%] top-[30%] size-128 rounded-full bg-[oklch(0.72_0.16_200/0.16)] blur-[130px] animate-aurora [animation-delay:-6s]" />
-        <div className="absolute left-[-8%] bottom-[-10%] size-136 rounded-full bg-[oklch(0.6_0.2_290/0.12)] blur-[140px] animate-aurora [animation-delay:-12s]" />
+        <div ref={gridRef} className="absolute inset-0 grid-bg mask-[radial-gradient(ellipse_at_center,black_30%,transparent_75%)] will-change-transform" />
+        <div ref={blob1Ref} className="absolute left-1/2 top-[-10%] size-176 -translate-x-1/2 rounded-full bg-[oklch(0.62_0.2_255/0.22)] blur-[140px] animate-aurora will-change-transform" />
+        <div ref={blob2Ref} className="absolute right-[-10%] top-[30%] size-128 rounded-full bg-[oklch(0.72_0.16_200/0.16)] blur-[130px] animate-aurora [animation-delay:-6s] will-change-transform" />
+        <div ref={blob3Ref} className="absolute left-[-8%] bottom-[-10%] size-136 rounded-full bg-[oklch(0.6_0.2_290/0.12)] blur-[140px] animate-aurora [animation-delay:-12s] will-change-transform" />
       </div>
       <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-40 bg-linear-to-t from-background to-transparent" />
 

@@ -8,6 +8,7 @@ import {
   Compass,
   FolderGit2,
   Megaphone,
+  Monitor,
   Send,
   Wrench,
 } from "lucide-react";
@@ -75,10 +76,20 @@ const cards = [
     accent: "from-blue-500/20 via-indigo-400/5 to-transparent",
     color: "oklch(0.78_0.16_220)",
   },
+  {
+    href: "/desktop",
+    label: "Desktop Experience",
+    description:
+      "Explore the portfolio as an interactive Mac desktop — drag, click, and play.",
+    icon: Monitor,
+    accent: "from-purple-500/20 via-pink-400/5 to-transparent",
+    color: "oklch(0.65_0.2_300)",
+  },
 ];
 
 export function HomeExplore() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const bgGlowRef = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
 
   // Animate cards on scroll
@@ -106,8 +117,57 @@ export function HomeExplore() {
       },
     );
   }, [reduce]);
+
+  // Parallax: background glow drifts opposite to scroll for depth
+  useEffect(() => {
+    if (reduce || !bgGlowRef.current) return;
+    const el = bgGlowRef.current;
+
+    const onScroll = () => {
+      const rect = el.parentElement?.getBoundingClientRect();
+      if (!rect) return;
+      const viewH = window.innerHeight;
+      const center = rect.top + rect.height / 2 - viewH / 2;
+      el.style.transform = `translate3d(0, ${center * -0.08}px, 0)`;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [reduce]);
+
+  // Per-card parallax: each card gets a slightly different scroll speed
+  useEffect(() => {
+    if (reduce || !containerRef.current) return;
+
+    const cards = Array.from(
+      containerRef.current.querySelectorAll<HTMLElement>('[data-explore-card]')
+    );
+
+    const speeds = [0.02, 0.04, 0.03, 0.05, 0.025, 0.035]; // staggered per-card
+
+    const onScroll = () => {
+      const containerRect = containerRef.current?.getBoundingClientRect();
+      if (!containerRect) return;
+      const viewH = window.innerHeight;
+      const center = containerRect.top + containerRect.height / 2 - viewH / 2;
+
+      cards.forEach((card, i) => {
+        const speed = speeds[i % speeds.length];
+        // Subtle Y offset — keeps the card visually "anchored" at different depths
+        card.style.transform = `translateY(${center * -speed}px)`;
+      });
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [reduce]);
   return (
     <section id="explore" className="relative overflow-hidden py-24 sm:py-32">
+      <div ref={bgGlowRef} className="absolute inset-0 pointer-events-none will-change-transform">
+        <div className="absolute left-1/2 top-[10%] size-96 -translate-x-1/2 rounded-full bg-[oklch(0.62_0.2_255/0.08)] blur-[120px]" />
+        <div className="absolute right-[-5%] bottom-[20%] size-64 rounded-full bg-[oklch(0.72_0.16_200/0.06)] blur-[100px]" />
+      </div>
       <AmbientGlow color="bg-[oklch(0.62_0.2_255/0.06)]" top="top-0" blur="blur-[130px]" />
 
       <div className="mx-auto max-w-6xl px-5">
