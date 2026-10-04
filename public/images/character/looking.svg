@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 320" width="240" height="320" role="img" aria-label="Protagonist looking ahead with hand shading eyes">
+  <g fill="none" stroke="#111" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+    <ellipse cx="120" cy="300" rx="52" ry="8" fill="#111" opacity="0.12" stroke="none"/>
+    <!-- backpack -->
+    <path d="M78 132 q-20 4 -22 34 q-2 34 16 40 q10 3 16 -2 l0 -70 q-6 -4 -10 -2z" fill="#f4f4f5" stroke-width="3"/>
+    <path d="M60 158 h16" stroke-width="2.5"/>
+    <!-- legs -->
+    <path d="M106 210 l-6 76" stroke-width="4"/>
+    <path d="M134 210 l8 76" stroke-width="4"/>
+    <path d="M90 292 h22" stroke-width="5"/>
+    <path d="M130 292 h22" stroke-width="5"/>
+    <!-- torso -->
+    <path d="M100 128 q-8 44 -6 84 q0 6 8 6 h36 q8 0 8 -6 q2 -40 -6 -84 q-14 -8 -40 0z" fill="#fff" stroke-width="3.5"/>
+    <path d="M120 134 v70" stroke-width="2"/>
+    <path d="M104 130 l-4 46" stroke-width="2.5"/>
+    <path d="M136 130 l4 46" stroke-width="2.5"/>
+    <!-- left arm relaxed -->
+    <path d="M100 134 q-16 30 -14 62 q1 8 8 7" stroke-width="4"/>
+    <!-- right arm raised, hand shading eyes -->
+    <path d="M140 134 q26 4 34 -34" stroke-width="4"/>
+    <path d="M174 100 q8 -6 14 -2" stroke-width="4"/>
+    <!-- neck + head tilted up -->
+    <path d="M114 116 v10 M126 116 v10" stroke-width="3"/>
+    <path d="M98 80 q-2 -32 24 -34 q26 -2 26 30 q0 30 -24 34 q-24 -4 -26 -30z" fill="#fff" stroke-width="3.5"/>
+    <path d="M94 76 q2 -34 26 -34 q24 0 26 34 q-6 -14 -16 -16 q-4 8 -14 8 q-12 0 -14 -8 q-6 4 -8 16z" fill="#111" stroke-width="3"/>
+    <path d="M112 86 v4 M132 86 v4" stroke-width="4"/>
+    <path d="M116 102 q7 4 13 -1" stroke-width="3"/>
+    <!-- distant path lines ahead -->
+    <path d="M188 132 h34 M196 156 h30 M204 180 h24" stroke-width="2.5" opacity="0.5"/>
+    <text x="120" y="176" font-family="Georgia, serif" font-size="16" font-style="italic" font-weight="700" fill="#111" text-anchor="middle" stroke="none">J.</text>
+  </g>
+</svg>

@@ -23,6 +23,11 @@ const navGroups: NavGroup[] = [
     label: "About",
     items: [
       {
+        label: "Story",
+        href: "/story",
+        description: "The manga-style journey through my work.",
+      },
+      {
         label: "Journey",
         href: "/journey",
         description: "The path from first PC to graduation.",

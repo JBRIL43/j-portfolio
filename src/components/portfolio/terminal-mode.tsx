@@ -9,6 +9,7 @@ import {
   useTransform,
 } from "framer-motion";
 import { Terminal as TerminalIcon, Maximize2, Minus, X } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 // ── Types ──
@@ -254,6 +255,7 @@ function LineNumbers({ count, cursorLine }: { count: number; cursorLine: number 
 // ── Main Component ──
 export function TerminalMode() {
   // ── State ──
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [vimMode, setVimMode] = useState<VimMode>("normal");
   const [input, setInput] = useState("");
@@ -910,7 +912,7 @@ export function TerminalMode() {
     <>
       {/* FAB when closed */}
       <AnimatePresence>
-        {!isOpen && (
+        {!isOpen && pathname !== "/story" && (
           <motion.button
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}

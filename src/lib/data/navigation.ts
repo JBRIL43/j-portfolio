@@ -1,6 +1,7 @@
 export type NavItem = { label: string; href: string };
 
 export const navItems: NavItem[] = [
+  { label: "Story", href: "/story" },
   { label: "Journey", href: "/journey" },
   { label: "Work", href: "/work" },
   { label: "Projects", href: "/projects" },

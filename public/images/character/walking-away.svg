@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 320" width="240" height="320" role="img" aria-label="Protagonist walking away, seen from behind">
+  <g fill="none" stroke="#111" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+    <ellipse cx="120" cy="304" rx="50" ry="7" fill="#111" opacity="0.1" stroke="none"/>
+    <!-- backpack from behind (prominent) -->
+    <path d="M88 130 q-16 6 -16 40 q0 40 14 52 q10 8 34 8 q24 0 34 -8 q14 -12 14 -52 q0 -34 -16 -40 q-30 -10 -64 0z" fill="#f4f4f5" stroke-width="3.5"/>
+    <path d="M84 150 h72" stroke-width="2.5"/>
+    <path d="M84 204 h72" stroke-width="2.5"/>
+    <rect x="104" y="164" width="32" height="26" rx="3" stroke-width="3"/>
+    <!-- J. embroidered on backpack -->
+    <text x="120" y="185" font-family="Georgia, serif" font-size="17" font-style="italic" font-weight="700" fill="#111" text-anchor="middle" stroke="none">J.</text>
+    <!-- legs walking away -->
+    <path d="M106 232 q-10 32 -24 58" stroke-width="4"/>
+    <path d="M134 232 q12 30 22 54" stroke-width="4"/>
+    <path d="M74 296 q-4 6 -12 8 M74 296 h14" stroke-width="5"/>
+    <path d="M156 292 q6 6 14 8 M156 292 h-12" stroke-width="5"/>
+    <!-- shoulders / neck / head from behind -->
+    <path d="M96 130 q24 -10 48 0" stroke-width="3.5"/>
+    <path d="M114 116 v12 M126 116 v12" stroke-width="3"/>
+    <path d="M98 82 q0 -32 22 -32 q22 0 22 32 q0 28 -22 32 q-22 -4 -22 -32z" fill="#fff" stroke-width="3.5"/>
+    <!-- hair from behind -->
+    <path d="M96 84 q-2 -38 24 -38 q26 0 24 38 q-4 -18 -14 -22 q-4 6 -10 6 q-14 0 -18 -10 q-6 8 -6 26z" fill="#111" stroke-width="3"/>
+    <!-- receding path -->
+    <path d="M108 300 q6 -30 12 -46 M132 300 q-4 -30 -8 -46" stroke-width="2" opacity="0.35" stroke-dasharray="4 7"/>
+    <path d="M120 262 l0 -6" stroke-width="2" opacity="0.35"/>
+  </g>
+</svg>
