@@ -45,7 +45,7 @@ export function LoadingScreen() {
           exit={{ opacity: 0, transition: { duration: 0.6, ease: "easeInOut" } }}
         >
           {/* ambient glow */}
-          <div className="pointer-events-none absolute left-1/2 top-1/2 size-[40rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[oklch(0.62_0.2_255/0.18)] blur-[120px]" />
+          <div className="pointer-events-none absolute left-1/2 top-1/2 size-[40rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#059669]/12 blur-[120px]" />
 
           <div className="relative flex flex-col items-center gap-6">
             <motion.div
@@ -54,7 +54,7 @@ export function LoadingScreen() {
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="relative"
             >
-              <div className="absolute inset-0 rounded-2xl bg-[oklch(0.62_0.2_255/0.35)] blur-xl" />
+              <div className="absolute inset-0 rounded-2xl bg-[#059669]/25 blur-xl" />
               <div className="relative grid size-16 place-items-center rounded-2xl glass-strong">
                 <span className="text-xl font-semibold tracking-tight text-gradient-blue">
                   JB
@@ -71,9 +71,9 @@ export function LoadingScreen() {
               >
                 Jibril Nuredin
               </motion.p>
-              <div className="h-px w-44 overflow-hidden rounded-full bg-white/10">
+              <div className="h-px w-44 overflow-hidden rounded-full bg-black/10">
                 <motion.div
-                  className="h-full bg-gradient-to-r from-transparent via-[oklch(0.62_0.2_255)] to-transparent"
+                  className="h-full bg-gradient-to-r from-transparent via-[#111] to-transparent"
                   initial={{ x: "-100%" }}
                   animate={{ x: "100%" }}
                   transition={{

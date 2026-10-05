@@ -75,7 +75,7 @@ export function TiltGlare({ className }: { className?: string }) {
       aria-hidden
       className={cn(
         "pointer-events-none absolute inset-0 rounded-[inherit] opacity-0 transition-opacity duration-300 group-hover/tilt:opacity-100",
-        "[background:radial-gradient(240px_circle_at_var(--tilt-mx,50%)_var(--tilt-my,50%),oklch(0.62_0.2_255/0.16),transparent_60%)]",
+        "[background:radial-gradient(240px_circle_at_var(--tilt-mx,50%)_var(--tilt-my,50%),rgb(5_150_105_/_0.16),transparent_60%)]",
         className
       )}
     />

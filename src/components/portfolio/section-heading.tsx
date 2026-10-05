@@ -30,7 +30,7 @@ export function SectionHeading({
     >
       <Reveal>
         <span className="inline-flex items-center gap-2 rounded-full glass px-3 py-1 text-xs font-medium tracking-wide text-foreground/80">
-          <span className="size-1.5 rounded-full bg-[oklch(0.62_0.2_255)] shadow-[0_0_10px_oklch(0.62_0.2_255)]" />
+          <span className="size-1.5 rounded-full bg-[#111]" />
           {eyebrow}
         </span>
       </Reveal>

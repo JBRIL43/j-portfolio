@@ -48,77 +48,40 @@
 
 :root {
     --radius: 0.75rem;
-    /* Light palette (kept for completeness; site defaults to dark) */
-    --background: oklch(0.99 0 0);
-    --foreground: oklch(0.12 0.005 264);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.12 0.005 264);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.12 0.005 264);
-    --primary: oklch(0.55 0.2 255);
-    --primary-foreground: oklch(0.99 0 0);
-    --secondary: oklch(0.96 0.004 264);
-    --secondary-foreground: oklch(0.18 0.01 264);
-    --muted: oklch(0.96 0.004 264);
-    --muted-foreground: oklch(0.5 0.01 264);
-    --accent: oklch(0.55 0.2 255);
-    --accent-foreground: oklch(0.99 0 0);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.9 0.004 264);
-    --input: oklch(0.9 0.004 264);
-    --ring: oklch(0.55 0.2 255);
+    /* Manga palette: paper + ink + emerald accent */
+    --background: #fafaf8;
+    --foreground: #111111;
+    --card: #ffffff;
+    --card-foreground: #111111;
+    --popover: #ffffff;
+    --popover-foreground: #111111;
+    --primary: #111111;
+    --primary-foreground: #fafaf8;
+    --secondary: #f0f0ec;
+    --secondary-foreground: #111111;
+    --muted: #f0f0ec;
+    --muted-foreground: #55554f;
+    --accent: #059669;
+    --accent-foreground: #ffffff;
+    --destructive: #dc2626;
+    --border: rgb(17 17 17 / 0.15);
+    --input: #d8d8d2;
+    --ring: #059669;
     --chart-1: oklch(0.62 0.21 255);
     --chart-2: oklch(0.7 0.17 162);
     --chart-3: oklch(0.77 0.19 70);
     --chart-4: oklch(0.63 0.26 304);
     --chart-5: oklch(0.65 0.25 16);
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.55 0.2 255);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.708 0 0);
-    --accent-blue: oklch(0.62 0.2 255);
-    --accent-blue-soft: oklch(0.62 0.2 255 / 0.12);
-}
-
-.dark {
-    /* Deep black + electric blue premium palette */
-    --background: oklch(0.07 0.006 264);
-    --foreground: oklch(0.97 0.004 264);
-    --card: oklch(0.11 0.008 264);
-    --card-foreground: oklch(0.97 0.004 264);
-    --popover: oklch(0.12 0.01 264);
-    --popover-foreground: oklch(0.97 0.004 264);
-    --primary: oklch(0.62 0.2 255);
-    --primary-foreground: oklch(0.99 0 0);
-    --secondary: oklch(0.16 0.012 264);
-    --secondary-foreground: oklch(0.95 0.004 264);
-    --muted: oklch(0.14 0.008 264);
-    --muted-foreground: oklch(0.68 0.012 264);
-    --accent: oklch(0.62 0.2 255);
-    --accent-foreground: oklch(0.99 0 0);
-    --destructive: oklch(0.65 0.22 25);
-    --border: oklch(1 0 0 / 9%);
-    --input: oklch(1 0 0 / 12%);
-    --ring: oklch(0.62 0.2 255);
-    --chart-1: oklch(0.62 0.21 255);
-    --chart-2: oklch(0.7 0.17 162);
-    --chart-3: oklch(0.77 0.19 70);
-    --chart-4: oklch(0.63 0.26 304);
-    --chart-5: oklch(0.65 0.25 16);
-    --sidebar: oklch(0.09 0.008 264);
-    --sidebar-foreground: oklch(0.97 0.004 264);
-    --sidebar-primary: oklch(0.62 0.2 255);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.16 0.012 264);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 9%);
-    --sidebar-ring: oklch(0.62 0.2 255);
-    --accent-blue: oklch(0.62 0.2 255);
-    --accent-blue-soft: oklch(0.62 0.2 255 / 0.14);
+    --sidebar: #fafaf8;
+    --sidebar-foreground: #111111;
+    --sidebar-primary: #059669;
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: #f0f0ec;
+    --sidebar-accent-foreground: #111111;
+    --sidebar-border: rgb(17 17 17 / 0.15);
+    --sidebar-ring: #059669;
+    --accent-blue: #059669;
+    --accent-blue-soft: rgb(5 150 105 / 0.12);
 }
 
 @layer base {
@@ -137,8 +100,8 @@
         -moz-osx-font-smoothing: grayscale;
     }
     ::selection {
-        background: oklch(0.62 0.2 255 / 0.3);
-        color: oklch(0.99 0 0);
+        background: #059669;
+        color: #ffffff;
     }
     /* Custom scrollbar */
     ::-webkit-scrollbar {
@@ -149,56 +112,292 @@
         background: transparent;
     }
     ::-webkit-scrollbar-thumb {
-        background: oklch(1 0 0 / 0.1);
+        background: rgb(17 17 17 / 0.25);
         border-radius: 9999px;
         border: 2px solid transparent;
         background-clip: content-box;
     }
     ::-webkit-scrollbar-thumb:hover {
-        background: oklch(0.62 0.2 255 / 0.5);
+        background: rgb(5 150 105 / 0.6);
         background-clip: content-box;
     }
 }
 
 @layer utilities {
-    /* Glassmorphism */
+    /* ===== MANGA DESIGN SYSTEM ===== */
+    /* Halftone screentone (manga dot screen) */
+    .screentone {
+        background-image: radial-gradient(#111 15%, transparent 16%);
+        background-size: 8px 8px;
+        opacity: 0.25;
+        pointer-events: none;
+    }
+    .screentone-light {
+        background-image: radial-gradient(#111 12%, transparent 14%);
+        background-size: 10px 10px;
+        opacity: 0.15;
+        pointer-events: none;
+    }
+    .screentone-dark {
+        background-image: radial-gradient(#111 20%, transparent 22%);
+        background-size: 6px 6px;
+        opacity: 0.35;
+        pointer-events: none;
+    }
+
+    /* Manga panel: thick ink border + hard offset shadow */
+    .manga-panel {
+        position: relative;
+        background: #fff;
+        border: 2px solid #111;
+        box-shadow: 8px 8px 0 0 #111;
+    }
+    .manga-panel-sm {
+        border: 2px solid #111;
+        box-shadow: 4px 4px 0 0 #111;
+    }
+    .manga-panel-lg {
+        border: 3px solid #111;
+        box-shadow: 10px 10px 0 0 #111;
+    }
+
+    /* Inner panel gutters (speed lines at top/bottom) */
+    .manga-gutter-top {
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 12px;
+        background: linear-gradient(to bottom, transparent 0%, #fafaf8 100%);
+        pointer-events: none;
+    }
+    .manga-gutter-top::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background-image: repeating-linear-gradient(
+            90deg, transparent, transparent 6px,
+            #111 6px, #111 7px
+        );
+        opacity: 0.12;
+        pointer-events: none;
+    }
+    .manga-gutter-bottom {
+        position: absolute;
+        bottom: 0; left: 0; right: 0;
+        height: 12px;
+        background: linear-gradient(to top, transparent 0%, #fafaf8 100%);
+        pointer-events: none;
+    }
+    .manga-gutter-bottom::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background-image: repeating-linear-gradient(
+            90deg, transparent, transparent 6px,
+            #111 6px, #111 7px
+        );
+        opacity: 0.12;
+        pointer-events: none;
+    }
+
+    /* Narration box: mono, uppercase, ink border + offset shadow */
+    .manga-narration {
+        display: inline-block;
+        border: 1px solid #111;
+        background: #fff;
+        padding: 6px 12px;
+        font-family: var(--font-mono), monospace;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        box-shadow: 2px 2px 0 0 #111;
+    }
+
+    /* Speech bubble with tail */
+    .manga-speech {
+        position: relative;
+        border: 2px solid #111;
+        background: #f4f4f5;
+        padding: 16px 20px;
+        box-shadow: 3px 3px 0 0 #111;
+    }
+    .manga-speech::before {
+        content: "";
+        position: absolute;
+        top: -10px; left: 24px;
+        border-width: 0 8px 10px 8px;
+        border-style: solid;
+        border-color: transparent transparent #111 transparent;
+    }
+    .manga-speech::after {
+        content: "";
+        position: absolute;
+        top: -7px; left: 25px;
+        border-width: 0 7px 9px 7px;
+        border-style: solid;
+        border-color: transparent transparent #f4f4f5 transparent;
+    }
+    .manga-speech-left::before { left: 24px; }
+    .manga-speech-right::before { left: auto; right: 24px; }
+
+    /* Hero badge: mono, black pill */
+    .manga-badge {
+        display: inline-block;
+        font-family: var(--font-mono), monospace;
+        font-size: 0.65rem;
+        font-weight: 700;
+        background: #111;
+        color: #fff;
+        padding: 3px 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        box-shadow: 2px 2px 0 0 #111;
+    }
+
+    /* Hero title cursor blink */
+    .manga-cursor {
+        display: inline-block;
+        width: 2px;
+        height: 1em;
+        background: #059669;
+        animation: manga-cursor-blink 1s steps(1) infinite;
+        margin-left: 2px;
+        vertical-align: text-bottom;
+    }
+    @keyframes manga-cursor-blink {
+        0%, 50% { opacity: 1; }
+        51%, 100% { opacity: 0; }
+    }
+
+    /* Manga CTA button: mono, black → emerald hover with translate + hard shadow */
+    .manga-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-family: var(--font-mono), monospace;
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        background: #111;
+        color: #fff;
+        padding: 14px 24px;
+        border: 2px solid #111;
+        box-shadow: 3px 3px 0 0 #111;
+        transition: all 0.12s ease;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    .manga-btn:hover {
+        background: #059669;
+        color: #111;
+        border-color: #059669;
+        box-shadow: 4px 4px 0 0 #111;
+        transform: translate(-2px, -2px);
+    }
+    .manga-btn:active {
+        transform: translate(1px, 1px);
+        box-shadow: 1px 1px 0 0 #111;
+    }
+    .manga-btn-secondary {
+        background: transparent;
+        color: #111;
+        border-color: #111;
+        box-shadow: 3px 3px 0 0 #111;
+    }
+    .manga-btn-secondary:hover {
+        background: #111;
+        color: #fff;
+        box-shadow: 4px 4px 0 0 #111;
+        transform: translate(-2px, -2px);
+    }
+
+    /* Art panel frame */
+    .manga-art-panel {
+        border: 2px solid #111;
+        background: #fff;
+        padding: 8px;
+        box-shadow: 4px 4px 0 0 #111;
+    }
+    .manga-art-box {
+        aspect-ratio: 3 / 4;
+        border: 1px solid #111;
+        background: #f4f4f5;
+        position: relative;
+    }
+
+    /* Character avatar circle */
+    .manga-avatar {
+        width: 110px;
+        height: 110px;
+        border: 2px solid #111;
+        border-radius: 50%;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-mono), monospace;
+        font-size: 2.5rem;
+        font-weight: 900;
+        box-shadow: 3px 3px 0 0 #111;
+        transition: border-color 0.2s ease;
+    }
+    .manga-art-panel:hover .manga-avatar {
+        border-color: #059669;
+    }
+
+    /* SFX / Onomatopoeia text */
+    .manga-sfx {
+        font-style: italic;
+        font-weight: 900;
+        font-size: 1.5rem;
+        text-align: right;
+        letter-spacing: -0.02em;
+        text-transform: uppercase;
+        user-select: none;
+    }
+
+    /* Panel footer */
+    .manga-panel-footer {
+        margin-top: 32px;
+        padding-top: 16px;
+        border-top: 1px solid #111;
+        display: flex;
+        justify-content: space-between;
+        font-family: var(--font-mono), monospace;
+        font-size: 0.65rem;
+        color: #525252;
+    }
+
+    /* Paper "glass": translucent ink wash, works on the light manga palette */
     .glass {
-        background: oklch(1 0 0 / 0.04);
-        backdrop-filter: blur(16px) saturate(160%);
-        -webkit-backdrop-filter: blur(16px) saturate(160%);
-        border: 1px solid oklch(1 0 0 / 0.08);
+        background: rgb(0 0 0 / 0.03);
+        backdrop-filter: blur(16px) saturate(120%);
+        -webkit-backdrop-filter: blur(16px) saturate(120%);
+        border: 1px solid rgb(0 0 0 / 0.08);
     }
     .glass-strong {
-        background: oklch(1 0 0 / 0.06);
-        backdrop-filter: blur(24px) saturate(180%);
-        -webkit-backdrop-filter: blur(24px) saturate(180%);
-        border: 1px solid oklch(1 0 0 / 0.1);
+        background: rgb(0 0 0 / 0.05);
+        backdrop-filter: blur(24px) saturate(140%);
+        -webkit-backdrop-filter: blur(24px) saturate(140%);
+        border: 1px solid rgb(0 0 0 / 0.12);
     }
     .glass-blue {
-        background: oklch(0.62 0.2 255 / 0.08);
-        backdrop-filter: blur(20px) saturate(180%);
-        -webkit-backdrop-filter: blur(20px) saturate(180%);
-        border: 1px solid oklch(0.62 0.2 255 / 0.2);
+        background: rgb(5 150 105 / 0.08);
+        backdrop-filter: blur(20px) saturate(140%);
+        -webkit-backdrop-filter: blur(20px) saturate(140%);
+        border: 1px solid rgb(5 150 105 / 0.25);
     }
 
     .text-gradient {
-        background: linear-gradient(
-            180deg,
-            oklch(0.99 0 0) 0%,
-            oklch(0.82 0.02 264) 100%
-        );
+        background: linear-gradient(180deg, #111111 0%, #3a3a37 100%);
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
         color: transparent;
     }
     .text-gradient-blue {
-        background: linear-gradient(
-            100deg,
-            oklch(0.85 0.12 255) 0%,
-            oklch(0.62 0.2 255) 50%,
-            oklch(0.78 0.16 220) 100%
-        );
+        background: linear-gradient(100deg, #111111 0%, #2b2b2b 100%);
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -207,11 +406,11 @@
 
     .glow-blue {
         box-shadow:
-            0 0 0 1px oklch(0.62 0.2 255 / 0.2),
-            0 8px 40px -8px oklch(0.62 0.2 255 / 0.45);
+            0 0 0 1px rgb(17 17 17 / 0.9),
+            0 8px 40px -8px rgb(17 17 17 / 0.35);
     }
     .glow-blue-sm {
-        box-shadow: 0 0 24px -6px oklch(0.62 0.2 255 / 0.5);
+        box-shadow: 0 8px 24px -8px rgb(17 17 17 / 0.4);
     }
 
     /* Subtle dotted/grid background */
@@ -219,19 +418,19 @@
         background-image:
             linear-gradient(
                 to right,
-                oklch(1 0 0 / 0.035) 1px,
+                rgb(17 17 17 / 0.05) 1px,
                 transparent 1px
             ),
             linear-gradient(
                 to bottom,
-                oklch(1 0 0 / 0.035) 1px,
+                rgb(17 17 17 / 0.05) 1px,
                 transparent 1px
             );
         background-size: 56px 56px;
     }
     .dot-bg {
         background-image: radial-gradient(
-            oklch(1 0 0 / 0.06) 1px,
+            rgb(17 17 17 / 0.08) 1px,
             transparent 1px
         );
         background-size: 22px 22px;
@@ -347,12 +546,20 @@
 .shimmer {
     background: linear-gradient(
         90deg,
-        oklch(1 0 0 / 0.05) 25%,
-        oklch(1 0 0 / 0.12) 37%,
-        oklch(1 0 0 / 0.05) 63%
+        rgb(17 17 17 / 0.05) 25%,
+        rgb(17 17 17 / 0.12) 37%,
+        rgb(17 17 17 / 0.05) 63%
     );
     background-size: 200% 100%;
     animation: shimmer 1.6s ease-in-out infinite;
+}
+
+/* Manga display type: big headings use Zen Kurenaido, body stays Inter */
+@layer base {
+    h1,
+    h2 {
+        font-family: var(--font-story), var(--font-sans);
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {

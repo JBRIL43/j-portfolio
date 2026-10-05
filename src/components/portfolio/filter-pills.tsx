@@ -39,7 +39,7 @@ export function FilterPills<T extends string>({
             {active && (
               <motion.span
                 layoutId={layoutId}
-                className="absolute inset-0 rounded-full bg-[oklch(0.62_0.2_255)] shadow-[0_0_20px_-6px_oklch(0.62_0.2_255)]"
+                className="absolute inset-0 rounded-full bg-[#111]"
                 transition={{ type: "spring", stiffness: 380, damping: 30 }}
               />
             )}

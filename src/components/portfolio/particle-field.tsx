@@ -55,11 +55,11 @@ export function ParticleField() {
 
     // Color palettes - electric blue with variations
     const colors: [number, number, number][] = [
-      [120, 170, 255], // Electric blue
-      [100, 150, 255], // Lighter blue
-      [140, 180, 255], // Soft blue
-      [80, 130, 255], // Deep blue
-      [160, 200, 255], // Sky blue
+      [40, 40, 40], // Ink
+      [70, 70, 70], // Soft ink
+      [100, 100, 100], // Light ink
+      [30, 30, 30], // Deep ink
+      [130, 130, 130], // Faded ink
     ];
 
     const spawn = (): Particle => ({
@@ -140,8 +140,8 @@ export function ParticleField() {
             star.x - star.vx * 15,
             star.y - star.vy * 15,
           );
-          gradient.addColorStop(0, `rgba(200, 220, 255, ${star.life * 0.8})`);
-          gradient.addColorStop(1, "rgba(200, 220, 255, 0)");
+          gradient.addColorStop(0, `rgba(17, 17, 17, ${star.life * 0.6})`);
+          gradient.addColorStop(1, "rgba(17, 17, 17, 0)");
 
           ctx.beginPath();
           ctx.moveTo(star.x, star.y);
@@ -154,7 +154,7 @@ export function ParticleField() {
           // Star head
           ctx.beginPath();
           ctx.arc(star.x, star.y, star.size * 0.5, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(255, 255, 255, ${star.life})`;
+          ctx.fillStyle = `rgba(17, 17, 17, ${star.life})`;
           ctx.fill();
 
           return true;
@@ -229,7 +229,7 @@ export function ParticleField() {
         // Core
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.6})`;
+        ctx.fillStyle = `rgba(17, 17, 17, ${alpha * 0.5})`;
         ctx.fill();
       }
 
@@ -246,7 +246,7 @@ export function ParticleField() {
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
-            ctx.strokeStyle = `rgba(99, 140, 255, ${o})`;
+            ctx.strokeStyle = `rgba(17, 17, 17, ${o * 0.7})`;
             ctx.lineWidth = 0.5;
             ctx.stroke();
           }
@@ -262,7 +262,7 @@ export function ParticleField() {
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(mouse.x, mouse.y);
-            ctx.strokeStyle = `rgba(140, 180, 255, ${o})`;
+            ctx.strokeStyle = `rgba(5, 150, 105, ${o})`;
             ctx.lineWidth = 0.6;
             ctx.stroke();
           }

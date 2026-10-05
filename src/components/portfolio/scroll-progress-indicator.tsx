@@ -67,11 +67,11 @@ export function ScrollProgressIndicator() {
           {/* Track */}
           <div className="relative flex flex-col items-center" style={{ height: sections.length * 32 }}>
             {/* Background line */}
-            <div className="absolute top-2 bottom-2 left-1/2 w-px -translate-x-1/2 bg-white/10" />
+            <div className="absolute top-2 bottom-2 left-1/2 w-px -translate-x-1/2 bg-black/15" />
 
             {/* Filled line */}
             <motion.div
-              className="absolute top-2 left-1/2 w-px -translate-x-1/2 bg-gradient-to-b from-[oklch(0.62_0.2_255)] to-[oklch(0.78_0.16_220)]"
+              className="absolute top-2 left-1/2 w-px -translate-x-1/2 bg-[#111]"
               initial={false}
               animate={{ height: `${progress * 100}%` }}
               transition={reduce ? { duration: 0 } : { duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
@@ -118,10 +118,10 @@ export function ScrollProgressIndicator() {
                       "size-2.5",
                       isActive && "size-3.5",
                       isActive
-                        ? "bg-[oklch(0.62_0.2_255)] shadow-[0_0_12px_oklch(0.62_0.2_255/0.6)]"
+                        ? "bg-[#111] shadow-[0_0_12px_rgb(17_17_17_/_0.4)]"
                         : isPast
-                          ? "bg-[oklch(0.62_0.2_255/0.5)]"
-                          : "bg-white/20 hover:bg-white/35"
+                          ? "bg-[#111]/45"
+                          : "bg-black/25 hover:bg-black/40"
                     )}
                     whileHover={reduce ? undefined : { scale: 1.4 }}
                     aria-label={`Go to ${section.label}`}
@@ -130,7 +130,7 @@ export function ScrollProgressIndicator() {
                     {isActive && !reduce && (
                       <motion.span
                         layoutId="scroll-dot-ring"
-                        className="absolute -inset-1 rounded-full ring-1 ring-[oklch(0.62_0.2_255/0.4)]"
+                        className="absolute -inset-1 rounded-full ring-1 ring-[#059669]/50"
                         transition={{ type: "spring", stiffness: 380, damping: 30 }}
                       />
                     )}

@@ -5,13 +5,13 @@ import { ExternalLink, Quote } from "lucide-react";
 import { leadershipPillars, leadershipStats, socials } from "@/lib/portfolio-data";
 import { SectionHeading } from "./section-heading";
 import { staggerContainer, staggerItem } from "./reveal";
-import { TiltCard } from "./tilt";
 import { AmbientGlow } from "./ambient-glow";
+import { MangaPanel } from "./manga-panel";
 
 export function PeakCraft() {
   return (
     <section id="peak-craft" className="relative overflow-hidden py-24 sm:py-32">
-      <AmbientGlow color="bg-[oklch(0.6_0.2_290/0.1)]" size="size-[30rem]" top="top-1/3" side="right" />
+      <AmbientGlow color="bg-[#059669]/10" size="size-[30rem]" top="top-1/3" side="right" />
 
       <div className="mx-auto max-w-6xl px-5">
         <SectionHeading
@@ -26,18 +26,11 @@ export function PeakCraft() {
         />
 
         <div className="mt-14 grid grid-cols-1 gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-          {/* Featured panel */}
-          <TiltCard
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="group relative overflow-hidden rounded-3xl glass-strong p-7"
-          >
-            <div className="absolute -right-10 -top-10 size-40 rounded-full bg-[oklch(0.62_0.2_255/0.18)] blur-3xl" />
+          <MangaPanel index={0} left={true} className="p-7">
+            <div className="absolute -right-8 -top-8 size-40 rounded-full bg-[#059669]/15 blur-3xl" />
             <div className="relative">
-              <span className="inline-flex items-center gap-2 rounded-full bg-white/6 px-3 py-1 text-xs text-foreground/80 ring-1 ring-white/10">
-                <span className="size-1.5 rounded-full bg-[oklch(0.62_0.2_255)]" />
+              <span className="inline-flex items-center gap-2 rounded-full bg-black/[0.06] px-3 py-1 text-xs text-foreground/80 ring-1 ring-black/10">
+                <span className="size-1.5 rounded-full bg-[#111]" />
                 Peak Craft · Hawassa University
               </span>
 
@@ -54,7 +47,7 @@ export function PeakCraft() {
                 {leadershipStats.map((s) => (
                   <div
                     key={s.label}
-                    className="rounded-xl bg-white/5 p-3 ring-1 ring-white/8"
+                    className="rounded-xl bg-black/[0.05] p-3 ring-1 ring-black/10"
                   >
                     <p className="text-base font-semibold text-gradient-blue">
                       {s.value}
@@ -66,11 +59,11 @@ export function PeakCraft() {
                 ))}
               </div>
 
-              <div className="mt-6 flex items-start gap-3 rounded-2xl border border-white/8 bg-white/3 p-4">
-                <Quote className="mt-0.5 size-4 shrink-0 text-[oklch(0.62_0.2_255)]" />
+              <div className="mt-6 flex items-start gap-3 rounded-2xl border border-black/10 bg-black/[0.03] p-4">
+                <Quote className="mt-0.5 size-4 shrink-0 text-[#111]" />
                 <p className="text-sm italic leading-relaxed text-foreground/80">
-                  “A community isn&apos;t built by one person — it&apos;s built
-                  by one clear story, told consistently, by everyone.”
+                  "A community isn't built by one person — it's built
+                  by one clear story, told consistently, by everyone."
                 </p>
               </div>
 
@@ -79,7 +72,7 @@ export function PeakCraft() {
                   href={socials.pcic}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group/live inline-flex items-center gap-2 rounded-xl bg-[oklch(0.62_0.2_255)] px-4 py-2.5 text-sm font-medium text-white shadow-[0_0_24px_-8px_oklch(0.62_0.2_255)] transition-all hover:brightness-110"
+                  className="group/live inline-flex items-center gap-2 rounded-xl bg-[#111] px-4 py-2.5 text-sm font-medium text-white  transition-all hover:bg-[#059669]"
                 >
                   <ExternalLink className="size-4 transition-transform group-hover/live:translate-x-0.5" />
                   Live: pcic.tech
@@ -88,15 +81,14 @@ export function PeakCraft() {
                   href={socials.peakProjects}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-xl glass px-4 py-2.5 text-sm font-medium text-foreground/90 transition-colors hover:bg-white/10"
+                  className="inline-flex items-center gap-2 rounded-xl glass px-4 py-2.5 text-sm font-medium text-foreground/90 transition-colors hover:bg-black/10"
                 >
                   Peak Projects
                 </a>
               </div>
             </div>
-          </TiltCard>
+          </MangaPanel>
 
-          {/* Pillars */}
           <motion.div
             variants={staggerContainer}
             initial="hidden"
@@ -107,14 +99,14 @@ export function PeakCraft() {
             {leadershipPillars.map((p) => {
               const Icon = p.icon;
               return (
-                <TiltCard
+                <MangaPanel
                   key={p.title}
-                  variants={staggerItem}
-                  max={6}
-                  className="group flex items-start gap-4 rounded-2xl glass p-5 transition-colors duration-300 hover:bg-white/8 hover:ring-1 hover:ring-[oklch(0.62_0.2_255/0.25)]"
+                  index={p.title}
+                  left={false}
+                  className="group flex items-start gap-4 p-5"
                 >
-                  <div className="grid size-10 shrink-0 place-items-center rounded-xl bg-white/6 ring-1 ring-white/10 transition-colors group-hover:bg-[oklch(0.62_0.2_255/0.16)]">
-                    <Icon className="size-5 text-[oklch(0.78_0.14_255)]" />
+                  <div className="grid size-10 shrink-0 place-items-center rounded-xl bg-black/[0.06] ring-1 ring-black/10 transition-colors group-hover:bg-[#059669]/15">
+                    <Icon className="size-5 text-[#047857]" />
                   </div>
                   <div>
                     <h4 className="text-base font-semibold tracking-tight text-foreground">
@@ -124,7 +116,7 @@ export function PeakCraft() {
                       {p.description}
                     </p>
                   </div>
-                </TiltCard>
+                </MangaPanel>
               );
             })}
           </motion.div>

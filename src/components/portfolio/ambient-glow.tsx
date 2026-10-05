@@ -20,7 +20,7 @@ type AmbientGlowProps = {
  * centered (or offset) blurred circle inside.
  */
 export function AmbientGlow({
-  color = "bg-[oklch(0.62_0.2_255/0.08)]",
+  color = "bg-[#059669]/8",
   size = "size-[36rem]",
   top = "top-1/4",
   side = "left",

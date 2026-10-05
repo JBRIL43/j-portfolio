@@ -10,8 +10,8 @@ import { z } from "zod";
 import { socials } from "@/lib/portfolio-data";
 import { SectionHeading } from "./section-heading";
 import { Reveal } from "./reveal";
-import { useTilt, TiltGlare } from "./tilt";
 import { AmbientGlow } from "./ambient-glow";
+import { MangaPanel } from "./manga-panel";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -51,29 +51,25 @@ const socialLinks = [
 ];
 
 function SocialCard({ item }: { item: (typeof socialLinks)[number] }) {
-  const { ref, onMouseMove, onMouseLeave, style } = useTilt<HTMLAnchorElement>(6);
   const Icon = item.icon;
   return (
-    <motion.a
-      ref={ref}
-      onMouseMove={onMouseMove}
-      onMouseLeave={onMouseLeave}
-      style={style}
-      href={item.href}
-      target={item.label === "Email" ? undefined : "_blank"}
-      rel="noopener noreferrer"
-      className="group/tilt group relative flex items-center gap-4 overflow-hidden rounded-2xl glass p-5 transition-colors duration-300 hover:bg-white/8 hover:ring-1 hover:ring-[oklch(0.62_0.2_255/0.25)]"
-    >
-      <TiltGlare />
-      <div className="relative grid size-11 shrink-0 place-items-center rounded-xl bg-white/6 ring-1 ring-white/10 transition-colors group-hover:bg-[oklch(0.62_0.2_255/0.16)]">
-        <Icon className="size-5 text-[oklch(0.78_0.14_255)]" />
-      </div>
-      <div className="relative min-w-0 flex-1">
-        <p className="text-sm font-medium text-foreground">{item.label}</p>
-        <p className="truncate text-xs text-muted-foreground">{item.handle}</p>
-      </div>
-      <ArrowUpRight className="relative size-4 text-muted-foreground transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[oklch(0.78_0.14_255)]" />
-    </motion.a>
+    <MangaPanel index={item.label} left={false} className="group p-5">
+      <motion.a
+        href={item.href}
+        target={item.label === "Email" ? undefined : "_blank"}
+        rel="noopener noreferrer"
+        className="relative flex items-center gap-4"
+      >
+        <div className="relative grid size-11 shrink-0 place-items-center rounded-xl bg-black/[0.06] ring-1 ring-black/10 transition-colors group-hover:bg-[#059669]/15">
+          <Icon className="size-5 text-[#047857]" />
+        </div>
+        <div className="relative min-w-0 flex-1">
+          <p className="text-sm font-medium text-foreground">{item.label}</p>
+          <p className="truncate text-xs text-muted-foreground">{item.handle}</p>
+        </div>
+        <ArrowUpRight className="relative size-4 text-muted-foreground transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[#047857]" />
+      </motion.a>
+    </MangaPanel>
   );
 }
 
@@ -120,14 +116,14 @@ export function Contact() {
 
   return (
     <section id="contact" className="relative overflow-hidden py-24 sm:py-32">
-      <AmbientGlow color="bg-[oklch(0.62_0.2_255/0.1)]" top="top-0" blur="blur-[130px]" />
+      <AmbientGlow color="bg-[#059669]/10" top="top-0" blur="blur-[130px]" />
 
       <div className="mx-auto max-w-6xl px-5">
         <SectionHeading
           eyebrow="Contact"
           title={
             <>
-              Let&apos;s build something{" "}
+              Let's build something{" "}
               <span className="text-gradient-blue">meaningful</span>
             </>
           }
@@ -135,108 +131,108 @@ export function Contact() {
         />
 
         <div className="mt-14 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_0.85fr]">
-          {/* Form */}
           <Reveal>
-            <form
-              onSubmit={handleSubmit(onSubmit)}
-              noValidate
-              className="rounded-3xl glass-strong p-6 sm:p-8"
-            >
-              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                <div className="space-y-2">
-                  <Label htmlFor="name">Name</Label>
-                  <Input
-                    id="name"
-                    placeholder="Your name"
-                    autoComplete="name"
-                    aria-invalid={!!errors.name}
-                    {...register("name")}
-                  />
-                  {errors.name && (
-                    <p className="text-xs text-destructive">
-                      {errors.name.message}
-                    </p>
-                  )}
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="you@example.com"
-                    autoComplete="email"
-                    aria-invalid={!!errors.email}
-                    {...register("email")}
-                  />
-                  {errors.email && (
-                    <p className="text-xs text-destructive">
-                      {errors.email.message}
-                    </p>
-                  )}
-                </div>
-              </div>
-
-              <div className="mt-5 space-y-2">
-                <Label htmlFor="subject">Subject</Label>
-                <Input
-                  id="subject"
-                  placeholder="What's this about?"
-                  aria-invalid={!!errors.subject}
-                  {...register("subject")}
-                />
-                {errors.subject && (
-                  <p className="text-xs text-destructive">
-                    {errors.subject.message}
-                  </p>
-                )}
-              </div>
-
-              <div className="mt-5 space-y-2">
-                <Label htmlFor="message">Message</Label>
-                <Textarea
-                  id="message"
-                  rows={5}
-                  placeholder="Tell me about your idea, project, or opportunity..."
-                  aria-invalid={!!errors.message}
-                  {...register("message")}
-                />
-                {errors.message && (
-                  <p className="text-xs text-destructive">
-                    {errors.message.message}
-                  </p>
-                )}
-              </div>
-
-              <button
-                type="submit"
-                disabled={submitting}
-                className={cn(
-                  "group mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[oklch(0.62_0.2_255)] px-5 py-3 text-sm font-medium text-white shadow-[0_0_30px_-8px_oklch(0.62_0.2_255)] transition-all hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
-                )}
+            <MangaPanel index={0} left={true} className="p-6 sm:p-8">
+              <form
+                onSubmit={handleSubmit(onSubmit)}
+                noValidate
+                className="space-y-5"
               >
-                {submitting ? (
-                  <>
-                    <span className="size-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
-                    Sending...
-                  </>
-                ) : (
-                  <>
-                    Send Message
-                    <Send className="size-4 transition-transform group-hover:translate-x-0.5" />
-                  </>
-                )}
-              </button>
-            </form>
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="name">Name</Label>
+                    <Input
+                      id="name"
+                      placeholder="Your name"
+                      autoComplete="name"
+                      aria-invalid={!!errors.name}
+                      {...register("name")}
+                    />
+                    {errors.name && (
+                      <p className="text-xs text-destructive">
+                        {errors.name.message}
+                      </p>
+                    )}
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="you@example.com"
+                      autoComplete="email"
+                      aria-invalid={!!errors.email}
+                      {...register("email")}
+                    />
+                    {errors.email && (
+                      <p className="text-xs text-destructive">
+                        {errors.email.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="subject">Subject</Label>
+                  <Input
+                    id="subject"
+                    placeholder="What's this about?"
+                    aria-invalid={!!errors.subject}
+                    {...register("subject")}
+                  />
+                  {errors.subject && (
+                    <p className="text-xs text-destructive">
+                      {errors.subject.message}
+                    </p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="message">Message</Label>
+                  <Textarea
+                    id="message"
+                    rows={5}
+                    placeholder="Tell me about your idea, project, or opportunity..."
+                    aria-invalid={!!errors.message}
+                    {...register("message")}
+                  />
+                  {errors.message && (
+                    <p className="text-xs text-destructive">
+                      {errors.message.message}
+                    </p>
+                  )}
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className={cn(
+                    "group mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#111] px-5 py-3 text-sm font-medium text-white  transition-all hover:bg-[#059669] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+                  )}
+                >
+                  {submitting ? (
+                    <>
+                      <span className="size-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      Send Message
+                      <Send className="size-4 transition-transform group-hover:translate-x-0.5" />
+                    </>
+                  )}
+                </button>
+              </form>
+            </MangaPanel>
           </Reveal>
 
-          {/* Socials + info */}
           <Reveal delay={0.1}>
             <div className="flex h-full flex-col gap-3">
               {socialLinks.map((s) => (
                 <SocialCard key={s.label} item={s} />
               ))}
 
-              <div className="mt-auto rounded-2xl glass p-5">
+              <MangaPanel index={0} left={true} className="mt-auto p-5">
                 <div className="flex items-center gap-2">
                   <span className="relative flex size-2">
                     <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400/70" />
@@ -250,7 +246,7 @@ export function Contact() {
                   Open to freelance web work, design collaborations, community
                   partnerships, and meaningful conversations.
                 </p>
-              </div>
+              </MangaPanel>
             </div>
           </Reveal>
         </div>

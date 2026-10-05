@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { useEffect, useRef, useState, useCallback } from "react";
+import { motion, useScroll, useTransform, useMotionValue, useSpring, useReducedMotion } from "framer-motion";
+import { useEffect, useRef } from "react";
 import {
   ArrowDown,
   ArrowRight,
@@ -12,12 +12,6 @@ import {
   Terminal,
 } from "lucide-react";
 import Link from "next/link";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
-import { cn } from "@/lib/utils";
-import { useReducedMotion } from "./use-reduced-motion";
 
 const headline = [
   "Building",
@@ -28,13 +22,11 @@ const headline = [
 ];
 
 export function Hero() {
-  // Cursor-following tilt for the floating identity card
   const cardRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const scrollProgressRef = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
 
-  // Magnetic button refs
   const cta1Ref = useRef<HTMLAnchorElement>(null);
   const cta2Ref = useRef<HTMLAnchorElement>(null);
 
@@ -50,21 +42,12 @@ export function Hero() {
         const x = e.clientX - rect.left - rect.width / 2;
         const y = e.clientY - rect.top - rect.height / 2;
 
-        gsap.to(btn, {
-          x: x * 0.3,
-          y: y * 0.3,
-          duration: 0.3,
-          ease: "power2.out",
-        });
+        btn.style.transform = `translate(${x * 0.25}px, ${y * 0.25}px)`;
       };
 
       const handleMouseLeave = () => {
-        gsap.to(btn, {
-          x: 0,
-          y: 0,
-          duration: 0.5,
-          ease: "elastic.out(1, 0.5)",
-        });
+        btn.style.transition = "transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)";
+        btn.style.transform = "translate(0, 0)";
       };
 
       btn.addEventListener("mousemove", handleMouseMove);
@@ -77,94 +60,46 @@ export function Hero() {
     });
   }, []);
 
-  // Scroll progress indicator
-  useEffect(() => {
-    if (reduce || !scrollProgressRef.current) return;
+  // Framer Motion scroll progress for top progress bar
+  const { scrollYProgress: heroScrollProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
 
-    gsap.to(scrollProgressRef.current, {
-      scaleX: 1,
-      ease: "none",
-      scrollTrigger: {
-        trigger: "#hero",
-        start: "top top",
-        end: "bottom top",
-        scrub: 0.3,
-      },
+  // Top progress bar update
+  useEffect(() => {
+    if (!scrollProgressRef.current) return;
+
+    const unsubscribe = heroScrollProgress.on("change", (latest) => {
+      if (scrollProgressRef.current) {
+        scrollProgressRef.current.style.transform = `scaleX(${latest})`;
+      }
     });
-  }, [reduce]);
 
-  // Parallax effect on hero section
-  useEffect(() => {
-    if (reduce || !sectionRef.current) return;
+    return () => unsubscribe();
+  }, [heroScrollProgress]);
 
-    gsap.to(sectionRef.current, {
-      y: 100,
-      ease: "none",
-      scrollTrigger: {
-        trigger: "#hero",
-        start: "top top",
-        end: "bottom top",
-        scrub: true,
-      },
-    });
-  }, [reduce]);
+  // Smooth parallax without SSR window access
+  const { scrollY } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
 
-  // Multi-layer parallax for background aurora blobs
-  const blob1Ref = useRef<HTMLDivElement>(null);
-  const blob2Ref = useRef<HTMLDivElement>(null);
-  const blob3Ref = useRef<HTMLDivElement>(null);
-  const gridRef = useRef<HTMLDivElement>(null);
+  const gridParallaxY = useTransform(scrollY, [0, 800], [0, -30]);
+  const blob1ParallaxY = useTransform(scrollY, [0, 800], [0, 40]);
+  const blob2ParallaxY = useTransform(scrollY, [0, 800], [0, 60]);
+  const blob3ParallaxY = useTransform(scrollY, [0, 800], [0, 80]);
 
-  useEffect(() => {
-    if (reduce) return;
-
-    // Each blob scrolls at a different rate for depth
-    const layers = [
-      { el: gridRef.current, speed: 60 },
-      { el: blob1Ref.current, speed: -80 },
-      { el: blob2Ref.current, speed: -120 },
-      { el: blob3Ref.current, speed: -160 },
-    ];
-
-    const onScroll = () => {
-      const scrollY = window.scrollY;
-      layers.forEach(({ el, speed }) => {
-        if (el) {
-          el.style.transform = `translate3d(0, ${scrollY * speed / 600}px, 0)`;
-        }
-      });
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [reduce]);
-
-  // normalized cursor position relative to card center: -1 .. 1
+  // Smooth cursor-following tilt
   const mvX = useMotionValue(0);
   const mvY = useMotionValue(0);
 
-  const rotateY = useSpring(useTransform(mvX, [-1, 1], [10, -10]), {
-    stiffness: 140,
-    damping: 16,
-    mass: 0.4,
-  });
-  const rotateX = useSpring(useTransform(mvY, [-1, 1], [-10, 10]), {
-    stiffness: 140,
-    damping: 16,
-    mass: 0.4,
-  });
-  // subtle magnetic translate so the card drifts toward the cursor
-  const shiftX = useSpring(useTransform(mvX, [-1, 1], [-6, 6]), {
-    stiffness: 120,
-    damping: 18,
-  });
-  const shiftY = useSpring(useTransform(mvY, [-1, 1], [-6, 6]), {
-    stiffness: 120,
-    damping: 18,
-  });
+  const rotateY = useSpring(useTransform(mvX, [-1, 1], [6, -6]), { stiffness: 200, damping: 25, mass: 0.5 });
+  const rotateX = useSpring(useTransform(mvY, [-1, 1], [-6, 6]), { stiffness: 200, damping: 25, mass: 0.5 });
+  const shiftX = useSpring(useTransform(mvX, [-1, 1], [-3, 3]), { stiffness: 150, damping: 20, mass: 0.5 });
+  const shiftY = useSpring(useTransform(mvY, [-1, 1], [-3, 3]), { stiffness: 150, damping: 20, mass: 0.5 });
 
   const onCardMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (reduce) return;
     const el = cardRef.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
@@ -173,7 +108,6 @@ export function Hero() {
     mvX.set(px * 2 - 1);
     mvY.set(py * 2 - 1);
 
-    // cursor-following glare inside the card
     const inner = el.querySelector<HTMLElement>("[data-card-glare]");
     if (inner) {
       inner.style.setProperty("--mx", `${e.clientX - rect.left}px`);
@@ -192,30 +126,42 @@ export function Hero() {
       ref={sectionRef}
       className="relative flex min-h-screen items-center overflow-hidden pt-28 pb-20"
     >
-      {/* Ambient background (particles are global, see page.tsx) */}
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <div ref={gridRef} className="absolute inset-0 grid-bg mask-[radial-gradient(ellipse_at_center,black_30%,transparent_75%)] will-change-transform" />
-        <div ref={blob1Ref} className="absolute left-1/2 top-[-10%] size-176 -translate-x-1/2 rounded-full bg-[oklch(0.62_0.2_255/0.22)] blur-[140px] animate-aurora will-change-transform" />
-        <div ref={blob2Ref} className="absolute right-[-10%] top-[30%] size-128 rounded-full bg-[oklch(0.72_0.16_200/0.16)] blur-[130px] animate-aurora [animation-delay:-6s] will-change-transform" />
-        <div ref={blob3Ref} className="absolute left-[-8%] bottom-[-10%] size-136 rounded-full bg-[oklch(0.6_0.2_290/0.12)] blur-[140px] animate-aurora [animation-delay:-12s] will-change-transform" />
-      </div>
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-40 bg-linear-to-t from-background to-transparent" />
-
-      {/* Scroll Progress Indicator */}
-      <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/5">
+      {/* Top Scroll Progress Indicator */}
+      <div className="absolute top-0 left-0 right-0 h-1 bg-black/10 z-20">
         <div
           ref={scrollProgressRef}
-          className="h-full origin-left scale-x-0 bg-gradient-to-r from-[oklch(0.62_0.2_255)] to-[oklch(0.78_0.16_220)]"
+          className="h-full origin-left scale-x-0 bg-[#111] transition-transform duration-75"
         />
       </div>
+
+      {/* Ambient background */}
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <motion.div
+          style={{ y: reduce ? 0 : gridParallaxY }}
+          className="absolute inset-0 grid-bg mask-[radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
+        />
+        <motion.div
+          style={{ y: reduce ? 0 : blob1ParallaxY }}
+          className="absolute left-1/2 top-[-10%] size-176 -translate-x-1/2 rounded-full bg-[#059669]/10 blur-[120px] animate-aurora"
+        />
+        <motion.div
+          style={{ y: reduce ? 0 : blob2ParallaxY }}
+          className="absolute right-[-10%] top-[30%] size-128 rounded-full bg-[#059669]/6 blur-[110px] animate-aurora [animation-delay:-6s]"
+        />
+        <motion.div
+          style={{ y: reduce ? 0 : blob3ParallaxY }}
+          className="absolute left-[-8%] bottom-[-10%] size-136 rounded-full bg-[#111]/5 blur-[120px] animate-aurora [animation-delay:-12s]"
+        />
+      </div>
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-40 bg-linear-to-t from-background to-transparent" />
 
       <div className="mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-12 px-5 lg:grid-cols-[1.15fr_0.85fr] lg:gap-8">
         {/* Left: copy */}
         <div className="flex flex-col items-start">
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.6, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ delay: 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="mb-6 inline-flex items-center gap-2 rounded-full glass px-3 py-1.5 text-xs text-foreground/80 hover:scale-105 transition-transform cursor-pointer"
           >
             <span className="relative flex size-2">
@@ -232,11 +178,11 @@ export function Hero() {
                 className="mr-[0.28em] inline-block overflow-hidden align-bottom"
               >
                 <motion.span
-                  initial={{ y: "110%", opacity: 0, rotateX: -40 }}
-                  animate={{ y: "0%", opacity: 1, rotateX: 0 }}
+                  initial={{ y: "110%", opacity: 0 }}
+                  animate={{ y: "0%", opacity: 1 }}
                   transition={{
-                    delay: 1.7 + i * 0.09,
-                    duration: 0.8,
+                    delay: 0.15 + i * 0.05,
+                    duration: 0.5,
                     ease: [0.22, 1, 0.36, 1],
                   }}
                   className={
@@ -244,10 +190,6 @@ export function Hero() {
                       ? "inline-block text-gradient-blue"
                       : "inline-block text-gradient"
                   }
-                  style={{
-                    transformPerspective: 1000,
-                    transformStyle: "preserve-3d",
-                  }}
                 >
                   {word}
                 </motion.span>
@@ -256,9 +198,9 @@ export function Hero() {
           </h1>
 
           <motion.p
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 2.25, duration: 0.7 }}
+            transition={{ delay: 0.35, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg"
           >
             Information Systems student, web developer, designer, PR lead,
@@ -267,15 +209,15 @@ export function Hero() {
           </motion.p>
 
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 2.4, duration: 0.7 }}
+            transition={{ delay: 0.45, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="mt-8 flex flex-wrap items-center gap-3"
           >
             <Link
               ref={cta1Ref}
               href="/projects"
-              className="group relative inline-flex items-center gap-2 rounded-xl bg-[oklch(0.62_0.2_255)] px-5 py-3 text-sm font-medium text-white shadow-[0_0_30px_-8px_oklch(0.62_0.2_255)] transition-all hover:shadow-[0_0_40px_-6px_oklch(0.62_0.2_255)] hover:brightness-110 cursor-pointer"
+              className="group relative inline-flex items-center gap-2 rounded-xl bg-[#111] px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-[#059669] cursor-pointer"
             >
               View Projects
               <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
@@ -283,7 +225,7 @@ export function Hero() {
             <Link
               ref={cta2Ref}
               href="/contact"
-              className="inline-flex items-center gap-2 rounded-xl glass px-5 py-3 text-sm font-medium text-foreground/90 transition-all hover:bg-white/10 cursor-pointer"
+              className="inline-flex items-center gap-2 rounded-xl glass px-5 py-3 text-sm font-medium text-foreground/90 transition-all hover:bg-black/10 cursor-pointer"
             >
               <Mail className="size-4" />
               Contact Me
@@ -293,34 +235,34 @@ export function Hero() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 2.6, duration: 0.7 }}
+            transition={{ delay: 0.55, duration: 0.5 }}
             className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-muted-foreground"
           >
             <span className="inline-flex items-center gap-1.5 group cursor-pointer">
-              <Sparkles className="size-3.5 text-[oklch(0.62_0.2_255)] group-hover:rotate-12 transition-transform" />
+              <Sparkles className="size-3.5 text-[#111] group-hover:rotate-12 transition-transform duration-300" />
               Information Systems · Hawassa University
             </span>
-            <span className="hidden h-3 w-px bg-white/15 sm:block" />
+            <span className="hidden h-3 w-px bg-black/15 sm:block" />
             <span className="inline-flex items-center gap-1.5 group cursor-pointer">
-              <MapPin className="size-3.5 text-[oklch(0.62_0.2_255)] group-hover:scale-125 transition-transform" />
+              <MapPin className="size-3.5 text-[#111] group-hover:scale-125 transition-transform duration-300" />
               Head of PR · Peak Craft
             </span>
-            <span className="hidden h-3 w-px bg-white/15 sm:block" />
+            <span className="hidden h-3 w-px bg-black/15 sm:block" />
             <span className="inline-flex items-center gap-1.5 group cursor-pointer">
-              <PenTool className="size-3.5 text-[oklch(0.62_0.2_255)] group-hover:-rotate-12 transition-transform" />
+              <PenTool className="size-3.5 text-[#111] group-hover:-rotate-12 transition-transform duration-300" />
               SMM · Content Creator
             </span>
           </motion.div>
         </div>
 
-        {/* Right: identity card — follows the cursor */}
+        {/* Right: identity card — follows cursor gently */}
         <motion.div
           ref={cardRef}
           onMouseMove={onCardMove}
           onMouseLeave={onCardLeave}
-          initial={{ opacity: 0, y: 30, scale: 0.9 }}
+          initial={{ opacity: 0, y: 20, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ delay: 2.0, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ delay: 0.25, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           style={{
             rotateX: reduce ? 0 : rotateX,
             rotateY: reduce ? 0 : rotateY,
@@ -330,29 +272,35 @@ export function Hero() {
           }}
           className="relative mx-auto w-full max-w-sm"
         >
-          <div className="absolute -inset-4 -z-10 rounded-3xl bg-[oklch(0.62_0.2_255/0.18)] blur-3xl" />
+          <div className="absolute -inset-4 -z-10 rounded-3xl bg-[#059669]/10 blur-2xl" />
           <div
             data-card-glare
-            className="group relative animate-float-slow overflow-hidden rounded-3xl glass-strong p-6 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.8)]"
+            className="group relative overflow-hidden rounded-3xl glass-strong p-6 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.4)] border border-[#111]/15"
           >
             {/* cursor-following glare */}
             <div
               className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
               style={{
                 background:
-                  "radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), oklch(0.62 0.2 255 / 0.16), transparent 60%)",
+                  "radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), rgb(5 150 105 / 0.16), transparent 60%)",
               }}
             />
             {/* top row */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="relative size-12 shrink-0">
-                  <img
-                    src="/avatar.png"
-                    alt="Jibril Nuredin avatar"
-                    className="size-12 rounded-xl object-cover ring-1 ring-white/15"
-                  />
-                  <span className="absolute -bottom-0.5 -right-0.5 size-3.5 rounded-full border-2 border-[oklch(0.11_0.008_264)] bg-emerald-400 animate-pulse" />
+                  {/* Manga-style B&W Avatar */}
+                  <div className="relative size-12 rounded-xl overflow-hidden ring-2 ring-[#111]">
+                    <img
+                      src="/avatar.png"
+                      alt="Jibril Nuredin avatar"
+                      className="size-full object-cover"
+                      style={{
+                        filter: "grayscale(100%) contrast(160%) brightness(105%)",
+                      }}
+                    />
+                    <span className="absolute -bottom-0.5 -right-0.5 size-3.5 rounded-full border-2 border-white bg-emerald-400 animate-pulse" />
+                  </div>
                 </div>
                 <div>
                   <p className="text-sm font-semibold text-foreground">
@@ -363,56 +311,56 @@ export function Hero() {
                   </p>
                 </div>
               </div>
-              <span className="rounded-full bg-white/8 px-2.5 py-1 text-[10px] font-medium text-foreground/70">
+              <span className="rounded-full bg-black/8 px-2.5 py-1 text-[10px] font-medium text-foreground/70 font-mono">
                 v2025
               </span>
             </div>
 
-            <div className="my-5 h-px w-full bg-white/8" />
+            <div className="my-5 h-px w-full bg-black/10" />
 
             {/* meta lines */}
             <div className="space-y-2.5 font-mono text-xs">
               <div className="flex justify-between group/meta cursor-pointer">
-                <span className="text-muted-foreground transition-colors group-hover/meta:text-foreground">
+                <span className="text-muted-foreground transition-colors group-hover/meta:text-foreground duration-200">
                   role
                 </span>
-                <span className="text-foreground/90">software_engineer</span>
+                <span className="text-foreground/90 font-medium">software_engineer</span>
               </div>
               <div className="flex justify-between group/meta cursor-pointer">
-                <span className="text-muted-foreground transition-colors group-hover/meta:text-foreground">
+                <span className="text-muted-foreground transition-colors group-hover/meta:text-foreground duration-200">
                   pr
                 </span>
-                <span className="text-foreground/90">peak_craft.head</span>
+                <span className="text-foreground/90 font-medium">peak_craft.head</span>
               </div>
               <div className="flex justify-between group/meta cursor-pointer">
-                <span className="text-muted-foreground transition-colors group-hover/meta:text-foreground">
+                <span className="text-muted-foreground transition-colors group-hover/meta:text-foreground duration-200">
                   smm
                 </span>
-                <span className="text-foreground/90">social_media_mgr</span>
+                <span className="text-foreground/90 font-medium">social_media_mgr</span>
               </div>
               <div className="flex justify-between group/meta cursor-pointer">
-                <span className="text-muted-foreground transition-colors group-hover/meta:text-foreground">
+                <span className="text-muted-foreground transition-colors group-hover/meta:text-foreground duration-200">
                   content
                 </span>
-                <span className="text-foreground/90">creator</span>
+                <span className="text-foreground/90 font-medium">creator</span>
               </div>
               <div className="flex justify-between group/meta cursor-pointer">
-                <span className="text-muted-foreground transition-colors group-hover/meta:text-foreground">
+                <span className="text-muted-foreground transition-colors group-hover/meta:text-foreground duration-200">
                   edu
                 </span>
-                <span className="text-foreground/90">info_systems</span>
+                <span className="text-foreground/90 font-medium">info_systems</span>
               </div>
               <div className="flex justify-between group/meta cursor-pointer">
-                <span className="text-muted-foreground transition-colors group-hover/meta:text-foreground">
+                <span className="text-muted-foreground transition-colors group-hover/meta:text-foreground duration-200">
                   focus
                 </span>
-                <span className="text-[oklch(0.72_0.16_255)]">
+                <span className="text-[#059669] font-medium">
                   web · ai · community
                 </span>
               </div>
             </div>
 
-            <div className="my-5 h-px w-full bg-white/8" />
+            <div className="my-5 h-px w-full bg-black/10" />
 
             {/* stack chips */}
             <div className="flex flex-wrap gap-1.5">
@@ -424,11 +372,10 @@ export function Hero() {
                 "Canva",
                 "MongoDB",
                 "Tailwind",
-              ].map((s, i) => (
+              ].map((s) => (
                 <span
                   key={s}
-                  className="cursor-pointer rounded-md bg-white/6 px-2 py-1 text-[11px] text-foreground/80 ring-1 ring-white/8 transition-all hover:bg-[oklch(0.62_0.2_255/0.2)] hover:ring-[oklch(0.62_0.2_255/0.4)] hover:scale-105"
-                  style={{ animationDelay: `${i * 50}ms` }}
+                  className="cursor-pointer rounded-md bg-black/[0.06] px-2 py-1 text-[11px] text-foreground/80 ring-1 ring-black/10 transition-all duration-200 hover:bg-[#059669]/15 hover:ring-[#059669]/40 hover:scale-105"
                 >
                   {s}
                 </span>
@@ -436,11 +383,11 @@ export function Hero() {
             </div>
 
             {/* Terminal hint */}
-            <div className="mt-4 flex items-center gap-2 rounded-lg bg-black/20 px-3 py-2 text-[10px] text-muted-foreground">
+            <div className="mt-4 flex items-center gap-2 rounded-lg bg-black/[0.06] px-3 py-2 text-[10px] text-muted-foreground">
               <Terminal className="size-3" />
               <span>
                 Press{" "}
-                <kbd className="rounded bg-white/10 px-1.5 py-0.5 font-mono">
+                <kbd className="rounded bg-black/10 px-1.5 py-0.5 font-mono">
                   `
                 </kbd>{" "}
                 for terminal
@@ -452,9 +399,9 @@ export function Hero() {
 
       {/* explore cue */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 2.9, duration: 0.7 }}
+        transition={{ delay: 0.6, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 sm:flex"
       >
         <Link
@@ -462,21 +409,21 @@ export function Hero() {
           className="group flex flex-col items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
           aria-label="Scroll down to explore more"
         >
-          <span className="text-[10px] uppercase tracking-[0.2em] group-hover:tracking-[0.25em] transition-all">
+          <span className="text-[10px] uppercase tracking-[0.2em] group-hover:tracking-[0.25em] transition-all duration-200 font-mono">
             Scroll down
           </span>
-          <span className="flex h-10 w-6 items-start justify-center rounded-full border border-white/15 p-1.5 transition-colors group-hover:border-white/25">
+          <span className="flex h-10 w-6 items-start justify-center rounded-full border border-black/25 p-1.5 transition-colors duration-200 group-hover:border-black/50">
             <motion.span
               animate={{ y: [0, 10, 0] }}
               transition={{
-                duration: 1.5,
+                duration: 1.8,
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
-              className="grid size-3 place-items-center rounded-full bg-[oklch(0.62_0.2_255)] shadow-[0_0_18px_oklch(0.62_0.2_255/0.5)]"
+              className="grid size-3 place-items-center rounded-full bg-[#111]"
             />
           </span>
-          <ArrowDown className="size-3.5 animate-bounce text-[oklch(0.62_0.2_255)]" />
+          <ArrowDown className="size-3.5 animate-bounce text-[#111]" />
         </Link>
       </motion.div>
     </section>

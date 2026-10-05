@@ -1,14 +1,12 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono, Zen_Kurenaido } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as SonnerToaster } from "@/components/ui/sonner";
 import { Navbar } from "@/components/portfolio/navbar";
 import { Footer } from "@/components/portfolio/footer";
-import { ParticleField } from "@/components/portfolio/particle-field";
 import { SmoothScroll } from "@/components/portfolio/smooth-scroll";
 import { TerminalMode } from "@/components/portfolio/terminal-mode";
-import { CustomCursor } from "@/components/portfolio/custom-cursor";
 import { SoundToggle } from "@/components/portfolio/sound-toggle";
 import { ScrollProgressIndicator } from "@/components/portfolio/scroll-progress-indicator";
 
@@ -20,6 +18,13 @@ const inter = Inter({
 
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-mono",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const zenKurenaido = Zen_Kurenaido({
+  weight: "400",
+  variable: "--font-story",
   subsets: ["latin"],
   display: "swap",
 });
@@ -85,7 +90,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport = {
-  themeColor: "#07080d",
+  themeColor: "#fafaf8",
   width: "device-width",
   initialScale: 1,
 };
@@ -121,7 +126,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
         <script
           type="application/ld+json"
@@ -129,13 +134,10 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.variable} ${jetbrainsMono.variable} antialiased bg-background text-foreground overflow-x-hidden`}
+        className={`${inter.variable} ${jetbrainsMono.variable} ${zenKurenaido.variable} antialiased bg-background text-foreground overflow-x-hidden`}
       >
-        <CustomCursor />
         <SoundToggle />
         <SmoothScroll>
-          {/* Global cursor-reactive particle background (behind all pages) */}
-          <ParticleField />
           <div className="relative flex min-h-screen flex-col">
             <Navbar />
             <ScrollProgressIndicator />
@@ -145,7 +147,7 @@ export default function RootLayout({
         </SmoothScroll>
         <TerminalMode />
         <Toaster />
-        <SonnerToaster position="bottom-right" theme="dark" richColors />
+        <SonnerToaster position="bottom-right" theme="light" richColors />
       </body>
     </html>
   );

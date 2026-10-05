@@ -54,7 +54,7 @@ export function Modal({
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             onClick={(e) => e.stopPropagation()}
             className={cn(
-              "relative z-10 flex w-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-[oklch(0.1_0.008_264)] shadow-[0_30px_80px_-30px_rgba(0,0,0,0.9)]",
+              "relative z-10 flex w-full flex-col overflow-hidden rounded-2xl border-2 border-[#111] bg-white shadow-[8px_8px_0_0_#111]",
               maxWidth,
               maxHeight,
               className,
@@ -65,7 +65,7 @@ export function Modal({
               <button
                 onClick={onClose}
                 aria-label="Close"
-                className="absolute right-4 top-4 z-20 grid size-9 shrink-0 place-items-center rounded-lg glass transition-colors hover:bg-white/10"
+                className="absolute right-4 top-4 z-20 grid size-9 shrink-0 place-items-center rounded-lg glass transition-colors hover:bg-black/10"
               >
                 <X className="size-5" />
               </button>

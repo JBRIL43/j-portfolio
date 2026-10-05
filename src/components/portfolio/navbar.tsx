@@ -6,12 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { cn } from "@/lib/utils";
-import { useScrolled } from "./use-scrolled";
 import { useReducedMotion } from "./use-reduced-motion";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 type NavGroup = {
   label: string;
@@ -22,11 +17,6 @@ const navGroups: NavGroup[] = [
   {
     label: "About",
     items: [
-      {
-        label: "Story",
-        href: "/story",
-        description: "The manga-style journey through my work.",
-      },
       {
         label: "Journey",
         href: "/journey",
@@ -40,7 +30,7 @@ const navGroups: NavGroup[] = [
       {
         label: "Vision",
         href: "/vision",
-        description: "Where I’m taking the work next.",
+        description: "Where I'm taking the work next.",
       },
     ],
   },
@@ -82,29 +72,11 @@ const navGroups: NavGroup[] = [
 ];
 
 export function Navbar() {
-  const scrolled = useScrolled(20);
   const [open, setOpen] = useState(false);
   const [activeGroup, setActiveGroup] = useState<string | null>(null);
   const [mobileGroup, setMobileGroup] = useState<string | null>(null);
   const reduce = useReducedMotion();
-  const progressRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
-
-  // Scroll progress indicator
-  useEffect(() => {
-    if (reduce || !progressRef.current) return;
-
-    gsap.to(progressRef.current, {
-      scaleX: 1,
-      ease: "none",
-      scrollTrigger: {
-        trigger: "body",
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 0.3,
-      },
-    });
-  }, [reduce]);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -128,34 +100,20 @@ export function Navbar() {
         transition={{ delay: 0.6, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         className="fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-3 sm:pt-4"
       >
-        {/* Scroll Progress Bar */}
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-white/5">
-          <div
-            ref={progressRef}
-            className="origin-left scale-x-0 h-full bg-gradient-to-r from-[oklch(0.62_0.2_255)] via-[oklch(0.78_0.16_220)] to-[oklch(0.72_0.16_200)]"
-          />
-        </div>
-
-        <nav
-          className={cn(
-            "flex w-full max-w-5xl items-center justify-between gap-4 rounded-2xl px-4 py-2.5 transition-all duration-300 sm:px-5",
-            scrolled
-              ? "glass-strong shadow-[0_8px_40px_-12px_rgba(0,0,0,0.6)]"
-              : "border border-transparent bg-transparent",
-          )}
-        >
+        {/* Manga Navigation Bar - Always Solid */}
+        <nav className="flex w-full max-w-6xl items-center justify-between gap-4 rounded-2xl px-4 py-3 sm:px-5 manga-panel-sm border-2 border-[#111] bg-white shadow-[4px_4px_0_0_#111]">
           <Link
             href="/"
             className="group flex items-center gap-2.5"
             aria-label="Go to home"
           >
-            <span className="relative grid size-8 place-items-center rounded-lg glass">
-              <span className="text-[13px] font-semibold text-gradient-blue">
-                JB
+            <span className="relative grid size-9 place-items-center rounded-lg manga-panel-sm bg-white">
+              <span className="text-[14px] font-mono font-bold text-[#111]">
+                J.
               </span>
-              <span className="absolute inset-0 rounded-lg ring-1 ring-[oklch(0.62_0.2_255/0.3)] opacity-0 transition-opacity group-hover:opacity-100" />
+              <span className="absolute inset-0 rounded-lg ring-1 ring-[#059669]/40 opacity-0 transition-opacity group-hover:opacity-100" />
             </span>
-            <span className="hidden text-sm font-medium tracking-tight text-foreground/90 sm:block">
+            <span className="hidden text-sm font-mono font-medium tracking-tight text-foreground/90 sm:block">
               Jibril Nuredin
             </span>
           </Link>
@@ -180,24 +138,13 @@ export function Navbar() {
                       )
                     }
                     className={cn(
-                      "relative inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm transition-colors",
+                      "relative inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-mono text-xs transition-colors",
                       groupActive || activeGroup === group.label
                         ? "text-foreground"
                         : "text-muted-foreground hover:text-foreground",
                     )}
                     aria-expanded={activeGroup === group.label}
                   >
-                    {(groupActive || activeGroup === group.label) && (
-                      <motion.span
-                        layoutId="nav-active"
-                        className="absolute inset-0 rounded-lg bg-white/8 ring-1 ring-white/10"
-                        transition={{
-                          type: "spring",
-                          stiffness: 380,
-                          damping: 30,
-                        }}
-                      />
-                    )}
                     <span className="relative">{group.label}</span>
                     <ChevronDown
                       className={cn(
@@ -214,7 +161,7 @@ export function Navbar() {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 12, scale: 0.98 }}
                         transition={{ duration: 0.18 }}
-                        className="absolute left-0 top-full z-50 mt-3 w-72 rounded-2xl border border-white/10 bg-[oklch(0.1_0.008_264)] p-2 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.75)] backdrop-blur-xl"
+                        className="absolute left-0 top-full z-50 mt-3 w-72 rounded-xl border-2 border-[#111] bg-white p-2 shadow-[4px_4px_0_0_#111]"
                       >
                         {group.items.map((item) => {
                           const active = isActive(item.href);
@@ -224,15 +171,15 @@ export function Navbar() {
                               href={item.href}
                               onClick={() => setActiveGroup(null)}
                               className={cn(
-                                "block rounded-xl px-4 py-3 transition-colors hover:bg-white/6",
-                                active && "bg-white/6",
+                                "block rounded-lg px-4 py-3 transition-colors hover:bg-black/[0.06]",
+                                active && "bg-black/[0.06]",
                               )}
                             >
                               <div className="flex items-center justify-between gap-3">
                                 <span className="text-sm font-medium text-foreground">
                                   {item.label}
                                 </span>
-                                <span className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+                                <span className="text-[9px] uppercase tracking-[0.18em] text-muted-foreground font-mono">
                                   {group.label}
                                 </span>
                               </div>
@@ -253,13 +200,13 @@ export function Navbar() {
           <div className="flex items-center gap-2">
             <Link
               href="/contact"
-              className="hidden rounded-lg bg-[oklch(0.62_0.2_255)] px-4 py-1.5 text-sm font-medium text-white shadow-[0_0_24px_-6px_oklch(0.62_0.2_255)] transition-all hover:shadow-[0_0_32px_-4px_oklch(0.62_0.2_255)] hover:brightness-110 sm:inline-flex"
+              className="hidden rounded-lg bg-[#111] px-4 py-2 text-sm font-mono font-medium text-white transition-all hover:bg-[#059669] sm:inline-flex"
             >
-              Let&apos;s talk
+              Let's talk
             </Link>
             <button
               onClick={() => setOpen(true)}
-              className="grid size-9 place-items-center rounded-lg glass lg:hidden"
+              className="grid size-10 place-items-center rounded-lg manga-panel-sm lg:hidden"
               aria-label="Open menu"
             >
               <Menu className="size-5" />
@@ -285,15 +232,15 @@ export function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", stiffness: 320, damping: 34 }}
-              className="absolute right-0 top-0 flex h-full w-[82%] max-w-sm flex-col gap-2 overflow-y-auto border-l border-white/10 bg-[oklch(0.09_0.008_264)] p-6"
+              className="absolute right-0 top-0 flex h-full w-[82%] max-w-sm flex-col gap-2 overflow-y-auto border-l-2 border-[#111] bg-white p-6"
             >
               <div className="mb-6 flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">
+                <span className="text-sm font-mono text-muted-foreground">
                   {activeDropdownItem?.label ?? "Menu"}
                 </span>
                 <button
                   onClick={() => setOpen(false)}
-                  className="grid size-9 place-items-center rounded-lg glass"
+                  className="grid size-9 place-items-center rounded-lg manga-panel-sm"
                   aria-label="Close menu"
                 >
                   <X className="size-5" />
@@ -308,7 +255,7 @@ export function Navbar() {
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.08 + groupIndex * 0.06 }}
-                      className="rounded-2xl border border-white/8 bg-white/3 p-2"
+                      className="rounded-xl border border-black/15 bg-black/[0.03] p-2"
                     >
                       <button
                         type="button"
@@ -317,10 +264,10 @@ export function Navbar() {
                             current === group.label ? null : group.label,
                           )
                         }
-                        className="flex w-full items-center justify-between rounded-xl px-4 py-3 text-left text-base font-medium text-foreground transition-colors hover:bg-white/5"
+                        className="flex w-full items-center justify-between rounded-lg px-4 py-3 text-left text-base font-medium text-foreground transition-colors hover:bg-black/5"
                         aria-expanded={expanded}
                       >
-                        <span>{group.label}</span>
+                        <span className="font-mono text-sm">{group.label}</span>
                         <ChevronDown
                           className={cn(
                             "size-4 transition-transform duration-200",
@@ -346,17 +293,15 @@ export function Navbar() {
                                     href={item.href}
                                     onClick={() => setOpen(false)}
                                     className={cn(
-                                      "block rounded-xl px-3 py-3 transition-colors hover:bg-white/6",
+                                      "block rounded-lg px-3 py-3 transition-colors hover:bg-black/5",
                                       active
-                                        ? "bg-white/6 text-foreground"
+                                        ? "bg-black/5 text-foreground"
                                         : "text-foreground/90",
                                     )}
                                   >
                                     <div className="flex items-center justify-between gap-3">
-                                      <span className="font-medium">
-                                        {item.label}
-                                      </span>
-                                      <span className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+                                      <span className="font-medium">{item.label}</span>
+                                      <span className="text-[9px] uppercase tracking-[0.18em] text-muted-foreground font-mono">
                                         {group.label}
                                       </span>
                                     </div>
@@ -377,9 +322,9 @@ export function Navbar() {
               <Link
                 href="/contact"
                 onClick={() => setOpen(false)}
-                className="mt-4 rounded-xl bg-[oklch(0.62_0.2_255)] px-4 py-3 text-center text-sm font-medium text-white"
+                className="mt-4 rounded-lg bg-[#111] px-4 py-3 text-center text-sm font-mono font-medium text-white transition-colors hover:bg-[#059669]"
               >
-                Let&apos;s talk
+                Let's talk
               </Link>
             </motion.div>
           </motion.div>
