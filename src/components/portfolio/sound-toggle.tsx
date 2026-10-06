@@ -10,6 +10,9 @@ export function SoundToggle() {
   const [isEnabled, setIsEnabled] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
   const pathname = usePathname();
+  const [inFrame, setInFrame] = useState(false);
+
+  useEffect(() => { setInFrame(window.self !== window.top); }, []);
   const audioContextRef = useRef<AudioContext | null>(null);
 
   // Initialize audio context on first interaction
@@ -64,7 +67,7 @@ export function SoundToggle() {
   }, [pathname]);
 
   // The story page is a quiet manga experience: no sound UI there.
-  if (pathname === "/story" || pathname === "/desktop") return null;
+  if (pathname === "/story" || pathname === "/desktop" || pathname === "/" || inFrame) return null;
 
   return (
     <motion.button

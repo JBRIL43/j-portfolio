@@ -178,6 +178,7 @@ function LineNumbers({ count, cursorLine }: { count: number; cursorLine: number 
 // ── Main Component ──
 export function TerminalMode() {
   const pathname = usePathname();
+  const [inFrame, setInFrame] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [vimMode, setVimMode] = useState<VimMode>("insert");
   const [input, setInput] = useState("");
@@ -324,6 +325,8 @@ export function TerminalMode() {
   );
 
   // ── Keyboard handler ──
+  useEffect(() => { setInFrame(window.self !== window.top); }, []);
+
   useEffect(() => {
     const handleGlobalKey = (e: KeyboardEvent) => {
       if (e.key === "`" && !e.ctrlKey && !e.metaKey && !e.altKey) {
@@ -423,7 +426,7 @@ export function TerminalMode() {
     <>
       {/* ── Chatbot-style Launcher in Bottom-Right ── */}
       <AnimatePresence>
-        {!isOpen && pathname !== "/story" && pathname !== "/desktop" && (
+        {!isOpen && !inFrame && pathname !== "/story" && pathname !== "/desktop" && pathname !== "/" && (
           <motion.button
             initial={{ opacity: 0, scale: 0.8, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}

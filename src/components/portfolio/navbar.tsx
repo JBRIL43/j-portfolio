@@ -92,7 +92,8 @@ export function Navbar() {
     .flatMap((group) => group.items)
     .find((item) => isActive(item.href));
 
-  if (pathname === "/desktop") return null;
+  // Desktop-environment branch: navigation is dock-only, no site header.
+  return null;
 
   return (
     <>

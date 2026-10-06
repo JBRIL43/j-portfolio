@@ -428,6 +428,52 @@ function MenuBarClock() {
 }
 
 // ──────────────────────────────────────────────
+// Full-screen App Window (Mac / iOS style)
+// ──────────────────────────────────────────────
+
+type AppWindowData = { title: string; href: string };
+
+function AppWindow({ app, onClose }: { app: AppWindowData; onClose: () => void }) {
+  useEffect(() => {
+    const h = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", h);
+    return () => window.removeEventListener("keydown", h);
+  }, [onClose]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.94, y: 24 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.96, y: 16 }}
+      transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+      className="fixed inset-0 z-[250] flex flex-col bg-[#fafaf8]"
+      role="dialog"
+      aria-label={app.title}
+    >
+      {/* Window titlebar */}
+      <div className="flex shrink-0 items-center gap-3 border-b-2 border-[#111] bg-white px-3 py-2 sm:px-4 sm:py-2.5">
+        <button
+          onClick={onClose}
+          aria-label="Close window"
+          className="size-3.5 shrink-0 rounded-full border-2 border-[#111] bg-[#ff5f57] cursor-pointer active:scale-90 transition-transform"
+        />
+        <span className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-[#111] truncate">
+          {app.title}
+        </span>
+        <button
+          onClick={onClose}
+          className="ml-auto flex items-center gap-1.5 border-2 border-[#111] bg-white px-2.5 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-[#111] shadow-[2px_2px_0_0_#111] cursor-pointer active:translate-y-px active:shadow-none"
+        >
+          &#8592; Back to Desktop
+        </button>
+      </div>
+
+      <iframe src={app.href} title={app.title} className="min-h-0 w-full flex-1 border-0 bg-white" />
+    </motion.div>
+  );
+}
+
+// ──────────────────────────────────────────────
 // Preview Modal (Manga Panel Dialog)
 // ──────────────────────────────────────────────
 
@@ -685,10 +731,10 @@ function DesktopCard({
 // Manga Dock / Toolbar
 // ──────────────────────────────────────────────
 
-function Dock() {
+function Dock({ onOpen }: { onOpen: (title: string, href: string) => void }) {
   const [hovered, setHovered] = useState<string | null>(null);
   const items = [
-    { id: "home", label: "Story", icon: Compass, href: "/" },
+    { id: "home", label: "Story", icon: Compass, href: "/story" },
     { id: "projects", label: "Projects", icon: FolderGit2, href: "/projects" },
     { id: "skills", label: "Skills", icon: Wrench, href: "/skills" },
     { id: "about", label: "Beyond", icon: Megaphone, href: "/beyond" },
@@ -709,14 +755,18 @@ function Dock() {
           const Icon = item.icon;
           const active = hovered === item.id;
           return (
-            <Link key={item.id} href={item.href}>
-              <motion.div
-                onMouseEnter={() => setHovered(item.id)}
-                onMouseLeave={() => setHovered(null)}
-                whileHover={{ y: -6, scale: 1.12 }}
-                whileTap={{ scale: 0.92 }}
-                className="relative flex flex-col items-center cursor-pointer"
-              >
+            <motion.div
+              key={item.id}
+              role="button"
+              tabIndex={0}
+              onClick={() => onOpen(item.label, item.href)}
+              onKeyDown={(e) => { if (e.key === "Enter") onOpen(item.label, item.href); }}
+              onMouseEnter={() => setHovered(item.id)}
+              onMouseLeave={() => setHovered(null)}
+              whileHover={{ y: -6, scale: 1.12 }}
+              whileTap={{ scale: 0.92 }}
+              className="relative flex flex-col cursor-pointer"
+            >
                 <div
                   className={cn(
                     "flex items-center justify-center size-10 rounded-xl border-2 border-[#111] bg-white shadow-[2px_2px_0_0_#111] transition-colors",
@@ -738,7 +788,6 @@ function Dock() {
                   )}
                 </AnimatePresence>
               </motion.div>
-            </Link>
           );
         })}
       </div>
@@ -868,12 +917,13 @@ function MobileAppGrid({ onOpen }: { onOpen: (c: CardData) => void }) {
 // iOS-style Dock (mobile bottom bar)
 // ──────────────────────────────────────────────
 
-function MobileDock() {
+function MobileDock({ onOpen }: { onOpen: (title: string, href: string) => void }) {
   const items = [
-    { id: "home", icon: Compass, href: "/" },
-    { id: "projects", icon: FolderGit2, href: "/projects" },
-    { id: "skills", icon: Wrench, href: "/skills" },
-    { id: "contact", icon: Globe, href: "/contact" },
+    { id: "home", label: "Story", icon: Compass, href: "/story" },
+    { id: "awards", label: "Awards", icon: Award, href: "/awards" },
+    { id: "projects", label: "Projects", icon: FolderGit2, href: "/projects" },
+    { id: "skills", label: "Skills", icon: Wrench, href: "/skills" },
+    { id: "contact", label: "Contact", icon: Globe, href: "/contact" },
   ];
   return (
     <motion.div
@@ -886,11 +936,15 @@ function MobileDock() {
         {items.map((item) => {
           const Icon = item.icon;
           return (
-            <Link key={item.id} href={item.href}>
-              <motion.div whileTap={{ scale: 0.9 }} className="flex size-11 items-center justify-center rounded-[14px] border-2 border-[#111] bg-white shadow-[2px_2px_0_0_#111]">
-                <Icon className="size-5 text-[#111]" />
-              </motion.div>
-            </Link>
+            <motion.button
+              key={item.id}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => onOpen(item.label ?? item.id, item.href)}
+              aria-label={item.label ?? item.id}
+              className="flex size-11 items-center justify-center rounded-[14px] border-2 border-[#111] bg-white shadow-[2px_2px_0_0_#111] cursor-pointer"
+            >
+              <Icon className="size-5 text-[#111]" />
+            </motion.button>
           );
         })}
       </div>
@@ -909,6 +963,7 @@ export function MacDesktop() {
   const [ready, setReady] = useState(false);
   const [ctxMenu, setCtxMenu] = useState<ContextMenuState>({ visible: false, x: 0, y: 0 });
   const isMobile = useIsMobile();
+  const [activeApp, setActiveApp] = useState<AppWindowData | null>(null);
 
   useEffect(() => {
     setPositions(loadPositions());
@@ -929,6 +984,11 @@ export function MacDesktop() {
   }, []);
 
   const openModal = useCallback((card: CardData) => setActiveModal(card), []);
+
+  const openApp = useCallback((title: string, href: string) => {
+    if (href.startsWith("mailto:")) { window.location.href = href; return; }
+    setActiveApp({ title, href });
+  }, []);
   const closeModal = useCallback(() => setActiveModal(null), []);
 
   const handleContextMenu = useCallback((e: React.MouseEvent) => {
@@ -984,7 +1044,12 @@ export function MacDesktop() {
         </div>
       )}
 
-      {isMobile ? <MobileDock /> : <Dock />}
+      {!activeApp &&
+        (isMobile ? <MobileDock onOpen={openApp} /> : <Dock onOpen={openApp} />)}
+
+      <AnimatePresence>
+        {activeApp && <AppWindow app={activeApp} onClose={() => setActiveApp(null)} />}
+      </AnimatePresence>
 
       {/* Preview Modal */}
       <AnimatePresence>

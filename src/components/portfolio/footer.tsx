@@ -8,7 +8,7 @@ import { navItems, socials } from "@/lib/portfolio-data";
 export function Footer() {
   const pathname = usePathname();
 
-  if (pathname === "/desktop") return null;
+  if (pathname === "/desktop" || pathname === "/") return null;
 
   const toTop = () =>
     window.scrollTo({ top: 0, behavior: "smooth" });

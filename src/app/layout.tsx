@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as SonnerToaster } from "@/components/ui/sonner";
 import { Navbar } from "@/components/portfolio/navbar";
+import { BackToDesktop } from "@/components/portfolio/back-to-desktop";
 import { Footer } from "@/components/portfolio/footer";
 import { SmoothScroll } from "@/components/portfolio/smooth-scroll";
 import { TerminalMode } from "@/components/portfolio/terminal-mode";
@@ -140,6 +141,7 @@ export default function RootLayout({
         <SmoothScroll>
           <div className="relative flex min-h-screen flex-col">
             <Navbar />
+            <BackToDesktop />
             <ScrollProgressIndicator />
             <main className="flex-1">{children}</main>
             <Footer />

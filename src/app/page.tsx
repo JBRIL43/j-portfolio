@@ -1,13 +1,5 @@
-"use client";
-
-import { Hero } from "@/components/portfolio/hero";
-import { HomeExplore } from "@/components/portfolio/home-explore";
+import { MacDesktop } from "@/components/portfolio/mac-desktop";
 
 export default function Home() {
-  return (
-    <>
-      <Hero />
-      <HomeExplore />
-    </>
-  );
+  return <MacDesktop />;
 }
