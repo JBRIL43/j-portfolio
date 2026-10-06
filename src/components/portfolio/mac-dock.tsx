@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import {
   Compass,
@@ -27,30 +27,54 @@ const dockItems = [
   { label: "Mail", href: "mailto:jibirnur32@gmail.com", icon: Mail },
 ];
 
-const EDGE = 24;
+const EDGE = 110;
+const HIDE_DELAY = 450;
 
 /**
  * macOS-style auto-hiding dock: hidden against the bottom edge until the
- * pointer approaches (or the dock itself is touched), then springs up.
+ * pointer approaches (or the dock itself is hovered), then springs up.
+ * Stays up while hovered and only retracts after the pointer leaves the
+ * edge zone for a short grace period, so it can't vanish mid-reach.
  * Always visible on touch devices, which have no pointer edge.
  */
 export function MacDock() {
   const pathname = usePathname();
-  const [visible, setVisible] = useState(false);
+  // Touch devices have no pointer edge: start visible (initializer runs
+  // before paint, so no effect-time setState).
+  const [visible, setVisible] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      window.matchMedia("(hover: none)").matches,
+  );
+  const hideTimer = useRef<number | undefined>(undefined);
+
+  const show = useCallback(() => {
+    window.clearTimeout(hideTimer.current);
+    setVisible(true);
+  }, []);
+
+  const hide = useCallback(() => {
+    window.clearTimeout(hideTimer.current);
+    hideTimer.current = window.setTimeout(() => setVisible(false), HIDE_DELAY);
+  }, []);
 
   useEffect(() => {
     if (pathname === "/desktop" || pathname === "/story") return;
-    if (window.matchMedia("(hover: none)").matches) {
-      setVisible(true);
-      return;
-    }
+    if (window.matchMedia("(hover: none)").matches) return;
 
     const onMove = (e: MouseEvent) => {
-      setVisible(e.clientY > window.innerHeight - EDGE);
+      if (e.clientY > window.innerHeight - EDGE) show();
+      else hide();
     };
+    // Defer: pointer may already be near the bottom after navigation.
+    const raf = requestAnimationFrame(() => show());
     window.addEventListener("mousemove", onMove);
-    return () => window.removeEventListener("mousemove", onMove);
-  }, [pathname]);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("mousemove", onMove);
+      window.clearTimeout(hideTimer.current);
+    };
+  }, [pathname, show, hide]);
 
   if (pathname === "/desktop" || pathname === "/story") return null;
 
@@ -59,8 +83,8 @@ export function MacDock() {
       initial={{ y: 120, opacity: 0 }}
       animate={{ y: visible ? 0 : 120, opacity: visible ? 1 : 0 }}
       transition={{ type: "spring", stiffness: 380, damping: 32 }}
-      onMouseEnter={() => setVisible(true)}
-      onMouseLeave={() => setVisible(false)}
+      onMouseEnter={show}
+      onMouseLeave={hide}
       className="fixed inset-x-0 bottom-0 z-50 flex justify-center pb-3"
       aria-label="Site dock"
     >

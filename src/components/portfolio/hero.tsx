@@ -405,9 +405,9 @@ export function Hero() {
         className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 sm:flex"
       >
         <Link
-          href="#explore"
+          href="#journey"
           className="group flex flex-col items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
-          aria-label="Scroll down to explore more"
+          aria-label="Scroll down to the journey"
         >
           <span className="text-[10px] uppercase tracking-[0.2em] group-hover:tracking-[0.25em] transition-all duration-200 font-mono">
             Scroll down
