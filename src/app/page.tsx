@@ -1,13 +1,5 @@
-"use client";
-
-import { Hero } from "@/components/portfolio/hero";
-import { Journey } from "@/components/portfolio/journey";
+import { MacDesktop } from "@/components/portfolio/mac-desktop";
 
 export default function Home() {
-  return (
-    <>
-      <Hero />
-      <Journey />
-    </>
-  );
+  return <MacDesktop />;
 }

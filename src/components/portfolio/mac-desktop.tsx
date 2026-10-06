@@ -688,7 +688,7 @@ function DesktopCard({
 function Dock() {
   const [hovered, setHovered] = useState<string | null>(null);
   const items = [
-    { id: "home", label: "Story", icon: Compass, href: "/" },
+    { id: "home", label: "Story", icon: Compass, href: "/journey" },
     { id: "projects", label: "Projects", icon: FolderGit2, href: "/projects" },
     { id: "skills", label: "Skills", icon: Wrench, href: "/skills" },
     { id: "about", label: "Beyond", icon: Megaphone, href: "/beyond" },

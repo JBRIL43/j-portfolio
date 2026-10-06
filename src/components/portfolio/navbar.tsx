@@ -35,7 +35,7 @@ export function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
 
-  if (pathname === "/desktop") return null;
+  if (pathname === "/desktop" || pathname === "/") return null;
 
   return (
     <>

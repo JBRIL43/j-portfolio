@@ -59,7 +59,7 @@ export function MacDock() {
   }, []);
 
   useEffect(() => {
-    if (pathname === "/desktop" || pathname === "/story") return;
+    if (pathname === "/desktop" || pathname === "/story" || pathname === "/") return;
     if (window.matchMedia("(hover: none)").matches) return;
 
     const onMove = (e: MouseEvent) => {
@@ -76,7 +76,7 @@ export function MacDock() {
     };
   }, [pathname, show, hide]);
 
-  if (pathname === "/desktop" || pathname === "/story") return null;
+  if (pathname === "/desktop" || pathname === "/story" || pathname === "/") return null;
 
   return (
     <motion.div
