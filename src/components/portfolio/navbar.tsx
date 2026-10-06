@@ -53,9 +53,9 @@ export function Navbar() {
         </button>
       )}
 
-      {/* Title plate — paper card on desktop, compact Dynamic Island pill on mobile */}
+      {/* Title plate — manga paper card on desktop, small paper pill island on mobile */}
       <div className="pointer-events-none fixed inset-x-0 top-0 z-40 flex justify-center px-4 pt-3 sm:pt-4">
-        <div className="flex items-center gap-2 rounded-full border-2 border-[#111] bg-[#111] px-3 py-1.5 text-white sm:gap-3 sm:rounded-none sm:bg-[#fafaf8] sm:px-4 sm:py-2 sm:text-[#111] sm:shadow-[4px_4px_0_0_#111]">
+        <div className="flex items-center gap-2 rounded-full border-2 border-[#111] bg-[#fafaf8] px-3 py-1.5 text-[#111] shadow-[4px_4px_0_0_#111] sm:gap-3 sm:rounded-none sm:px-4 sm:py-2">
           <span className="grid size-6 shrink-0 place-items-center border-2 border-[#111] bg-[#059669] text-[11px] font-black leading-none text-white">
             J
           </span>

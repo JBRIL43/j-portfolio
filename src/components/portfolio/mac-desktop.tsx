@@ -482,6 +482,36 @@ function PreviewModal({ card, onClose }: { card: CardData; onClose: () => void }
               )}
             </div>
           )}
+
+          {/* Show-more fallback: apps without detail links (Awards, socials…)
+              get one primary Continue action to the full destination. */}
+          {(!m?.links || m.links.length === 0) && card.href && (
+            <div className="pt-2">
+              {card.href.startsWith("/") ? (
+                <Link
+                  href={card.href}
+                  onClick={onClose}
+                  className="inline-flex w-full items-center justify-center gap-1.5 border-2 border-[#111] bg-[#059669] px-4 py-2.5 font-mono text-xs font-bold uppercase tracking-[0.12em] text-white shadow-[3px_3px_0_0_#111] transition-all hover:bg-[#047857] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
+                >
+                  Continue <ChevronRight className="size-3.5" />
+                </Link>
+              ) : (
+                <a
+                  href={card.href}
+                  target={card.href.startsWith("http") ? "_blank" : undefined}
+                  rel="noopener noreferrer"
+                  className="inline-flex w-full items-center justify-center gap-1.5 border-2 border-[#111] bg-[#059669] px-4 py-2.5 font-mono text-xs font-bold uppercase tracking-[0.12em] text-white shadow-[3px_3px_0_0_#111] transition-all hover:bg-[#047857] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
+                >
+                  Continue{" "}
+                  {card.href.startsWith("http") ? (
+                    <ExternalLink className="size-3.5" />
+                  ) : (
+                    <ChevronRight className="size-3.5" />
+                  )}
+                </a>
+              )}
+            </div>
+          )}
         </div>
       </motion.div>
     </motion.div>
