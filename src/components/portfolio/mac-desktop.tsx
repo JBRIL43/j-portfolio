@@ -31,6 +31,7 @@ import {
   ChevronRight,
   RotateCcw,
 } from "lucide-react";
+import { AmbientGlow } from "./ambient-glow";
 import { cn } from "@/lib/utils";
 
 // ──────────────────────────────────────────────
@@ -348,59 +349,6 @@ function clampPct(x: number, y: number, cardW: number): CardPos {
     y: Math.max(5, Math.min(maxY, y)),
   };
 }
-
-// ──────────────────────────────────────────────
-// Manga Halftone / Screentone Canvas
-// ──────────────────────────────────────────────
-
-function MangaScreenToneBg() {
-  const ref = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const c = ref.current;
-    if (!c) return;
-    const ctx = c.getContext("2d");
-    if (!ctx) return;
-    let w = 0, h = 0;
-
-    const draw = () => {
-      w = c.width = window.innerWidth;
-      h = c.height = window.innerHeight;
-      ctx.clearRect(0, 0, w, h);
-
-      // Halftone dot pattern
-      const spacing = 28;
-      ctx.fillStyle = "rgba(0, 0, 0, 0.04)";
-      for (let x = 0; x < w; x += spacing) {
-        for (let y = 0; y < h; y += spacing) {
-          ctx.beginPath();
-          ctx.arc(x, y, 1.2, 0, Math.PI * 2);
-          ctx.fill();
-        }
-      }
-
-      // Subtle speedlines at bottom-right corner
-      ctx.strokeStyle = "rgba(0, 0, 0, 0.03)";
-      ctx.lineWidth = 1;
-      for (let i = 0; i < 16; i++) {
-        ctx.beginPath();
-        ctx.moveTo(w, h);
-        ctx.lineTo(w - 300 - i * 40, h - 200 - i * 20);
-        ctx.stroke();
-      }
-    };
-
-    draw();
-    window.addEventListener("resize", draw);
-    return () => window.removeEventListener("resize", draw);
-  }, []);
-
-  return <canvas ref={ref} className="absolute inset-0 z-0 pointer-events-none" />;
-}
-
-// ──────────────────────────────────────────────
-// Mac-style Menu Bar Clock (top right)
-// ──────────────────────────────────────────────
 
 // ──────────────────────────────────────────────
 // Preview Modal (Manga Panel Dialog)
@@ -920,10 +868,11 @@ export function MacDesktop() {
 
   return (
     <div
-      className="relative h-[100dvh] w-full overflow-hidden bg-[#fafaf8]"
+      className="grid-bg relative h-[100dvh] w-full overflow-hidden bg-[#fafaf8]"
       onContextMenu={handleContextMenu}
     >
-      <MangaScreenToneBg />
+      {/* Shared site background: paper grid + ambient glow */}
+      <AmbientGlow color="bg-[#059669]/8" size="size-[34rem]" top="top-1/4" />
 
       {isMobile ? (
         <MobileAppGrid onOpen={openModal} />
