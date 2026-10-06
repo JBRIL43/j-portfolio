@@ -23,6 +23,81 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    id: "future-labs",
+    name: "Future Labs",
+    category: "Web",
+    tagline:
+      "The innovation lab's flagship site — futurelabs.et, building the future of Ethiopia through technology.",
+    problem:
+      "Future Labs needed a credible public home to introduce an Ethiopian technology lab, explain its AI, web, mobile, and cloud capabilities, and showcase flagship products like Dine Flow to startups, enterprises, and public-sector partners — a brand site that matched its engineering ambition.",
+    solution:
+      "Designed and built futurelabs.et as a polished Next.js marketing platform: mission & vision narrative, five service pillars (AI systems & automation, web & SaaS, mobile product engineering, cloud & APIs, product design & data intelligence), a flagship product showcase for Dine Flow, careers, and a contact funnel — with SEO, responsive layouts, and optimized imagery throughout.",
+    tech: ["Next.js", "React", "SEO", "Responsive Design", "Forms"],
+    impact:
+      "Gave Future Labs one credible web presence that frames the lab as Ethiopia's benchmark technology team — and turns product curiosity (Dine Flow), partnerships, and hiring interest into inbound leads through a single site.",
+    metrics: [
+      { label: "Live at", value: "futurelabs.et" },
+      { label: "Service pillars", value: "5" },
+      { label: "Flagship", value: "Dine Flow" },
+      { label: "HQ", value: "Addis Ababa" },
+    ],
+    accent: "from-teal-500/25 via-emerald-400/10 to-transparent",
+    year: "2026",
+    featured: true,
+    liveUrl: "https://futurelabs.et",
+    screenshots: [
+      {
+        src: "/projects/future-labs.png",
+        alt: "Future Labs homepage hero — Building the Future of Ethiopia Through Technology",
+        caption:
+          "Homepage — innovation-lab positioning: 'Building the Future of Ethiopia Through Technology.'",
+      },
+      {
+        src: "/projects/future-labs-product-dineflow.png",
+        alt: "Future Labs product showcase featuring the Dine Flow platform",
+        caption:
+          "Flagship showcase — Dine Flow, the AI food ordering & delivery ecosystem.",
+      },
+    ],
+  },
+  {
+    id: "ytn-training-institution",
+    name: "YTN Training Institution",
+    category: "Web",
+    tagline:
+      "A bilingual training & consulting platform — courses, cohorts, portals, and advisory, live on Vercel.",
+    problem:
+      "YTN Training & Consulting had no single place for prospective trainees to discover courses, follow upcoming cohorts, submit forms, or reach admissions — enrollment, FAQs, and advisory outreach were spread across manual channels with no trainee/trainer self-service.",
+    solution:
+      "Built a full multi-page Next.js platform deployed on Vercel: home, about, services, courses, trainee & trainer portals, forms, news, feedback, and contact — plus login/register flows, a FAQ hub, and English + Amharic (EN/አማ) localization so the site speaks to Ethiopian audiences in their own languages.",
+    tech: ["Next.js", "React", "Vercel", "i18n", "Forms"],
+    impact:
+      "Moved YTN's entire front door online — catalog, cohorts, registration, and advisory contact in one bilingual site — giving the institute a professional presence that converts visitors into enrolled trainees.",
+    metrics: [
+      { label: "Pages", value: "12+" },
+      { label: "Languages", value: "EN · አማ" },
+      { label: "Portals", value: "Trainee · Trainer" },
+      { label: "Deploy", value: "Vercel" },
+    ],
+    accent: "from-indigo-400/25 via-blue-400/10 to-transparent",
+    year: "2026",
+    featured: true,
+    liveUrl: "https://ytn-training-institution.vercel.app",
+    screenshots: [
+      {
+        src: "/projects/ytn-training-institution.png",
+        alt: "YTN Training Institution homepage — Your Partner in Learning, Training, Consulting & Business Development",
+        caption:
+          "Homepage — 'Your Partner in Learning, Training, Consulting & Business Development.'",
+      },
+      {
+        src: "/projects/ytn-training-about-us-page.png",
+        alt: "YTN Training Institution About Us page",
+        caption: "About Us — Ethiopian Wisdom · Global Experience.",
+      },
+    ],
+  },
+  {
     id: "pcic-management-system",
     name: "PCIC Management System",
     category: "Web",
