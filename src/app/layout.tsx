@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as SonnerToaster } from "@/components/ui/sonner";
 import { Navbar } from "@/components/portfolio/navbar";
+import { MacDock } from "@/components/portfolio/mac-dock";
 import { Footer } from "@/components/portfolio/footer";
 import { SmoothScroll } from "@/components/portfolio/smooth-scroll";
 import { TerminalMode } from "@/components/portfolio/terminal-mode";
@@ -145,6 +146,7 @@ export default function RootLayout({
             <Footer />
           </div>
         </SmoothScroll>
+        <MacDock />
         <TerminalMode />
         <Toaster />
         <SonnerToaster position="bottom-right" theme="light" richColors />

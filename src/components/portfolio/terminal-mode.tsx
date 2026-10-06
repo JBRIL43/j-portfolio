@@ -429,7 +429,7 @@ export function TerminalMode() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 10 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-5 right-5 z-50 flex items-center gap-2 border-[2.5px] border-[#111] bg-[#fafaf8] px-3.5 py-2.5 rounded-full shadow-[4px_4px_0_0_#111] text-xs font-bold uppercase tracking-wider text-[#111] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
+            className="fixed bottom-24 right-4 sm:bottom-5 sm:right-5 z-50 flex items-center gap-2 border-[2.5px] border-[#111] bg-[#fafaf8] px-3.5 py-2.5 rounded-full shadow-[4px_4px_0_0_#111] text-xs font-bold uppercase tracking-wider text-[#111] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
             title="Open Terminal (or press `)"
           >
             <div className="flex items-center justify-center size-6 rounded-full border-2 border-[#111] bg-[#111] text-white">
@@ -451,7 +451,7 @@ export function TerminalMode() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed bottom-5 right-5 z-50 flex flex-col w-[92vw] sm:w-[460px] md:w-[500px] h-[580px] max-h-[85vh] rounded-xl border-[2.5px] border-[#111] bg-[#fafaf8] shadow-[6px_6px_0_0_#111] overflow-hidden"
+            className="fixed bottom-24 right-4 sm:bottom-5 sm:right-5 z-50 flex flex-col w-[92vw] sm:w-[460px] md:w-[500px] h-[580px] max-h-[85vh] rounded-xl border-[2.5px] border-[#111] bg-[#fafaf8] shadow-[6px_6px_0_0_#111] overflow-hidden"
           >
             {/* ── Header ── */}
             <div className="flex items-center justify-between border-b-2 border-[#111] bg-white px-3.5 py-2.5 shrink-0 select-none">

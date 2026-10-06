@@ -72,7 +72,7 @@ export function SoundToggle() {
       animate={{ opacity: 1, scale: 1 }}
       transition={{ delay: 2 }}
       onClick={toggleSound}
-      className="fixed bottom-4 left-4 z-50 flex items-center gap-2 rounded-full glass px-3 py-2 text-xs text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+      className="fixed bottom-24 left-4 sm:bottom-4 z-50 flex items-center gap-2 rounded-full glass px-3 py-2 text-xs text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
       aria-label={isEnabled ? "Mute sounds" : "Enable sounds"}
     >
       <AnimatePresence mode="wait" initial={false}>
