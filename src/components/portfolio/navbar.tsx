@@ -21,7 +21,7 @@ function MangaClock() {
   }, []);
 
   return (
-    <span className="font-mono text-[11px] font-semibold tabular-nums text-[#111]">
+    <span className="font-mono text-[11px] font-semibold tabular-nums text-inherit">
       {time}
     </span>
   );
@@ -53,16 +53,16 @@ export function Navbar() {
         </button>
       )}
 
-      {/* Title plate — paper card with hard ink shadow */}
+      {/* Title plate — paper card on desktop, compact Dynamic Island pill on mobile */}
       <div className="pointer-events-none fixed inset-x-0 top-0 z-40 flex justify-center px-4 pt-3 sm:pt-4">
-        <div className="flex items-center gap-2 border-2 border-[#111] bg-[#fafaf8] px-3 py-2 shadow-[4px_4px_0_0_#111] sm:gap-3 sm:px-4">
+        <div className="flex items-center gap-2 rounded-full border-2 border-[#111] bg-[#111] px-3 py-1.5 text-white sm:gap-3 sm:rounded-none sm:bg-[#fafaf8] sm:px-4 sm:py-2 sm:text-[#111] sm:shadow-[4px_4px_0_0_#111]">
           <span className="grid size-6 shrink-0 place-items-center border-2 border-[#111] bg-[#059669] text-[11px] font-black leading-none text-white">
             J
           </span>
-          <span className="font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-[#111]">
+          <span className="hidden font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-current sm:inline">
             Jibril Nuredin
           </span>
-          <span className="h-4 w-px bg-[#111]/20" />
+          <span className="hidden h-4 w-px bg-current opacity-20 sm:block" />
           <MangaClock />
         </div>
       </div>

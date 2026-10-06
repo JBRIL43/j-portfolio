@@ -32,6 +32,7 @@ import {
   RotateCcw,
 } from "lucide-react";
 import { AmbientGlow } from "./ambient-glow";
+import { IOSDock } from "./mac-dock";
 import { cn } from "@/lib/utils";
 
 // ──────────────────────────────────────────────
@@ -788,40 +789,6 @@ function MobileAppGrid({ onOpen }: { onOpen: (c: CardData) => void }) {
 }
 
 // ──────────────────────────────────────────────
-// iOS-style Dock (mobile bottom bar)
-// ──────────────────────────────────────────────
-
-function MobileDock() {
-  const items = [
-    { id: "home", icon: Compass, href: "/" },
-    { id: "projects", icon: FolderGit2, href: "/projects" },
-    { id: "skills", icon: Wrench, href: "/skills" },
-    { id: "contact", icon: Globe, href: "/contact" },
-  ];
-  return (
-    <motion.div
-      initial={{ y: 60, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ delay: 0.3, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-      className="fixed inset-x-0 bottom-0 z-[100] flex justify-center pb-3 pointer-events-auto"
-    >
-      <div className="flex items-center gap-4 rounded-3xl border-2 border-[#111] bg-white/85 px-5 py-2.5 shadow-[4px_4px_0_0_#111] backdrop-blur-md">
-        {items.map((item) => {
-          const Icon = item.icon;
-          return (
-            <Link key={item.id} href={item.href}>
-              <motion.div whileTap={{ scale: 0.9 }} className="flex size-11 items-center justify-center rounded-[14px] border-2 border-[#111] bg-white shadow-[2px_2px_0_0_#111]">
-                <Icon className="size-5 text-[#111]" />
-              </motion.div>
-            </Link>
-          );
-        })}
-      </div>
-    </motion.div>
-  );
-}
-
-// ──────────────────────────────────────────────
 // Main Export
 // ──────────────────────────────────────────────
 
@@ -894,7 +861,7 @@ export function MacDesktop() {
         </div>
       )}
 
-      {isMobile ? <MobileDock /> : <Dock />}
+      {isMobile ? <IOSDock /> : <Dock />}
 
       {/* Preview Modal */}
       <AnimatePresence>

@@ -30,6 +30,54 @@ const dockItems = [
 const EDGE = 110;
 const HIDE_DELAY = 450;
 
+const mobileDockItems = [
+  { label: "Home", href: "/", icon: Compass },
+  { label: "Projects", href: "/projects", icon: FolderGit2 },
+  { label: "Skills", href: "/skills", icon: Wrench },
+  { label: "Contact", href: "/contact", icon: Globe },
+];
+
+/**
+ * iOS-style dock used on all narrow screens — both the home screen and the
+ * inner pages — so the dock never changes shape while navigating.
+ */
+export function IOSDock() {
+  const pathname = usePathname();
+
+  return (
+    <motion.div
+      initial={{ y: 60, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+      className="pointer-events-auto fixed inset-x-0 bottom-0 z-[100] flex justify-center pb-3"
+      aria-label="Site dock"
+    >
+      <nav className="flex items-center gap-4 rounded-3xl border-2 border-[#111] bg-white/85 px-5 py-2.5 shadow-[4px_4px_0_0_#111] backdrop-blur-md">
+        {mobileDockItems.map((item) => {
+          const Icon = item.icon;
+          const active =
+            item.href === "/"
+              ? pathname === "/"
+              : pathname.startsWith(item.href);
+          return (
+            <Link key={item.href} href={item.href}>
+              <motion.span
+                whileTap={{ scale: 0.9 }}
+                className={cn(
+                  "flex size-11 items-center justify-center rounded-[14px] border-2 border-[#111] shadow-[2px_2px_0_0_#111]",
+                  active ? "bg-[#059669] text-white" : "bg-white text-[#111]",
+                )}
+              >
+                <Icon className="size-5" />
+              </motion.span>
+            </Link>
+          );
+        })}
+      </nav>
+    </motion.div>
+  );
+}
+
 /**
  * macOS-style auto-hiding dock: hidden against the bottom edge until the
  * pointer approaches (or the dock itself is hovered), then springs up.
@@ -47,6 +95,19 @@ export function MacDock() {
       window.matchMedia("(hover: none)").matches,
   );
   const hideTimer = useRef<number | undefined>(undefined);
+  // Narrow screens share the iOS dock with the home screen (no flash: lazy).
+  const [isNarrow, setIsNarrow] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      window.matchMedia("(max-width: 767px)").matches,
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    const on = () => setIsNarrow(mq.matches);
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, []);
 
   const show = useCallback(() => {
     window.clearTimeout(hideTimer.current);
@@ -76,7 +137,9 @@ export function MacDock() {
     };
   }, [pathname, show, hide]);
 
-  if (pathname === "/desktop" || pathname === "/story" || pathname === "/") return null;
+  if (pathname === "/desktop" || pathname === "/story" || pathname === "/")
+    return null;
+  if (isNarrow) return <IOSDock />;
 
   return (
     <motion.div
