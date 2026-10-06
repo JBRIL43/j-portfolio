@@ -64,7 +64,7 @@ export function SoundToggle() {
   }, [pathname]);
 
   // The story page is a quiet manga experience: no sound UI there.
-  if (pathname === "/story") return null;
+  if (pathname === "/story" || pathname === "/desktop") return null;
 
   return (
     <motion.button

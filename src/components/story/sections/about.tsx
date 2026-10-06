@@ -7,20 +7,20 @@ export function About() {
   return (
     <ChapterSection id="about" state="looking" className="scroll-mt-[136px]">
       <div className="grid items-center gap-8 lg:grid-cols-[1fr_1.4fr]">
-          <figure
+            <figure
             className="relative border-[2.5px] border-[#111] bg-white"
             style={{ boxShadow: "5px 5px 0 0 #111" }}
           >
             <Image
-              src="/images/profile.jpg"
-              alt="Profile photo of Jibril Nuredin (placeholder until the real photo is added)"
-              width={800}
-              height={800}
-              className="aspect-[4/3] w-full object-cover grayscale"
+              src="/image.png"
+              alt="Manga screenshot of Jibril's story"
+              width={415}
+              height={739}
+              className="aspect-[415/739] w-full object-cover"
               sizes="(max-width: 1024px) 100vw, 40vw"
             />
             <figcaption className="border-t-[2.5px] border-[#111] bg-[#fafaf8] px-4 py-2 font-mono text-[11px] uppercase tracking-[0.16em] text-[#555]">
-              Photo placeholder
+              Manga panel
             </figcaption>
           </figure>
 

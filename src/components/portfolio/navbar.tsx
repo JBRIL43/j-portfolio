@@ -92,6 +92,8 @@ export function Navbar() {
     .flatMap((group) => group.items)
     .find((item) => isActive(item.href));
 
+  if (pathname === "/desktop") return null;
+
   return (
     <>
       <motion.header
