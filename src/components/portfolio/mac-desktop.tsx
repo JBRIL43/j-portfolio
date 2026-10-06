@@ -402,31 +402,6 @@ function MangaScreenToneBg() {
 // Mac-style Menu Bar Clock (top right)
 // ──────────────────────────────────────────────
 
-function MenuBarClock() {
-  const [now, setNow] = useState<Date | null>(null);
-
-  useEffect(() => {
-    setNow(new Date());
-    const timer = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  if (!now) return null;
-
-  const day = now.toLocaleDateString("en-US", { weekday: "short" });
-  const date = now.toLocaleDateString("en-US", { month: "short", day: "numeric" });
-  const time = now.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
-
-  return (
-    <div className="flex items-center gap-1.5 font-mono text-[11px] font-semibold tabular-nums text-[#111]">
-      <span className="hidden sm:inline">{day}</span>
-      <span>{date}</span>
-      <span className="text-[#111]/40">|</span>
-      <span>{time}</span>
-    </div>
-  );
-}
-
 // ──────────────────────────────────────────────
 // Preview Modal (Manga Panel Dialog)
 // ──────────────────────────────────────────────
@@ -949,20 +924,6 @@ export function MacDesktop() {
       onContextMenu={handleContextMenu}
     >
       <MangaScreenToneBg />
-
-      {/* Manga Header Badges */}
-      <div className="fixed top-4 left-4 z-40 flex items-center gap-2">
-        <div className="border-2 border-[#111] bg-[#111] px-3 py-1 font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-white shadow-[3px_3px_0_0_#111]">
-          {isMobile ? "MANGA OS · HOME" : "WORKSPACE · DESKTOP"}
-        </div>
-      </div>
-
-      {/* Mac-style clock, top right */}
-      <div className="fixed top-4 right-4 z-40 flex items-center">
-        <div className="border-2 border-[#111] bg-white px-3 py-1 shadow-[3px_3px_0_0_#111]">
-          <MenuBarClock />
-        </div>
-      </div>
 
       {isMobile ? (
         <MobileAppGrid onOpen={openModal} />
