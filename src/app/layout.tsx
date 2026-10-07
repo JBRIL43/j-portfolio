@@ -71,12 +71,21 @@ export const metadata: Metadata = {
     siteName: "Jibril Nuredin",
     type: "website",
     locale: "en_US",
+    images: [
+      {
+        url: "/preview.png", // Path to the image in your public folder
+        width: 1200,
+        height: 630,
+        alt: "Jibril Nuredin Portfolio Preview",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Jibril Nuredin — Builder of Technology & Communities",
     description:
       "Information Systems student, web developer, designer, and PR leader transforming ideas into impactful digital products and communities.",
+    images: ["preview.png"],
   },
   robots: {
     index: true,
