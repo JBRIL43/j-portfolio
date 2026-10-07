@@ -23,7 +23,6 @@ import {
 } from "lucide-react";
 import { AmbientGlow } from "./ambient-glow";
 import { IOSDock } from "./mac-dock";
-import { DynamicIsland } from "./dynamic-island";
 import { useReducedMotion } from "./use-reduced-motion";
 import { cn } from "@/lib/utils";
 import { skillCategories } from "@/lib/data/skills";
@@ -312,7 +311,7 @@ function PreviewModal({ project, onClose }: { project: ProjectData; onClose: () 
 // ──────────────────────────────────────────────
 
 function SmartStack({
-  title, icon, moreHref, children, id, tall = false, onActive,
+  title, icon, moreHref, children, id, tall = false,
 }: {
   title: string;
   icon: React.ComponentType<{ className?: string }>;
@@ -322,8 +321,6 @@ function SmartStack({
   id?: string;
   /** Hero stacks get a taller card viewport. */
   tall?: boolean;
-  /** Report this stack as the widget the user is touching (island label). */
-  onActive?: (title: string) => void;
 }) {
   const Icon = icon;
   const reduce = useReducedMotion();
@@ -337,8 +334,7 @@ function SmartStack({
     if (!el) return;
     const idx = Math.round(el.scrollTop / el.clientHeight);
     setActive((prev) => (prev === idx ? prev : Math.min(idx, count - 1)));
-    onActive?.(title);
-  }, [count, onActive, title]);
+  }, [count]);
 
   const goTo = useCallback(
     (i: number) => {
@@ -447,8 +443,6 @@ function SmartStack({
         <div
           ref={scrollRef}
           onScroll={handleScroll}
-          onFocus={() => onActive?.(title)}
-          onPointerDown={() => onActive?.(title)}
           onKeyDown={onKeyDown}
           tabIndex={0}
           role="region"
@@ -576,23 +570,18 @@ export function MacDesktop() {
   const openModal = useCallback((p: ProjectData) => setActiveModal(p), []);
   const closeModal = useCallback(() => setActiveModal(null), []);
   const isMobile = useIsMobile();
-  // The page never scrolls, so the island mirrors the widget in focus.
-  const [activeStack, setActiveStack] = useState("About · Journey");
 
   return (
     <div className="grid-bg relative h-[100dvh] w-full overflow-hidden bg-[#fafaf8]">
       <AmbientGlow color="bg-[#059669]/8" size="size-[34rem]" top="top-1/4" />
 
-      {/* Dynamic Island — fixed at top */}
-      <DynamicIsland label={activeStack} className="fixed left-0 right-0 top-7 z-50 [@media(min-height:781px)]:top-14" />
-
       {/* The desktop itself: one screen, no page scroll. Rows are fr units, so
-          every widget gets a share of the real leftover height (island + dock
+          every widget gets a share of the real leftover height (navbar + dock
           reserved via padding). Mobile recomposes to a 2-column home screen. */}
-      <div className="relative z-10 mx-auto grid h-full min-h-0 w-full max-w-6xl grid-cols-2 grid-rows-[1fr_1fr_1fr] gap-2 overflow-hidden px-2 pt-[4.25rem] pb-[4.75rem] sm:px-6 [@media(min-height:781px)]:grid-rows-[1.15fr_1fr_1fr] [@media(min-height:781px)]:gap-3 [@media(min-height:781px)]:pt-20 [@media(min-height:781px)]:pb-20">
+      <div className="relative z-10 mx-auto grid h-full min-h-0 w-full max-w-6xl grid-cols-2 grid-rows-[1fr_1fr_1fr] gap-2 overflow-hidden px-2 pt-[3.5rem] pb-[4.75rem] sm:px-6 sm:pt-16 [@media(min-height:781px)]:grid-rows-[1.15fr_1fr_1fr] [@media(min-height:781px)]:gap-3 [@media(min-height:781px)]:pt-[4.25rem] [@media(min-height:781px)]:pb-20">
           {/* ── Section 1: About + My Journey — full-width 2×4 Smart Stack ── */}
           <div id="sec-about" className="col-span-2 min-h-0">
-          <SmartStack title="About · My Journey" icon={Compass} moreHref="/journey" tall onActive={setActiveStack}>
+          <SmartStack title="About · My Journey" icon={Compass} moreHref="/journey" tall>
             {/* Card 1 — About Me */}
             <div className="flex flex-col justify-center overflow-hidden rounded-2xl border-2 border-[#111] bg-[#fafaf8] p-2.5 [@media(min-height:781px)]:p-5 [@media(max-height:780px)]:gap-1 shadow-[3px_3px_0_0_#111]">
               <p className="font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-[#059669]">
@@ -703,7 +692,7 @@ export function MacDesktop() {
           {/* ── Section 2: Projects + Skills — 2×2 Smart Stacks ── */}
           <div id="sec-projects" className="col-span-2 grid min-h-0 grid-cols-2 grid-rows-[minmax(0,1fr)] gap-2 sm:gap-4">
           {/* Projects — one project per card, vertical layout (image fills top) */}
-          <SmartStack title="Projects" icon={FolderGit2} moreHref="/projects" onActive={setActiveStack}>
+          <SmartStack title="Projects" icon={FolderGit2} moreHref="/projects">
             {PROJECTS.map((p) => (
               <button
                 key={p.id}
@@ -724,7 +713,7 @@ export function MacDesktop() {
           </SmartStack>
 
           {/* Skills — one category per card (Frontend ↓ Backend ↓ Programming ↓ Tools) */}
-          <SmartStack title="Skills" icon={Wrench} moreHref="/skills" onActive={setActiveStack}>
+          <SmartStack title="Skills" icon={Wrench} moreHref="/skills">
             {skillCategories.map((cat) => (
               <div
                 key={cat.id}
@@ -759,7 +748,7 @@ export function MacDesktop() {
           {/* ── Section 3: Awards + Contact — 2×2 Smart Stacks ── */}
           <div id="sec-awards" className="col-span-2 grid min-h-0 grid-cols-2 grid-rows-[minmax(0,1fr)] gap-2 sm:gap-4">
           {/* Awards — one award per card */}
-          <SmartStack title="Awards" icon={Award} moreHref="/awards" onActive={setActiveStack}>
+          <SmartStack title="Awards" icon={Award} moreHref="/awards">
             {awards.slice(0, 5).map((a) => (
               <Link
                 key={a.id}
@@ -785,7 +774,7 @@ export function MacDesktop() {
           {/* Contact — one card, all four channels + CTA.
               Two modes only: compact 2x2 rows (the default, fits any widget height)
               and a roomy single-column list on very tall screens. */}
-          <SmartStack title="Contact" icon={Globe} moreHref="/contact" onActive={setActiveStack}>
+          <SmartStack title="Contact" icon={Globe} moreHref="/contact">
             <div className="flex h-full flex-col justify-center gap-1.5 overflow-hidden rounded-2xl border-2 border-[#111] bg-white p-2 shadow-[3px_3px_0_0_#111] [@media(min-height:1200px)]:gap-2.5 [@media(min-height:1200px)]:p-3.5">
               <div className="grid grid-cols-2 gap-1.5 [@media(min-height:1200px)]:grid-cols-1 [@media(min-height:1200px)]:gap-2.5">
                 {CONTACTS.map((c) => (
