@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Zen_Kurenaido } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as SonnerToaster } from "@/components/ui/sonner";
@@ -10,25 +9,6 @@ import { SmoothScroll } from "@/components/portfolio/smooth-scroll";
 import { TerminalMode } from "@/components/portfolio/terminal-mode";
 import { SoundToggle } from "@/components/portfolio/sound-toggle";
 import { ScrollProgressIndicator } from "@/components/portfolio/scroll-progress-indicator";
-
-const inter = Inter({
-  variable: "--font-sans",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-mono",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const zenKurenaido = Zen_Kurenaido({
-  weight: "400",
-  variable: "--font-story",
-  subsets: ["latin"],
-  display: "swap",
-});
 
 const siteUrl = "https://jibrilnuredin.dev";
 
@@ -144,7 +124,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.variable} ${jetbrainsMono.variable} ${zenKurenaido.variable} antialiased bg-background text-foreground overflow-x-hidden`}
+        className="antialiased bg-background text-foreground overflow-x-hidden"
       >
         <SoundToggle />
         <SmoothScroll>

@@ -12,6 +12,7 @@ import {
   Briefcase,
   Award,
   Globe,
+  Send,
   Mail,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -23,7 +24,7 @@ const dockItems = [
   { label: "Skills", href: "/skills", icon: Wrench },
   { label: "Work", href: "/work", icon: Briefcase },
   { label: "Awards", href: "/awards", icon: Award },
-  { label: "Beyond", href: "/beyond", icon: Globe },
+  { label: "Contact", href: "/contact", icon: Send },
   { label: "Mail", href: "mailto:jibirnur32@gmail.com", icon: Mail },
 ];
 

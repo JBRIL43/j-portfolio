@@ -1,102 +1,60 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
-import {
-  motion,
-  AnimatePresence,
-  useMotionValue,
-  useSpring,
-} from "framer-motion";
+import { useState, useEffect, useCallback, useRef, Children } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import {
+  ExternalLink,
+  X,
+  Maximize2,
+  ChevronRight,
+  GraduationCap,
+  FolderGit2,
+  Wrench,
+  Award,
+  Globe,
+  Compass,
+  Route,
+  Send,
   Github,
   Linkedin,
   Mail,
-  ExternalLink,
-  Code2,
-  Palette,
-  Database,
-  Terminal,
-  FolderGit2,
-  Award,
-  Compass,
-  Send,
-  X,
-  Maximize2,
-  Minus,
   Users,
-  Megaphone,
-  Wrench,
-  Globe,
-  ChevronRight,
-  RotateCcw,
 } from "lucide-react";
 import { AmbientGlow } from "./ambient-glow";
 import { IOSDock } from "./mac-dock";
+import { DynamicIsland } from "./dynamic-island";
+import { useReducedMotion } from "./use-reduced-motion";
 import { cn } from "@/lib/utils";
+import { skillCategories } from "@/lib/data/skills";
+import { journey } from "@/lib/data/journey";
+import { awards } from "@/lib/data/awards";
+import { socials, visionStats } from "@/lib/data/socials";
+import { leadershipStats } from "@/lib/data/leadership";
 
 // ──────────────────────────────────────────────
-// Types
+// Types + Data
 // ──────────────────────────────────────────────
 
-type CardData = {
+type ProjectData = {
   id: string;
   title: string;
   subtitle?: string;
   image?: string;
-  icon?: React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
-  color: string;
-  width: number;
-  height?: number;
-  type: "project" | "skill" | "social" | "fun";
-  href?: string;
-  modal?: {
+  type: "project";
+  modal: {
     description: string;
     details: { label: string; value: string }[];
     links?: { label: string; href: string; external?: boolean }[];
   };
 };
 
-type CardPos = { x: number; y: number };
-
-// ──────────────────────────────────────────────
-// Organized layout positions (px/%)
-// ──────────────────────────────────────────────
-
-function computeDefaultPositions(): Record<string, CardPos> {
-  return {
-    // ── Left Side: Projects (macOS desktop files column) ──
-    pcic:      { x: 3,  y: 8 },
-    debt:      { x: 3,  y: 28 },
-    library:   { x: 3,  y: 48 },
-    inventory: { x: 3,  y: 68 },
-    fault:     { x: 13, y: 8 },
-    brand:     { x: 13, y: 28 },
-    // ── Right Side: Skills & Social (macOS widgets / files column) ──
-    react:     { x: 86, y: 8 },
-    nextjs:    { x: 86, y: 24 },
-    figma:     { x: 86, y: 40 },
-    nodejs:    { x: 86, y: 56 },
-    linux:     { x: 86, y: 72 },
-    github:    { x: 76, y: 8 },
-    linkedin:  { x: 76, y: 24 },
-    email:     { x: 76, y: 40 },
-    peakcraft: { x: 76, y: 56 },
-    awards:    { x: 76, y: 72 },
-  };
-}
-
-const DEFAULT_POSITIONS = computeDefaultPositions();
-
-const CARDS: CardData[] = [
-  // ── Projects ──
+const PROJECTS: ProjectData[] = [
   {
     id: "pcic",
     title: "PCIC",
     subtitle: "Management System",
     image: "/projects/pcic-dashboard.png",
-    color: "#111111",
-    width: 135,
     type: "project",
     modal: {
       description: "The operating system for Peak Craft — a full management system with role-based dashboard, event + attendance tracking, member management, decisions, compliance, and career modules.",
@@ -117,8 +75,6 @@ const CARDS: CardData[] = [
     title: "HU Debt",
     subtitle: "Student Platform",
     image: "/projects/debt-admin-dashboard.png",
-    color: "#111111",
-    width: 135,
     type: "project",
     modal: {
       description: "A cost-sharing debt platform for Hawassa University — web admin + Flutter student app. Digitized the entire cost-sharing lifecycle.",
@@ -139,8 +95,6 @@ const CARDS: CardData[] = [
     title: "LibraryHub",
     subtitle: "Bookstore",
     image: "/projects/libraryhub-hero.png",
-    color: "#111111",
-    width: 130,
     type: "project",
     modal: {
       description: "A fully static, multi-page bookstore web app. 32-book catalog, dual buy/rent pricing, search + genre filtering, shopping cart, and client-side auth.",
@@ -161,8 +115,6 @@ const CARDS: CardData[] = [
     title: "Stock Mgmt",
     subtitle: "Inventory System",
     image: "/projects/inventory-dashboard.png",
-    color: "#111111",
-    width: 130,
     type: "project",
     modal: {
       description: "A full inventory platform with role-based admin dashboard: real-time metrics, searchable stock-balance table, exportable reports.",
@@ -183,8 +135,6 @@ const CARDS: CardData[] = [
     title: "Fault Report",
     subtitle: "IoT Campus App",
     image: "/projects/fault-report-form.png",
-    color: "#111111",
-    width: 130,
     type: "project",
     modal: {
       description: "A Flutter + Supabase app for Hawassa University's IoT campus — report faults with photos, GPS, and Twilio SMS alerts.",
@@ -205,8 +155,6 @@ const CARDS: CardData[] = [
     title: "Peak Craft",
     subtitle: "Brand System",
     image: "/projects/peakcraft-emblem.png",
-    color: "#111111",
-    width: 130,
     type: "project",
     modal: {
       description: "Identity, voice, and guidelines for a tech community — crown, peaks, and a bold color system.",
@@ -216,146 +164,23 @@ const CARDS: CardData[] = [
         { label: "Colors", value: "Blue · Orange · Gold" },
         { label: "Tools", value: "Figma" },
       ],
-      links: [
-        { label: "Case Study", href: "/projects" },
-      ],
+      links: [{ label: "Case Study", href: "/projects" }],
     },
   },
-
-  // ── Skills ──
-  {
-    id: "react",
-    title: "React",
-    icon: Code2,
-    color: "#111111",
-    width: 95,
-    type: "skill",
-    modal: {
-      description: "A JavaScript library for building user interfaces. Used across all major projects.",
-      details: [
-        { label: "Category", value: "Frontend" },
-        { label: "Experience", value: "2+ years" },
-        { label: "Used in", value: "PCIC, Portfolio" },
-        { label: "Level", value: "Advanced" },
-      ],
-      links: [{ label: "All Skills", href: "/skills" }],
-    },
-  },
-  {
-    id: "nextjs",
-    title: "Next.js",
-    icon: Code2,
-    color: "#111111",
-    width: 95,
-    type: "skill",
-    modal: {
-      description: "The React framework for production. SSR, API routes, and optimized performance.",
-      details: [
-        { label: "Category", value: "Full-Stack" },
-        { label: "Experience", value: "2+ years" },
-        { label: "Used in", value: "Portfolio, PCIC" },
-        { label: "Level", value: "Advanced" },
-      ],
-      links: [{ label: "All Skills", href: "/skills" }],
-    },
-  },
-  {
-    id: "figma",
-    title: "Figma",
-    icon: Palette,
-    color: "#111111",
-    width: 95,
-    type: "skill",
-    modal: {
-      description: "Collaborative interface design tool. Used for Peak Craft brand and UI mockups.",
-      details: [
-        { label: "Category", value: "Design" },
-        { label: "Experience", value: "2+ years" },
-        { label: "Used in", value: "Peak Craft, Portfolio" },
-        { label: "Level", value: "Advanced" },
-      ],
-      links: [{ label: "All Skills", href: "/skills" }],
-    },
-  },
-  {
-    id: "nodejs",
-    title: "Node.js",
-    icon: Database,
-    color: "#111111",
-    width: 95,
-    type: "skill",
-    modal: {
-      description: "JavaScript runtime for server-side development. Powers backend APIs.",
-      details: [
-        { label: "Category", value: "Backend" },
-        { label: "Experience", value: "2+ years" },
-        { label: "Used in", value: "PCIC API, HU Debt" },
-        { label: "Level", value: "Advanced" },
-      ],
-      links: [{ label: "All Skills", href: "/skills" }],
-    },
-  },
-  {
-    id: "linux",
-    title: "Linux",
-    icon: Terminal,
-    color: "#111111",
-    width: 95,
-    type: "skill",
-    modal: {
-      description: "Unix-based OS and command line. Daily driver for development.",
-      details: [
-        { label: "Category", value: "Tools" },
-        { label: "Experience", value: "2+ years" },
-        { label: "Used in", value: "Daily workflow" },
-        { label: "Level", value: "Advanced" },
-      ],
-      links: [{ label: "All Skills", href: "/skills" }],
-    },
-  },
-
-  // ── Social + Fun ──
-  { id: "github", title: "GitHub", subtitle: "JBRIL43", icon: Github, color: "#111111", width: 105, type: "social", href: "https://github.com/JBRIL43" },
-  { id: "linkedin", title: "LinkedIn", subtitle: "Jibril Nuredin", icon: Linkedin, color: "#111111", width: 105, type: "social", href: "https://www.linkedin.com/in/jibril-nuredin" },
-  { id: "email", title: "Email", subtitle: "jibirnur32@gmail.com", icon: Mail, color: "#111111", width: 125, type: "social", href: "mailto:jibirnur32@gmail.com" },
-  { id: "peakcraft", title: "Peak Craft", subtitle: "Tech Community", icon: Users, color: "#111111", width: 115, type: "fun", href: "https://pcic.tech" },
-  { id: "awards", title: "Awards", subtitle: "16 Certs", icon: Award, color: "#111111", width: 105, type: "fun", href: "/awards" },
 ];
 
-const POS_KEY = "desktop-positions-manga-v1";
-
-function loadPositions(): Record<string, CardPos> {
-  if (typeof window === "undefined") return DEFAULT_POSITIONS;
-  try {
-    const raw = localStorage.getItem(POS_KEY);
-    if (raw) {
-      const stored = JSON.parse(raw) as Record<string, CardPos>;
-      return { ...DEFAULT_POSITIONS, ...stored };
-    }
-  } catch {}
-  return DEFAULT_POSITIONS;
-}
-
-function savePositions(pos: Record<string, CardPos>) {
-  try { localStorage.setItem(POS_KEY, JSON.stringify(pos)); } catch {}
-}
-
-function clampPct(x: number, y: number, cardW: number): CardPos {
-  const vw = typeof window !== "undefined" ? window.innerWidth : 1440;
-  const vh = typeof window !== "undefined" ? window.innerHeight : 900;
-  const maxX = ((vw - cardW) / vw) * 100;
-  const maxY = ((vh - 140) / vh) * 100;
-  return {
-    x: Math.max(0, Math.min(maxX, x)),
-    y: Math.max(5, Math.min(maxY, y)),
-  };
-}
+const CONTACTS = [
+  { id: "github", label: "GitHub", sub: "JBRIL43", icon: Github, href: socials.github },
+  { id: "linkedin", label: "LinkedIn", sub: "Jibril Nuredin", icon: Linkedin, href: socials.linkedin },
+  { id: "email", label: "Email", sub: "jibirnur32@gmail.com", icon: Mail, href: socials.email },
+  { id: "peakcraft", label: "Peak Craft", sub: "Tech Community", icon: Users, href: socials.pcic },
+];
 
 // ──────────────────────────────────────────────
-// Preview Modal (Manga Panel Dialog)
+// Preview Modal (Manga Panel Dialog) — project detail
 // ──────────────────────────────────────────────
 
-function PreviewModal({ card, onClose }: { card: CardData; onClose: () => void }) {
+function PreviewModal({ project, onClose }: { project: ProjectData; onClose: () => void }) {
   const [maximized, setMaximized] = useState(false);
 
   useEffect(() => {
@@ -364,7 +189,7 @@ function PreviewModal({ card, onClose }: { card: CardData; onClose: () => void }
     return () => window.removeEventListener("keydown", h);
   }, [onClose]);
 
-  const m = card.modal;
+  const m = project.modal;
 
   return (
     <motion.div
@@ -392,11 +217,10 @@ function PreviewModal({ card, onClose }: { card: CardData; onClose: () => void }
         <div className="flex items-center justify-between px-4 py-2.5 border-b-2 border-[#111] bg-white shrink-0">
           <div className="flex items-center gap-2.5">
             <span className="inline-block border-2 border-[#111] bg-[#111] px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-white">
-              PANEL // {card.type.toUpperCase()}
+              PANEL // PROJECT
             </span>
-            <span className="text-xs text-[#111] font-bold font-mono ml-1">{card.title}</span>
+            <span className="text-xs text-[#111] font-bold font-mono ml-1">{project.title}</span>
           </div>
-
           <div className="flex items-center gap-1.5">
             <button
               onClick={() => setMaximized((p) => !p)}
@@ -417,24 +241,17 @@ function PreviewModal({ card, onClose }: { card: CardData; onClose: () => void }
 
         {/* Body */}
         <div className="flex-1 overflow-y-auto p-5 space-y-4">
-          {card.image && (
+          {project.image && (
             <div className="relative aspect-video overflow-hidden border-2 border-[#111] rounded-lg shadow-[3px_3px_0_0_#111]">
-              <img src={card.image} alt={card.title} className="w-full h-full object-cover" />
+              <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
             </div>
           )}
 
-          <div className="flex items-center gap-3">
-            {card.icon && (
-              <div className="flex items-center justify-center size-10 rounded-lg border-2 border-[#111] bg-white shadow-[2px_2px_0_0_#111] shrink-0">
-                <card.icon className="size-5 text-[#111]" />
-              </div>
+          <div>
+            <h3 className="text-lg font-bold text-[#111] tracking-tight">{project.title}</h3>
+            {project.subtitle && (
+              <p className="font-mono text-xs text-[#666] uppercase tracking-wider">{project.subtitle}</p>
             )}
-            <div>
-              <h3 className="text-lg font-bold text-[#111] tracking-tight">{card.title}</h3>
-              {card.subtitle && (
-                <p className="font-mono text-xs text-[#666] uppercase tracking-wider">{card.subtitle}</p>
-              )}
-            </div>
           </div>
 
           {m?.description && (
@@ -466,7 +283,7 @@ function PreviewModal({ card, onClose }: { card: CardData; onClose: () => void }
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 border-2 border-[#111] bg-[#111] px-4 py-2 font-mono text-xs font-bold uppercase tracking-[0.12em] text-white shadow-[3px_3px_0_0_#111] transition-all hover:bg-[#059669] hover:text-white active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
+                    className="inline-flex items-center gap-1.5 border-2 border-[#111] bg-[#111] px-4 py-2 font-mono text-xs font-bold uppercase tracking-[0.12em] text-white shadow-[3px_3px_0_0_#111] transition-all hover:bg-[#059669] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
                   >
                     {link.label} <ExternalLink className="size-3" />
                   </a>
@@ -482,36 +299,6 @@ function PreviewModal({ card, onClose }: { card: CardData; onClose: () => void }
               )}
             </div>
           )}
-
-          {/* Show-more fallback: apps without detail links (Awards, socials…)
-              get one primary Continue action to the full destination. */}
-          {(!m?.links || m.links.length === 0) && card.href && (
-            <div className="pt-2">
-              {card.href.startsWith("/") ? (
-                <Link
-                  href={card.href}
-                  onClick={onClose}
-                  className="inline-flex w-full items-center justify-center gap-1.5 border-2 border-[#111] bg-[#059669] px-4 py-2.5 font-mono text-xs font-bold uppercase tracking-[0.12em] text-white shadow-[3px_3px_0_0_#111] transition-all hover:bg-[#047857] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
-                >
-                  Continue <ChevronRight className="size-3.5" />
-                </Link>
-              ) : (
-                <a
-                  href={card.href}
-                  target={card.href.startsWith("http") ? "_blank" : undefined}
-                  rel="noopener noreferrer"
-                  className="inline-flex w-full items-center justify-center gap-1.5 border-2 border-[#111] bg-[#059669] px-4 py-2.5 font-mono text-xs font-bold uppercase tracking-[0.12em] text-white shadow-[3px_3px_0_0_#111] transition-all hover:bg-[#047857] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
-                >
-                  Continue{" "}
-                  {card.href.startsWith("http") ? (
-                    <ExternalLink className="size-3.5" />
-                  ) : (
-                    <ChevronRight className="size-3.5" />
-                  )}
-                </a>
-              )}
-            </div>
-          )}
         </div>
       </motion.div>
     </motion.div>
@@ -519,146 +306,214 @@ function PreviewModal({ card, onClose }: { card: CardData; onClose: () => void }
 }
 
 // ──────────────────────────────────────────────
-// Draggable Desktop Card (Manga Panel)
+// Smart Stack widget: a fixed-size viewport showing ONE full card at a time.
+// The user scrolls/swipes vertically to switch cards (iPhone-style) —
+// snap-to-card, manual control only, never auto-rotates.
 // ──────────────────────────────────────────────
 
-const DRAG_THRESHOLD = 6;
-
-function DesktopCard({
-  card, position, onDrop, onOpen, topZ, bringToFront,
+function SmartStack({
+  title, icon, moreHref, children, id, tall = false, onActive,
 }: {
-  card: CardData;
-  position: CardPos;
-  onDrop: (id: string, pos: CardPos) => void;
-  onOpen: (card: CardData) => void;
-  topZ: number;
-  bringToFront: (id: string) => void;
+  title: string;
+  icon: React.ComponentType<{ className?: string }>;
+  moreHref: string;
+  children: React.ReactNode;
+  /** Section anchor id for the Dynamic Island scroll-spy. */
+  id?: string;
+  /** Hero stacks get a taller card viewport. */
+  tall?: boolean;
+  /** Report this stack as the widget the user is touching (island label). */
+  onActive?: (title: string) => void;
 }) {
-  const didDrag = useRef(false);
-  const startXY = useRef({ x: 0, y: 0 });
+  const Icon = icon;
+  const reduce = useReducedMotion();
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const shellRef = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(0);
+  const count = Children.count(children);
 
-  const onPointerDown = useCallback((e: React.PointerEvent) => {
-    bringToFront(card.id);
-    startXY.current = { x: e.clientX, y: e.clientY };
-    didDrag.current = false;
-  }, [card.id, bringToFront]);
+  const handleScroll = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const idx = Math.round(el.scrollTop / el.clientHeight);
+    setActive((prev) => (prev === idx ? prev : Math.min(idx, count - 1)));
+    onActive?.(title);
+  }, [count, onActive, title]);
 
-  const onPointerMove = useCallback((e: React.PointerEvent) => {
-    const dx = e.clientX - startXY.current.x;
-    const dy = e.clientY - startXY.current.y;
-    if (Math.sqrt(dx * dx + dy * dy) > DRAG_THRESHOLD) {
-      didDrag.current = true;
-    }
-  }, []);
-
-  const onDragEnd = useCallback(() => {
-    requestAnimationFrame(() => {
-      const el = document.getElementById(`dc-${card.id}`);
+  const goTo = useCallback(
+    (i: number) => {
+      const el = scrollRef.current;
       if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
-      const rawX = (rect.left / vw) * 100;
-      const rawY = (rect.top / vh) * 100;
-      const clamped = clampPct(rawX, rawY, card.width);
-      onDrop(card.id, clamped);
-    });
-  }, [card.id, card.width, onDrop]);
+      el.scrollTo({ top: i * el.clientHeight, behavior: reduce ? "auto" : "smooth" });
+    },
+    [reduce],
+  );
 
-  const onClick = useCallback(() => {
-    if (didDrag.current) return;
-    if (card.modal) {
-      onOpen(card);
-    } else if (card.href) {
-      const ext = card.href.startsWith("http") || card.href.startsWith("mailto");
-      if (ext) {
-        window.open(card.href, "_blank");
-      } else {
-        window.location.href = card.href;
-      }
-    }
-  }, [card, onOpen]);
+  // The widget owns vertical scrolling: wheel deltas accumulate and, once they
+  // express clear intent, the stack animates to exactly one neighbouring card.
+  // Letting small deltas ride native scroll-snap makes the content lurch and
+  // spring back ("dead wheel"), so we take the wheel and always ease.
+  useEffect(() => {
+    const el = scrollRef.current;
+    const shell = shellRef.current;
+    if (!el || !shell || count < 2) return;
+
+    let acc = 0;
+    let animating = false;
+    let unlock: ReturnType<typeof setTimeout> | undefined;
+
+    const settle = () => {
+      animating = false;
+      acc = 0;
+    };
+
+    const onWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaY) < 1) return;
+      e.preventDefault(); // this widget owns the wheel; the page never scrolls
+      if (animating) return; // ride out the in-flight ease, ignore momentum tail
+      acc += e.deltaY;
+      const threshold = el.clientHeight * 0.3;
+      if (Math.abs(acc) < threshold) return;
+      const dir = acc > 0 ? 1 : -1;
+      acc = 0;
+      const idx = Math.round(el.scrollTop / el.clientHeight);
+      const next = Math.min(count - 1, Math.max(0, idx + dir));
+      if (next === idx) return;
+      animating = true;
+      goTo(next);
+      el.addEventListener("scrollend", settle, { once: true });
+      unlock = setTimeout(settle, 420); // fallback if scrollend never fires
+    };
+
+    shell.addEventListener("wheel", onWheel, { passive: false });
+    return () => {
+      shell.removeEventListener("wheel", onWheel);
+      if (unlock) clearTimeout(unlock);
+    };
+  }, [count, goTo]);
+
+  // Keyboard: same one-card easing as the wheel, plus Home/End.
+  const onKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLDivElement>) => {
+      const el = scrollRef.current;
+      if (!el) return;
+      const idx = Math.round(el.scrollTop / el.clientHeight);
+      const map: Record<string, number> = {
+        ArrowDown: idx + 1,
+        ArrowRight: idx + 1,
+        PageDown: idx + 1,
+        ArrowUp: idx - 1,
+        ArrowLeft: idx - 1,
+        PageUp: idx - 1,
+        Home: 0,
+        End: count - 1,
+      };
+      const target = map[e.key];
+      if (target === undefined) return;
+      e.preventDefault();
+      const next = Math.min(count - 1, Math.max(0, target));
+      if (next !== idx) goTo(next);
+    },
+    [count, goTo],
+  );
 
   return (
-    <motion.div
-      id={`dc-${card.id}`}
-      key={`${card.id}-${position.x}-${position.y}`}
-      className="absolute select-none"
-      style={{
-        left: `${position.x}%`,
-        top: `${position.y}%`,
-        width: card.width,
-        zIndex: topZ,
-        willChange: "transform",
-      }}
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-      drag
-      dragMomentum={false}
-      dragElastic={0}
-      onPointerDown={onPointerDown}
-      onPointerMove={onPointerMove}
-      onDragEnd={onDragEnd}
-      onClick={onClick}
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.97 }}
-      onPointerUp={() => {
-        requestAnimationFrame(() => { didDrag.current = false; });
-      }}
-    >
-      <div
-        className={cn(
-          "rounded-lg overflow-hidden cursor-grab active:cursor-grabbing",
-          "border-2 border-[#111] bg-white",
-          "shadow-[4px_4px_0_0_#111] transition-all duration-200",
-          "hover:shadow-[6px_6px_0_0_#111] hover:-translate-y-0.5",
-        )}
-      >
-        {card.image ? (
-          <div className="relative aspect-[4/3] overflow-hidden border-b-2 border-[#111]">
-            <img src={card.image} alt={card.title} className="w-full h-full object-cover" draggable={false} />
+    <div id={id} ref={shellRef} data-stack={title} className="relative flex h-full min-h-0 flex-col">
+      {/* Layered back plates — the Smart Stack depth cue */}
+      <div aria-hidden className="absolute -bottom-1.5 left-2 right-2 h-6 rounded-2xl border-2 border-[#111]/50 bg-white" />
+      <div aria-hidden className="absolute -bottom-2.5 left-4 right-4 h-6 rounded-2xl border-2 border-[#111]/25 bg-white" />
+
+      <div className="relative flex h-full min-h-0 flex-col overflow-hidden rounded-2xl border-2 border-[#111] bg-white shadow-[4px_4px_0_0_#111]">
+        {/* Header: title + More */}
+        <div className="flex shrink-0 items-center justify-between gap-1.5 border-b-2 border-[#111] bg-[#fafaf8] px-2 py-0.5 [@media(min-height:781px)]:px-2.5 [@media(min-height:781px)]:py-1.5">
+          <div className="flex min-w-0 items-center gap-1.5 [@media(min-height:781px)]:gap-2">
+            <div className="flex size-4 shrink-0 items-center justify-center rounded border-2 border-[#111] bg-[#059669] text-white [@media(min-height:781px)]:size-6 [@media(min-height:781px)]:rounded-lg">
+              <Icon className="size-2.5 [@media(min-height:781px)]:size-3.5" />
+            </div>
+            <span className="truncate font-mono text-[9px] font-bold uppercase tracking-wider text-[#111] [@media(min-height:781px)]:text-[11px]">
+              {title}
+            </span>
           </div>
-        ) : (
-          <div className="flex items-center justify-center aspect-square border-b-2 border-[#111] bg-[#fafaf8]">
-            {card.icon && <card.icon className="size-7 text-[#111]" />}
-          </div>
-        )}
-        <div className="px-2 py-2 text-center bg-white">
-          <p className="text-xs font-bold text-[#111] truncate">{card.title}</p>
-          {card.subtitle && (
-            <p className="font-mono text-[9px] uppercase tracking-wider text-[#666] truncate mt-0.5">{card.subtitle}</p>
-          )}
+          <Link
+            href={moreHref}
+            className="flex h-4 shrink-0 items-center gap-0.5 rounded-full border-2 border-[#111] bg-white px-1.5 font-mono text-[9px] font-bold uppercase tracking-wider text-[#111] transition-colors hover:bg-[#059669] hover:text-white [@media(min-height:781px)]:h-6 [@media(min-height:781px)]:gap-1 [@media(min-height:781px)]:px-2.5 [@media(min-height:781px)]:text-[10px]"
+          >
+            More <ChevronRight className="size-2.5 [@media(min-height:781px)]:size-3" />
+          </Link>
         </div>
+
+        {/* One-card viewport: fills the leftover space in this widget's grid cell,
+            each card is exactly one viewport tall, snaps card-to-card. */}
+        <div
+          ref={scrollRef}
+          onScroll={handleScroll}
+          onFocus={() => onActive?.(title)}
+          onPointerDown={() => onActive?.(title)}
+          onKeyDown={onKeyDown}
+          tabIndex={0}
+          role="region"
+          aria-label={`${title} — one card at a time, scroll or swipe to switch`}
+          className={cn(
+            "min-h-0 flex-1 snap-y snap-mandatory snap-always overflow-y-auto overscroll-contain",
+            "focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#059669]/60",
+          )}
+        >
+          {Children.map(children, (child) => (
+            <div
+              className={cn(
+                "h-full snap-start snap-always [&>*]:h-full",
+                tall
+                  ? "py-1.5 min-[781px]:py-3"
+                  : "py-1 min-[781px]:py-2.5",
+              )}
+            >
+              {child}
+            </div>
+          ))}
+        </div>
+
+        {/* Card pager — shows position, tap to jump. Hidden for single-card stacks. */}
+        {count > 1 && (
+          <div className="pointer-events-auto absolute bottom-1.5 left-1/2 z-10 flex -translate-x-1/2 items-center gap-1.5 rounded-full border border-[#111]/15 bg-white/95 px-2 py-1 shadow-sm sm:bottom-2.5">
+            {Array.from({ length: count }).map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => goTo(i)}
+                aria-label={`Go to card ${i + 1} of ${count}`}
+                className={cn(
+                  "size-1.5 rounded-full transition-colors",
+                  i === active ? "scale-125 bg-[#059669]" : "bg-[#111]/20 hover:bg-[#111]/40",
+                )}
+              />
+            ))}
+          </div>
+        )}
       </div>
-    </motion.div>
+    </div>
   );
 }
 
 // ──────────────────────────────────────────────
-// Manga Dock / Toolbar
+// Workspace dock — persistent macOS-style dock for the home workspace.
+// (The global MacDock hides on "/" so the story intro stays clean.)
 // ──────────────────────────────────────────────
 
-function Dock() {
+function WorkspaceDock() {
   const [hovered, setHovered] = useState<string | null>(null);
   const items = [
-    { id: "home", label: "Story", icon: Compass, href: "/journey" },
+    { id: "home", label: "Home", icon: Compass, href: "/" },
+    { id: "journey", label: "Journey", icon: Route, href: "/journey" },
     { id: "projects", label: "Projects", icon: FolderGit2, href: "/projects" },
     { id: "skills", label: "Skills", icon: Wrench, href: "/skills" },
-    { id: "about", label: "Beyond", icon: Megaphone, href: "/beyond" },
     { id: "awards", label: "Awards", icon: Award, href: "/awards" },
     { id: "contact", label: "Contact", icon: Globe, href: "/contact" },
     { id: "mail", label: "Mail", icon: Send, href: "mailto:jibirnur32@gmail.com" },
   ];
 
   return (
-    <motion.div
-      initial={{ y: 80, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ delay: 0.5, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-      className="fixed bottom-4 left-1/2 -translate-x-1/2 z-[100]"
-    >
-      <div className="flex items-center gap-2 bg-[#fafaf8] border-[2.5px] border-[#111] rounded-2xl px-3 py-2 shadow-[5px_5px_0_0_#111]">
+    <div className="pointer-events-auto fixed bottom-4 left-1/2 z-[100] -translate-x-1/2">
+      <div className="flex items-center gap-2 rounded-2xl border-[2.5px] border-[#111] bg-[#fafaf8] px-3 py-2 shadow-[5px_5px_0_0_#111]">
         {items.map((item) => {
           const Icon = item.icon;
           const active = hovered === item.id;
@@ -674,7 +529,7 @@ function Dock() {
                 <div
                   className={cn(
                     "flex items-center justify-center size-10 rounded-xl border-2 border-[#111] bg-white shadow-[2px_2px_0_0_#111] transition-colors",
-                    active && "bg-[#059669] text-white"
+                    active && "bg-[#059669] text-white",
                   )}
                 >
                   <Icon className={cn("size-5", active ? "text-white" : "text-[#111]")} />
@@ -685,7 +540,7 @@ function Dock() {
                       initial={{ opacity: 0, y: 4 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 4 }}
-                      className="absolute -top-9 whitespace-nowrap rounded border-2 border-[#111] bg-[#111] px-2.5 py-0.5 text-[10px] font-mono font-bold uppercase tracking-wider text-white shadow-[2px_2px_0_0_#111] pointer-events-none"
+                      className="pointer-events-none absolute -top-9 whitespace-nowrap rounded border-2 border-[#111] bg-[#111] px-2.5 py-0.5 text-[10px] font-mono font-bold uppercase tracking-wider text-white shadow-[2px_2px_0_0_#111]"
                     >
                       {item.label}
                     </motion.div>
@@ -696,72 +551,9 @@ function Dock() {
           );
         })}
       </div>
-    </motion.div>
+    </div>
   );
 }
-
-// ──────────────────────────────────────────────
-// Context Menu
-// ──────────────────────────────────────────────
-
-type ContextMenuState = { visible: boolean; x: number; y: number };
-
-function ContextMenu({
-  state, onClose, onResetLayout,
-}: {
-  state: ContextMenuState;
-  onClose: () => void;
-  onResetLayout: () => void;
-}) {
-  const menuRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!state.visible) return;
-    const h = (e: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) onClose();
-    };
-    window.addEventListener("mousedown", h);
-    return () => window.removeEventListener("mousedown", h);
-  }, [state.visible, onClose]);
-
-  useEffect(() => {
-    if (!state.visible) return;
-    const h = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
-    window.addEventListener("keydown", h);
-    return () => window.removeEventListener("keydown", h);
-  }, [state.visible, onClose]);
-
-  if (!state.visible) return null;
-
-  return (
-    <motion.div
-      ref={menuRef}
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.9 }}
-      transition={{ duration: 0.1 }}
-      className="fixed z-[300] min-w-[180px] rounded-lg bg-[#fafaf8] border-2 border-[#111] shadow-[4px_4px_0_0_#111] py-1.5 font-mono text-xs"
-      style={{ left: state.x, top: state.y }}
-    >
-      <button
-        onClick={() => { onResetLayout(); onClose(); }}
-        className="w-full flex items-center gap-2.5 px-3 py-2 text-[#111] font-bold hover:bg-[#111] hover:text-white transition-colors cursor-pointer"
-      >
-        <RotateCcw className="size-3.5 text-amber-500" />
-        Reset Panels Layout
-      </button>
-      <div className="mx-2 my-1 h-px bg-[#111]/20" />
-      <button
-        onClick={onClose}
-        className="w-full flex items-center gap-2.5 px-3 py-2 text-[#666] hover:bg-[#111] hover:text-white transition-colors cursor-pointer"
-      >
-        Dismiss
-      </button>
-    </motion.div>
-  );
-}
-
-let zCounter = 100;
 
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(false);
@@ -776,131 +568,261 @@ function useIsMobile() {
 }
 
 // ──────────────────────────────────────────────
-// iOS-style App Grid (mobile)
-// ──────────────────────────────────────────────
-
-function MobileAppGrid({ onOpen }: { onOpen: (c: CardData) => void }) {
-  return (
-    <div className="fixed inset-x-0 top-16 bottom-24 z-30 overflow-y-auto px-4 py-4 pointer-events-auto">
-      <div className="grid grid-cols-4 gap-x-3 gap-y-5 sm:grid-cols-5">
-        {CARDS.map((card) => {
-          const Icon = card.icon;
-          return (
-            <motion.button
-              key={card.id}
-              initial={{ opacity: 0, scale: 0.7 }}
-              animate={{ opacity: 1, scale: 1 }}
-              whileTap={{ scale: 0.88 }}
-              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              onClick={() => onOpen(card)}
-              className="flex flex-col items-center gap-1.5 focus:outline-none"
-            >
-              <div
-                className={cn(
-                  "flex size-14 items-center justify-center rounded-[18px] border-2 border-[#111]",
-                  "bg-white shadow-[3px_3px_0_0_#111] overflow-hidden",
-                )}
-              >
-                {card.image ? (
-                  <img src={card.image} alt="" className="size-full object-cover" draggable={false} />
-                ) : Icon ? (
-                  <Icon className="size-6 text-[#111]" />
-                ) : null}
-              </div>
-              <span className="w-full truncate text-center text-[10px] font-semibold leading-tight text-[#111]">
-                {card.title}
-              </span>
-            </motion.button>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-// ──────────────────────────────────────────────
-// Main Export
+// Main Export — Smart Stack workspace (Mac + iPhone)
 // ──────────────────────────────────────────────
 
 export function MacDesktop() {
-  const [positions, setPositions] = useState<Record<string, CardPos>>(DEFAULT_POSITIONS);
-  const [activeModal, setActiveModal] = useState<CardData | null>(null);
-  const [zMap, setZMap] = useState<Record<string, number>>({});
-  const [ready, setReady] = useState(false);
-  const [ctxMenu, setCtxMenu] = useState<ContextMenuState>({ visible: false, x: 0, y: 0 });
-  const isMobile = useIsMobile();
-
-  useEffect(() => {
-    setPositions(loadPositions());
-    setReady(true);
-  }, []);
-
-  useEffect(() => {
-    if (ready) savePositions(positions);
-  }, [positions, ready]);
-
-  const bringToFront = useCallback((id: string) => {
-    zCounter += 1;
-    setZMap((prev) => ({ ...prev, [id]: zCounter }));
-  }, []);
-
-  const handleDrop = useCallback((id: string, pos: CardPos) => {
-    setPositions((prev) => ({ ...prev, [id]: pos }));
-  }, []);
-
-  const openModal = useCallback((card: CardData) => setActiveModal(card), []);
+  const [activeModal, setActiveModal] = useState<ProjectData | null>(null);
+  const openModal = useCallback((p: ProjectData) => setActiveModal(p), []);
   const closeModal = useCallback(() => setActiveModal(null), []);
-
-  const handleContextMenu = useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
-    setCtxMenu({ visible: true, x: e.clientX, y: e.clientY });
-  }, []);
-
-  const closeCtxMenu = useCallback(() => setCtxMenu((p) => ({ ...p, visible: false })), []);
-
-  const resetLayout = useCallback(() => {
-    setPositions(DEFAULT_POSITIONS);
-    try { localStorage.removeItem(POS_KEY); } catch {}
-  }, []);
+  const isMobile = useIsMobile();
+  // The page never scrolls, so the island mirrors the widget in focus.
+  const [activeStack, setActiveStack] = useState("About · Journey");
 
   return (
-    <div
-      className="grid-bg relative h-[100dvh] w-full overflow-hidden bg-[#fafaf8]"
-      onContextMenu={handleContextMenu}
-    >
-      {/* Shared site background: paper grid + ambient glow */}
+    <div className="grid-bg relative h-[100dvh] w-full overflow-hidden bg-[#fafaf8]">
       <AmbientGlow color="bg-[#059669]/8" size="size-[34rem]" top="top-1/4" />
 
-      {isMobile ? (
-        <MobileAppGrid onOpen={openModal} />
-      ) : (
-        /* Desktop Cards Canvas */
-        <div className="fixed inset-0 pt-4 pb-20 pointer-events-none">
-          {CARDS.map((card) => (
-            <div key={card.id} className="pointer-events-auto">
-              <DesktopCard
-                card={card}
-                position={positions[card.id] || DEFAULT_POSITIONS[card.id]}
-                onDrop={handleDrop}
-                onOpen={openModal}
-                topZ={zMap[card.id] ?? 10}
-                bringToFront={bringToFront}
-              />
-            </div>
-          ))}
-        </div>
-      )}
+      {/* Dynamic Island — fixed at top */}
+      <DynamicIsland label={activeStack} className="fixed left-0 right-0 top-7 z-50 [@media(min-height:781px)]:top-14" />
 
-      {isMobile ? <IOSDock /> : <Dock />}
+      {/* The desktop itself: one screen, no page scroll. Rows are fr units, so
+          every widget gets a share of the real leftover height (island + dock
+          reserved via padding). Mobile recomposes to a 2-column home screen. */}
+      <div className="relative z-10 mx-auto grid h-full min-h-0 w-full max-w-6xl grid-cols-2 grid-rows-[1fr_1fr_1fr] gap-2 overflow-hidden px-2 pt-[4.25rem] pb-[4.75rem] sm:px-6 [@media(min-height:781px)]:grid-rows-[1.15fr_1fr_1fr] [@media(min-height:781px)]:gap-3 [@media(min-height:781px)]:pt-20 [@media(min-height:781px)]:pb-20">
+          {/* ── Section 1: About + My Journey — full-width 2×4 Smart Stack ── */}
+          <div id="sec-about" className="col-span-2 min-h-0">
+          <SmartStack title="About · My Journey" icon={Compass} moreHref="/journey" tall onActive={setActiveStack}>
+            {/* Card 1 — About Me */}
+            <div className="flex flex-col justify-center overflow-hidden rounded-2xl border-2 border-[#111] bg-[#fafaf8] p-2.5 [@media(min-height:781px)]:p-5 [@media(max-height:780px)]:gap-1 shadow-[3px_3px_0_0_#111]">
+              <p className="font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-[#059669]">
+                01 · About Me
+              </p>
+              <h3 className="mt-1 [@media(min-height:781px)]:text-3xl [@media(max-height:780px)]:text-xl font-[family-name:var(--font-story)] text-2xl text-[#111]">
+                Jibril Nuredin
+              </h3>
+              <p className="mt-1 font-mono text-[10px] uppercase tracking-wider text-[#666] sm:text-xs">
+                Web Developer · Designer · Community Builder
+              </p>
+              <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-[#333] [@media(max-height:780px)]:hidden">
+                Information Systems student at Hawassa University, transforming ideas into
+                impactful digital products and communities across Africa — from full management
+                systems to campus apps.
+              </p>
+            </div>
+
+            {/* Card 2 — My Journey */}
+            <div className="flex flex-col justify-center overflow-hidden rounded-2xl border-2 border-[#111] bg-[#fafaf8] p-3 shadow-[3px_3px_0_0_#111] sm:p-5">
+              <p className="font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-[#059669]">
+                02 · My Journey
+              </p>
+              <h3 className="mt-1.5 text-sm font-bold text-[#111] sm:text-base">
+                From a first PC to a builder — 2022 → today
+              </h3>
+              <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-[#333] [@media(max-height:780px)]:hidden">
+                {journey[0]?.description}
+              </p>
+            </div>
+
+            {/* Card 3 — Education */}
+            <div className="flex flex-col justify-center overflow-hidden rounded-2xl border-2 border-[#111] bg-[#fafaf8] p-3 shadow-[3px_3px_0_0_#111] sm:p-5">
+              <p className="font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-[#059669]">
+                03 · Education
+              </p>
+              <div className="mt-1.5 flex items-center gap-2">
+                <div className="flex size-8 shrink-0 items-center justify-center rounded-lg border-2 border-[#111] bg-white">
+                  <GraduationCap className="size-4 text-[#111]" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-[#111]">Hawassa University</h3>
+                  <p className="font-mono text-[10px] uppercase tracking-wider text-[#666]">
+                    BSc Information Systems
+                  </p>
+                </div>
+              </div>
+              <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-[#333] [@media(max-height:780px)]:hidden">
+                {journey[1]?.description}
+              </p>
+            </div>
+
+            {/* Card 4 — Experience */}
+            <div className="flex flex-col justify-center overflow-hidden rounded-2xl border-2 border-[#111] bg-[#fafaf8] p-3 shadow-[3px_3px_0_0_#111] sm:p-5">
+              <p className="font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-[#059669]">
+                04 · Experience
+              </p>
+              <h3 className="mt-1 [@media(max-height:700px)]:text-[11px] [@media(min-height:781px)]:text-base [@media(max-height:780px)]:text-xs text-sm font-bold text-[#111]">
+                Head of Public Relations · Peak Craft
+              </h3>
+              <div className="mt-1.5 grid grid-cols-4 gap-1 [@media(min-height:781px)]:gap-2">
+                {leadershipStats.map((s) => (
+                  <div key={s.label} className="rounded-lg border-2 border-[#111] bg-white px-1.5 [@media(max-height:780px)]:py-0.5 py-1.5 [@media(min-height:1001px)]:px-2.5">
+                    <p className="[@media(max-height:700px)]:hidden font-mono text-[7px] uppercase tracking-wider text-[#777] [@media(min-height:1001px)]:text-[8px]">{s.label}</p>
+                    <p className="text-[10px] font-bold text-[#111] [@media(min-height:1001px)]:text-xs">{s.value}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Card 5 — Milestones */}
+            <div className="flex flex-col justify-center overflow-hidden rounded-2xl border-2 border-[#111] bg-[#fafaf8] p-3 shadow-[3px_3px_0_0_#111] sm:p-5">
+              <p className="font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-[#059669]">
+                05 · Milestones
+              </p>
+              <div className="mt-1 [@media(max-height:780px)]:space-y-0.5 space-y-1.5 [@media(min-height:1000px)]:space-y-2 [&>*:nth-child(n+4)]:[@media(max-height:780px)]:hidden">
+                {journey.slice(0, 4).map((j) => (
+                  <div key={`${j.year}-${j.title}`} className="border-l-2 border-[#111] pl-3">
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-[9px] font-bold uppercase text-[#059669]">{j.year}</span>
+                      <p className="truncate text-[10px] font-bold text-[#111] [@media(min-height:1000px)]:text-xs">{j.title}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Card 6 — Goals */}
+            <div className="flex flex-col justify-center overflow-hidden rounded-2xl border-2 border-[#111] bg-[#fafaf8] p-3 shadow-[3px_3px_0_0_#111] sm:p-5">
+              <p className="font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-[#059669]">
+                06 · Goals
+              </p>
+              <div className="mt-1 [@media(max-height:780px)]:space-y-0.5 space-y-1.5">
+                {visionStats.map((s) => (
+                  <div key={s.label} className="flex items-baseline gap-2">
+                    <span className="shrink-0 font-mono text-[9px] font-bold uppercase tracking-wider text-[#111]">
+                      {s.label}
+                    </span>
+                    <span className="text-[10px] text-[#333] [@media(min-height:1000px)]:text-xs">{s.value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </SmartStack>
+          </div>
+
+          {/* ── Section 2: Projects + Skills — 2×2 Smart Stacks ── */}
+          <div id="sec-projects" className="col-span-2 grid min-h-0 grid-cols-2 grid-rows-[minmax(0,1fr)] gap-2 sm:gap-4">
+          {/* Projects — one project per card, vertical layout (image fills top) */}
+          <SmartStack title="Projects" icon={FolderGit2} moreHref="/projects" onActive={setActiveStack}>
+            {PROJECTS.map((p) => (
+              <button
+                key={p.id}
+                onClick={() => openModal(p)}
+                className="flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border-2 border-[#111] bg-white shadow-[3px_3px_0_0_#111] transition-transform hover:scale-[1.01] hover:shadow-[4px_4px_0_0_#111]"
+              >
+                {p.image && (
+                  <div className="relative aspect-video w-full flex-1 overflow-hidden border-b-2 border-[#111]">
+                    <img src={p.image} alt={p.title} className="h-full w-full object-cover" />
+                  </div>
+                )}
+                <div className="flex flex-col items-start gap-0.5 p-2 text-left [@media(min-height:781px)]:gap-1 [@media(min-height:781px)]:p-3">
+                  <p className="text-xs font-bold text-[#111] [@media(min-height:781px)]:text-sm">{p.title}</p>
+                  <p className="font-mono text-[9px] uppercase tracking-wider text-[#666] [@media(min-height:781px)]:text-[10px]">{p.subtitle}</p>
+                </div>
+              </button>
+            ))}
+          </SmartStack>
+
+          {/* Skills — one category per card (Frontend ↓ Backend ↓ Programming ↓ Tools) */}
+          <SmartStack title="Skills" icon={Wrench} moreHref="/skills" onActive={setActiveStack}>
+            {skillCategories.map((cat) => (
+              <div
+                key={cat.id}
+                className="flex h-full flex-col justify-center gap-1.5 overflow-hidden rounded-2xl border-2 border-[#111] bg-white p-2.5 shadow-[3px_3px_0_0_#111] [@media(min-height:781px)]:gap-2.5 [@media(min-height:781px)]:p-3.5"
+              >
+                <div>
+                  <h3 className="text-xs font-bold uppercase tracking-wide text-[#111] sm:text-sm">{cat.label}</h3>
+                  <p className="mt-0.5 hidden text-[11px] leading-snug text-[#666] [@media(min-height:1200px)]:block">{cat.description}</p>
+                </div>
+                <div className="space-y-0.5 [@media(min-height:1000px)]:space-y-0.5 [@media(max-height:1000px)]:[&>*:nth-child(n+5)]:hidden [&>*:nth-child(n+4)]:[@media(max-height:780px)]:hidden">
+                  {cat.skills.map((s) => (
+                    <div key={s.name} className="[@media(max-height:700px)]:space-y-0 space-y-0.5 [@media(min-height:1000px)]:space-y-1">
+                      <div className="flex items-baseline justify-between gap-1">
+                        <span className="truncate text-[10px] font-bold leading-tight text-[#111] [@media(max-height:700px)]:text-[9px] [@media(min-height:1000px)]:text-xs">{s.name}</span>
+                        <span className="font-mono text-[9px] font-bold text-[#059669] sm:text-[10px]">{s.level}%</span>
+                      </div>
+                      <div className="h-1 [@media(min-height:1000px)]:h-1.5 overflow-hidden rounded-full border border-[#111] bg-white">
+                        <div
+                          className="h-full bg-[#059669]"
+                          style={{ width: `${s.level}%` }}
+                          aria-label={`${s.level}% proficiency`}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </SmartStack>
+          </div>
+
+          {/* ── Section 3: Awards + Contact — 2×2 Smart Stacks ── */}
+          <div id="sec-awards" className="col-span-2 grid min-h-0 grid-cols-2 grid-rows-[minmax(0,1fr)] gap-2 sm:gap-4">
+          {/* Awards — one award per card */}
+          <SmartStack title="Awards" icon={Award} moreHref="/awards" onActive={setActiveStack}>
+            {awards.slice(0, 5).map((a) => (
+              <Link
+                key={a.id}
+                href="/awards"
+                className="flex h-full flex-col justify-center [@media(max-height:780px)]:gap-1 gap-2 overflow-hidden rounded-2xl border-2 border-[#111] bg-white p-2 [@media(max-height:780px)]:p-1.5 shadow-[3px_3px_0_0_#111] transition-transform hover:scale-[1.01] hover:shadow-[4px_4px_0_0_#111] [@media(min-height:781px)]:gap-2.5 [@media(min-height:781px)]:p-4"
+              >
+                <div className="flex [@media(max-height:780px)]:size-8 size-10 items-center justify-center rounded-xl border-2 border-[#111] bg-[#fafaf8] [@media(min-height:781px)]:size-12">
+                  <a.icon className="[@media(max-height:780px)]:size-4 size-5 text-[#111] [@media(min-height:781px)]:size-6" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-xs font-bold text-[#111] sm:text-sm">{a.title}</p>
+                  <p className="mt-0.5 font-mono text-[9px] uppercase tracking-wider text-[#666] sm:text-[10px]">
+                    {a.issuer} · {a.year}
+                  </p>
+                  {a.description && (
+                    <p className="mt-1.5 hidden text-xs leading-relaxed text-[#333] sm:line-clamp-2 sm:block [@media(max-height:780px)]:hidden!">{a.description}</p>
+                  )}
+                </div>
+              </Link>
+            ))}
+          </SmartStack>
+
+          {/* Contact — one card, all four channels + CTA.
+              Two modes only: compact 2x2 rows (the default, fits any widget height)
+              and a roomy single-column list on very tall screens. */}
+          <SmartStack title="Contact" icon={Globe} moreHref="/contact" onActive={setActiveStack}>
+            <div className="flex h-full flex-col justify-center gap-1.5 overflow-hidden rounded-2xl border-2 border-[#111] bg-white p-2 shadow-[3px_3px_0_0_#111] [@media(min-height:1200px)]:gap-2.5 [@media(min-height:1200px)]:p-3.5">
+              <div className="grid grid-cols-2 gap-1.5 [@media(min-height:1200px)]:grid-cols-1 [@media(min-height:1200px)]:gap-2.5">
+                {CONTACTS.map((c) => (
+                  <a
+                    key={c.id}
+                    href={c.href}
+                    target={c.href.startsWith("http") ? "_blank" : undefined}
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 rounded-lg border-2 border-[#111] bg-[#fafaf8] p-1 transition-all hover:bg-white [@media(min-height:1200px)]:gap-2.5 [@media(min-height:1200px)]:p-2.5"
+                  >
+                    <div className="flex size-5 shrink-0 items-center justify-center rounded-md border-2 border-[#111] bg-white [@media(min-height:1200px)]:size-8 [@media(min-height:1200px)]:rounded-lg">
+                      <c.icon className="size-2.5 text-[#111] [@media(min-height:1200px)]:size-4" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-[10px] font-bold text-[#111] [@media(min-height:1200px)]:text-xs">{c.label}</p>
+                      <p className="hidden truncate font-mono text-[9px] uppercase tracking-wider text-[#666] [@media(min-height:1200px)]:block">{c.sub}</p>
+                    </div>
+                    <ExternalLink className="hidden size-3 shrink-0 text-[#111]/40 [@media(min-height:1200px)]:block" />
+                  </a>
+                ))}
+              </div>
+              <Link
+                href="/contact"
+                className="flex w-full items-center justify-center gap-1 rounded-lg border-2 border-[#111] bg-[#059669] px-2 py-1 font-mono text-[9px] font-bold uppercase tracking-wider text-white shadow-[2px_2px_0_0_#111] transition-all hover:bg-[#047857] [@media(min-height:1200px)]:gap-1.5 [@media(min-height:1200px)]:px-3 [@media(min-height:1200px)]:py-2.5 [@media(min-height:1200px)]:text-[10px]"
+              >
+                Say hi <ChevronRight className="size-3 [@media(min-height:1200px)]:size-3.5" />
+              </Link>
+            </div>
+          </SmartStack>
+          </div>
+      </div>
+
+      {/* Dock: iOS dock on iPhone, macOS dock on desktop (both already have fixed positioning) */}
+      {isMobile ? <IOSDock /> : <WorkspaceDock />}
 
       {/* Preview Modal */}
       <AnimatePresence>
-        {activeModal && <PreviewModal card={activeModal} onClose={closeModal} />}
-      </AnimatePresence>
-
-      {/* Context Menu */}
-      <AnimatePresence>
-        <ContextMenu state={ctxMenu} onClose={closeCtxMenu} onResetLayout={resetLayout} />
+        {activeModal && <PreviewModal project={activeModal} onClose={closeModal} />}
       </AnimatePresence>
     </div>
   );
