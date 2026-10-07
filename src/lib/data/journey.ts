@@ -12,14 +12,14 @@ export const journey: JourneyStep[] = [
     year: "2022",
     title: "Discovering Technology",
     description:
-      "My journey started when I got my first PC. I began exploring everything — tearing apart how apps and websites worked, spending late nights figuring out how technology actually fits together.",
+      "My journey started with my first PC in 2022. Curiosity quickly turned into experimentation — learning how websites and apps worked, breaking things, fixing them, and eventually building my own.",
     tag: "Origin",
   },
   {
     year: "2022",
     title: "Finding My Path at University",
     description:
-      "I went to university to find a career that suited me and got into Information Systems at Hawassa University. I took my first programming language, C++ — it was difficult because it was my first time ever encountering code.",
+      "I went to university looking for a career that suited me and found Information Systems at Hawassa University. My first language was C++ — hard, with zero coding experience. I learned to break problems down, debug, and keep trying, and discovered I enjoyed building things more than just studying them.",
     tag: "Foundations",
   },
   {

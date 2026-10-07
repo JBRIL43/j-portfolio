@@ -602,12 +602,13 @@ export function MacDesktop() {
                 Jibril Nuredin
               </h3>
               <p className="mt-1 font-mono text-[10px] uppercase tracking-wider text-[#666] sm:text-xs">
-                Web Developer · Designer · Community Builder
+                Full-Stack Developer · AI Engineering Enthusiast · Community Builder
               </p>
-              <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-[#333] [@media(max-height:780px)]:hidden">
-                Information Systems student at Hawassa University, transforming ideas into
-                impactful digital products and communities across Africa — from full management
-                systems to campus apps.
+              <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-[#333] [@media(max-height:880px)]:line-clamp-2 [@media(max-height:780px)]:hidden">
+                Information Systems graduate from Hawassa University, building practical digital products from idea to implementation. I enjoy turning real-world problems into useful software, from full management systems and campus applications to web experiences and community-driven projects.
+              </p>
+              <p className="mt-1.5 line-clamp-2 text-xs leading-relaxed text-[#555] [@media(max-height:880px)]:hidden">
+                Currently focused on growing as a Full-Stack Developer while exploring the next chapter of my journey into AI Engineering.
               </p>
             </div>
 
@@ -617,7 +618,7 @@ export function MacDesktop() {
                 02 · My Journey
               </p>
               <h3 className="mt-1.5 text-sm font-bold text-[#111] sm:text-base">
-                From a first PC to a builder — 2022 → today
+                From my first PC to building real products — 2022 → today
               </h3>
               <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-[#333] [@media(max-height:780px)]:hidden">
                 {journey[0]?.description}
@@ -636,11 +637,11 @@ export function MacDesktop() {
                 <div>
                   <h3 className="text-sm font-bold text-[#111]">Hawassa University</h3>
                   <p className="font-mono text-[10px] uppercase tracking-wider text-[#666]">
-                    BSc Information Systems
+                    BSc Information Systems · 2026
                   </p>
                 </div>
               </div>
-              <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-[#333] [@media(max-height:780px)]:hidden">
+              <p className="mt-1.5 line-clamp-4 shrink-0 text-sm leading-relaxed text-[#333] [@media(max-height:780px)]:hidden">
                 {journey[1]?.description}
               </p>
             </div>

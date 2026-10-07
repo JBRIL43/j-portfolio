@@ -295,7 +295,7 @@ export function StoryIntro({ onEnter }: { onEnter: () => void }) {
                           </span>
                           <h3 className="font-mono text-sm font-bold text-[#111]">{step.title}</h3>
                         </div>
-                        <p className="mt-1 font-mono text-xs text-[#666]">{step.description}</p>
+                        <p className="mt-1 line-clamp-2 font-mono text-xs text-[#666]">{step.description}</p>
                       </motion.div>
                     ))}
                   </div>

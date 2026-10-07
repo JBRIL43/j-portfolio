@@ -72,7 +72,7 @@ const aboutText = (
       <span className="font-bold text-[#059669]">Jibril Nuredin</span> — Full-Stack Developer
     </p>
     <p className="text-[#444] leading-relaxed">
-      Information Systems student at Hawassa University. Building web products, mobile applications, and community platforms with a focus on AI Engineering.
+      Information Systems graduate from Hawassa University, building practical digital products from idea to implementation. I enjoy turning real-world problems into useful software, from full management systems and campus applications to web experiences and community-driven projects. Currently focused on growing as a Full-Stack Developer while exploring the next chapter of my journey into AI Engineering.
     </p>
     <p className="text-[10px] text-[#777] font-mono">
       Stack: React · Next.js · Node.js · Flutter · Figma · AI Tooling

@@ -20,11 +20,12 @@ export const metadata: Metadata = {
     template: "%s · Jibril Nuredin",
   },
   description:
-    "Information Systems student at Hawassa University, web developer, designer, and Head of Public Relations at Peak Craft. Transforming ideas into impactful digital products and communities across Africa.",
+    "Information Systems graduate from Hawassa University, building practical digital products — full management systems, campus applications, and community-driven web experiences. Now focused on Full-Stack development and AI Engineering.",
   keywords: [
     "Jibril Nuredin",
     "Software Engineer",
-    "Web Developer",
+    "Full-Stack Developer",
+    "AI Engineering",
     "UI/UX Designer",
     "Tech Community Builder",
     "Peak Craft",
@@ -46,7 +47,7 @@ export const metadata: Metadata = {
     title:
       "Jibril Nuredin — Building Technology, Communities & Digital Experiences",
     description:
-      "Information Systems student, web developer, designer, and PR leader transforming ideas into impactful digital products and communities.",
+      "Information Systems graduate and Full-Stack Developer building practical digital products — from full management systems and campus apps to community-driven web experiences.",
     url: siteUrl,
     siteName: "Jibril Nuredin",
     type: "website",
@@ -64,7 +65,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Jibril Nuredin — Builder of Technology & Communities",
     description:
-      "Information Systems student, web developer, designer, and PR leader transforming ideas into impactful digital products and communities.",
+      "Information Systems graduate and Full-Stack Developer building practical digital products across Africa — management systems, campus apps, and community-driven web experiences.",
     images: ["preview.png"],
   },
   robots: {

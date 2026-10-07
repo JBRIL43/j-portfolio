@@ -203,9 +203,7 @@ export function Hero() {
             transition={{ delay: 0.35, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg"
           >
-            Information Systems student, web developer, designer, PR lead,
-            social media manager, and content creator transforming ideas into
-            impactful digital products and communities.
+            Full-Stack Developer · AI Engineering Enthusiast · Community Builder. Information Systems graduate from Hawassa University, building practical digital products from idea to implementation. I enjoy turning real-world problems into useful software, from full management systems and campus applications to web experiences and community-driven projects. Currently focused on growing as a Full-Stack Developer while exploring the next chapter of my journey into AI Engineering.
           </motion.p>
 
           <motion.div
