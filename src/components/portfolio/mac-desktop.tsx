@@ -446,6 +446,7 @@ function SmartStack({
           onKeyDown={onKeyDown}
           tabIndex={0}
           role="region"
+          data-lenis-prevent-touch
           aria-label={`${title} — one card at a time, scroll or swipe to switch`}
           className={cn(
             "min-h-0 flex-1 snap-y snap-mandatory snap-always overflow-y-auto overscroll-contain",

@@ -47,6 +47,8 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
         infinite: false,
         gestureOrientation: "vertical",
         syncTouch: true,
+        // Smart Stacks are nested scrollers: let them take the gesture natively
+        allowNestedScroll: true,
       }}
     >
       <PauseOnModal />
